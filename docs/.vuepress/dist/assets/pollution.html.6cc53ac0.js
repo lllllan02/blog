@@ -1,0 +1,1 @@
+import{_ as e}from"./plugin-vue_export-helper.21dcd24c.js";import{o,c as t}from"./app.5d82fd04.js";const r={};function c(_,l){return o(),t("div")}var f=e(r,[["render",c],["__file","pollution.html.vue"]]);export{f as default};
