@@ -1001,9 +1001,21 @@ links:
   items:
     - {
       title: "RegMs If",
-      intro: "If7 的个人博客",
+      intro: "潘老师 Orz",
       link: "https://regmsif.cf/",
       avatar: "/img/avatar_if7.png"
+    }
+    - {
+      title: "Tangent",
+      intro: "谭老板 Orz",
+      link: "https://tangent1231.com/",
+      avatar: "/img/avatar_tangent.png"
+    }
+    - {
+      title: "Light",
+      intro: "信院第一人",
+      link: "https://lllighter.com/",
+      avatar: "/img/avatar_light.png"
     }
 
   # 当成员头像加载失败时，替换为指定图片
