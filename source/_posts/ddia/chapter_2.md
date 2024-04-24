@@ -1,8 +1,8 @@
 ---
 title: 第二章、数据模型与查询语言
-categories: 
- - 《数据密集型应用系统设计》
-date: 2024-04-22 21:36:56
+categories:
+  - 《数据密集型应用系统设计》
+date: 2024-04-23 00:36:56
 tags:
   - designing data-intensive applications
 index_img: /ddia/chapter_2/cover.png
@@ -15,8 +15,8 @@ banner_img: /ddia/chapter_2/cover.png
 
 复杂的应用程序可能会有更多的中间层，例如基于 API 来构建上层 API，但是基本思想相同：**每层都提供一个简洁的数据模型来隐藏下层的复杂性**。这些抽象机制使得不同的人群可以高效协作。
 
-
 历史上，数据最初被表示为一棵大树（**层次模型**），但是这<u>不利于表示多对多关系</u>，所以发明了**关系模型**来解决这个问题。最近开发人员发现一些应用程序也不太适合关系模型，新的非关系「NoSQL」数据存储便兴起来，并且存在两个主要方向上的分歧：
+
 1. **文档数据库**的目标用例上数据来自于自包含文档，且一个文档与其他文档之间的<u>关联很少</u>。
 2. **图数据库**则针对相反的场景，目标用例上所有数据都可能会<u>互相关联</u>。
 
@@ -43,6 +43,7 @@ Hibernate 这样的**对象-关系映射（ORM object-relational mapping）**框
 ![使用关系模式来表示 LinkedIn 简历](chapter_2/linkedin.png)
 
 为什么在 SQL 中，地域和公司都以 ID，而不是字符串进行标识呢？
+
 1. ID 对人类没有任何意义，所以永远不需要改变，可以规范化人类的信息。那么就会存在多对一的关系（多个人对应了同一个 ID）。
 2. 在关系数据库 SQL 中，所有使用它的地方可以用 ID 来引用其他表中的行。
 3. 但是文档数据库（比如 JSON），对连接支持很弱。
@@ -54,6 +55,7 @@ Hibernate 这样的**对象-关系映射（ORM object-relational mapping）**框
 **NoSQL：不仅仅是 SQL（Not only SQL）。**
 
 采用 NoQSL 的几个驱动因素：
+
 1. 比关系数据库**更好的扩展性**需求，包括支持超大数据集或超高写入吞吐量。
 2. 相比商业数据库产品，**免费和开源**软件更受偏爱。
 3. 关系模型不能很好地支持一些**特殊的查询**操作。
@@ -69,39 +71,39 @@ Hibernate 这样的**对象-关系映射（ORM object-relational mapping）**框
 
 ```json
 {
-    "user_id": 251,
-    "first_name": "Bill",
-    "last_name": "Gates",
-    "summary": "Co-chair of the Bill & Melinda Gates... Active blogger.",
-    "region_id": "us:91",
-    "industry_id": 131,
-    "photo_url": "//p/7/000/253/05b/308dd6e.jpg",
-    "positions": [
-        {
-            "job_title": "Co-chair",
-            "organization": "Bill & Melinda Gates Foundation"
-        },
-        {
-            "job_title": "Co-founder, Chairman",
-            "organization": "Microsoft"
-        }
-    ],
-    "education": [
-        {
-            "school_name": "Harvard University",
-            "start": 1973,
-            "end": 1975
-        },
-        {
-            "school_name": "Lakeside School, Seattle",
-            "start": null,
-            "end": null
-        }
-    ],
-    "contact_info": {
-        "blog": "http://thegatesnotes.com",
-        "twitter": "http://twitter.com/BillGates"
+  "user_id": 251,
+  "first_name": "Bill",
+  "last_name": "Gates",
+  "summary": "Co-chair of the Bill & Melinda Gates... Active blogger.",
+  "region_id": "us:91",
+  "industry_id": 131,
+  "photo_url": "//p/7/000/253/05b/308dd6e.jpg",
+  "positions": [
+    {
+      "job_title": "Co-chair",
+      "organization": "Bill & Melinda Gates Foundation"
+    },
+    {
+      "job_title": "Co-founder, Chairman",
+      "organization": "Microsoft"
     }
+  ],
+  "education": [
+    {
+      "school_name": "Harvard University",
+      "start": 1973,
+      "end": 1975
+    },
+    {
+      "school_name": "Lakeside School, Seattle",
+      "start": null,
+      "end": null
+    }
+  ],
+  "contact_info": {
+    "blog": "http://thegatesnotes.com",
+    "twitter": "http://twitter.com/BillGates"
+  }
 }
 ```
 
@@ -131,16 +133,19 @@ Hibernate 这样的**对象-关系映射（ORM object-relational mapping）**框
 #### 文档模型的模式灵活性
 
 大多数文档数据库，以及关系数据库中的 JSON 支持，都不会对文档中的数据强制执行任何模式。
+
 - 文档数据库有时被称为「**无模式**」，但其实数因为读数据的代码通常采用某种结构而存在某种隐形模式，而不是由数据库强制执行。
 - 更准确说应该是「**读时模式**」，即数据结构是隐式的，只有在读取时才解释。与「**写时模式**」在数据库确保数据写入时都必须遵循相对应。
 
 当应用程序需要改变数据格式时，这些方法之间的差异就尤其明显。
+
 - 读时模式变更字段很容易，只用改应用代码
 - 写时模式变更字段速度很慢，而且要求停运。它的这种坏名誉并不是完全应得的：大多数关系数据库系统可在几毫秒内执行 `ALTER TABLE` 语句。MySQL 是一个值得注意的例外，它执行 ALTER TABLE 时会复制整个表，这可能意味着在更改一个大型表时会花费几分钟甚至几个小时的停机时间，尽管存在各种工具来解决这个限制。
 
 #### 查询的数据局部性
 
 文档通常存储为 JSON、XML 或其二进制变体的连续字符串。
+
 - 在频繁访问整个文档时存储局部性具有性能优势。局部性优势仅适用于同时访问文档大部分内容的场景。
 - 更新文档时通常会重写整个文档，只有不改变源文档大小时才可以容易地原地覆盖更新。因此通常建议文档应该尽量小且避免写入时增加文档大小。
 
@@ -160,12 +165,14 @@ Hibernate 这样的**对象-关系映射（ORM object-relational mapping）**框
 ### 属性图
 
 在属性图模型中，每个**顶点（vertex）**包括：
+
 - 唯一的标识符
 - 一组出边（outgoing edges）
 - 一组入边（ingoing edges）
 - 一组属性（键值对）
 
 每条**边（edge）**包括：
+
 - 唯一标识符
 - 边的起点/尾部顶点（tail vertex）
 - 边的终点/头部顶点（head vertex）
@@ -173,6 +180,7 @@ Hibernate 这样的**对象-关系映射（ORM object-relational mapping）**框
 - 一组属性（键值对）
 
 使用关系模式来表示属性图：
+
 ```sql
 CREATE TABLE vertices (
   vertex_id  INTEGER PRIMARY KEY,
@@ -197,7 +205,7 @@ CREATE INDEX edges_heads ON edges (head_vertex);
 1. 任何顶点都可以有一条边连接到任何其他顶点。没有模式限制哪种事物可不可以关联。
 2. 给定任何顶点，可以高效地找到它的入边和出边，从而遍历图，即沿着一系列顶点的路径前后移动。
 3. 通过对不同类型的关系使用不同的标签，可以在一个图中存储几种不同的信息，同时仍然保持一个清晰的数据模型。
-{% endnote %}
+   {% endnote %}
 
 ## 数据查询语言
 
