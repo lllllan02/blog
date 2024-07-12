@@ -1,10 +1,10 @@
 ---
 title: GO 学习路径
 categories:
-  - 阅读
+  - golang
 date: 2024-07-12 15:50:14
 tags:
-  - go
+  - golang
 index_img:
 banner_img:
 ---
