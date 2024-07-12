@@ -11,93 +11,6 @@ banner_img:
 
 【导读】：[awesome-go](https://github.com/avelino/awesome-Go) 就是 `avelino` 发起维护的 Go 资源列表，内容包括：音频和音乐库、命令行工具、服务端应用、流处理、持续集成、数据库、机器学习、NLP、物联网、中间件、文本处理、安全、机器人技术等。
 
-# 资源列表
-
-- [资源列表](#资源列表)
-  - [音频和音乐库](#音频和音乐库)
-  - [认证和 OAuth 授权](#认证和-oauth-授权)
-  - [机器人相关](#机器人相关)
-  - [命令行工具](#命令行工具)
-    - [标准 CLI](#标准-cli)
-  - [高级控制台 UI](#高级控制台-ui)
-  - [配置管理](#配置管理)
-  - [持续集成](#持续集成)
-  - [CSS 预处理](#css-预处理)
-  - [数据结构](#数据结构)
-  - [数据库](#数据库)
-      - [数据库迁移工具](#数据库迁移工具)
-    - [数据库工具](#数据库工具)
-    - [SQL 查询语句构建库](#sql-查询语句构建库)
-  - [数据库驱动](#数据库驱动)
-  - [日期和时间](#日期和时间)
-  - [分布式系统](#分布式系统)
-  - [动态 DNS](#动态-dns)
-  - [邮件库](#邮件库)
-  - [脚本语言与嵌入式编程](#脚本语言与嵌入式编程)
-  - [错误处理](#错误处理)
-  - [文件处理](#文件处理)
-  - [金融领域相关库](#金融领域相关库)
-  - [表单](#表单)
-  - [函数式编程](#函数式编程)
-  - [游戏开发](#游戏开发)
-  - [代码生成与泛型](#代码生成与泛型)
-  - [位置信息与地理 GEO 处理库](#位置信息与地理-geo-处理库)
-  - [Goroutines](#goroutines)
-  - [GUI](#gui)
-  - [硬件](#硬件)
-  - [Images 图像处理](#images-图像处理)
-  - [物联网(IOT)](#物联网iot)
-  - [作业调度](#作业调度)
-  - [JSON](#json)
-  - [Logging 日志库](#logging-日志库)
-  - [机器学习](#机器学习)
-  - [消息系统](#消息系统)
-  - [Microsoft Office](#microsoft-office)
-    - [EXCEL](#excel)
-  - [其他杂项](#其他杂项)
-    - [依赖性注入](#依赖性注入)
-    - [项目结构](#项目结构)
-    - [字符串处理](#字符串处理)
-    - [暂未分类](#暂未分类)
-  - [自然语言处理](#自然语言处理)
-  - [网络相关库](#网络相关库)
-    - [Http Client](#http-client)
-    - [OpenGL](#opengl)
-    - [ORM](#orm)
-  - [Go 语言包管理](#go-语言包管理)
-    - [查询语](#查询语)
-  - [资源嵌入](#资源嵌入)
-  - [数据分析与数据科学](#数据分析与数据科学)
-  - [安全领域相关库](#安全领域相关库)
-  - [序列化](#序列化)
-  - [服务端应用](#服务端应用)
-  - [流处理](#流处理)
-  - [模板引擎](#模板引擎)
-  - [测试相关](#测试相关)
-  - [文本处理](#文本处理)
-  - [第三方 API](#第三方-api)
-  - [工具库](#工具库)
-  - [UUID](#uuid)
-  - [校验库](#校验库)
-    - [版本控制](#版本控制)
-  - [视频](#视频)
-  - [web 框架](#web-框架)
-  - [中间件](#中间件)
-    - [中间件](#中间件-1)
-    - [创建 http 中间件的代码库](#创建-http-中间件的代码库)
-  - [路由](#路由)
-  - [WebAssembly](#webassembly)
-  - [Windows](#windows)
-  - [XML](#xml)
-  - [相关工具](#相关工具)
-    - [代码分析](#代码分析)
-  - [编辑器插件](#编辑器插件)
-  - [Go 代码生成工具](#go-代码生成工具)
-  - [Go 工具](#go-工具)
-  - [软件包](#软件包)
-    - [devops 工具](#devops-工具)
-    - [其他软件库和软件包](#其他软件库和软件包)
-
 ## 音频和音乐库
 
 - [flac](https://github.com/mewkiz/flac) : 原生`Go`语言编写的 FLAC 数据流编码与解码器。
@@ -116,8 +29,6 @@ banner_img:
 - [portmidi](https://github.com/rakyll/portmidi) : 音频`I/O`库`PortMidi`的`go`语言封装
 - [vorbis](https://github.com/mccoyst/vorbis) : `Go`语言版`Vorbis`解码器（使用到`CGO`,但并不依赖与 cgo）
 - [waveform](https://github.com/mdlayher/waveform) : 基于音频流来生成音频波形图的`go`语言库
-
----
 
 ## 认证和 OAuth 授权
 
@@ -155,8 +66,6 @@ banner_img:
 - [sessionup](https://github.com/swithek/sessionup) : 简单而有效的`HTTP`会话管理和标识库。
 - [sjwt](https://github.com/brianvoe/sjwt) : - 简单的`jwt`生成器和解析器。
 
----
-
 ## 机器人相关
 
 ` 构建和使用机器人的库`
@@ -180,8 +89,6 @@ banner_img:
 - [telebot](https://github.com/tucnak/telebot) : 用`Go`编写的`Telegram`机器人框架。
 - [telegram-bot-api](https://github.com/Syfaro/telegram-bot-api) : 简单干净的`Telegram`机器人客户端。
 - [Tenyks](https://github.com/kyleterry/tenyks) : 使用`Redis` 和`JSON`进行消息传递的面向服务的` IRC`机器人。
-
----
 
 ## 命令行工具
 
@@ -228,8 +135,6 @@ banner_img:
 - [wlog](https://github.com/dixonwille/wlog) : 简单的日志接口,具有跨平台和并发支持等特性
 - [wmenu](https://github.com/dixonwille/wmenu) : 为命令行程序提供简单的菜单结构选项来提供给用户来进行选择
 
----
-
 ## 高级控制台 UI
 
 `用于构建控制台应用程序和控制台用户界面的库.`
@@ -263,8 +168,6 @@ banner_img:
 - [uiprogress](https://github.com/gosuri/uiprogress) ：用于渲染进度条的库
 - [uitable](https://github.com/gosuri/uitable) : 用于改善命令行中，表格数据可读性的库
 - [yacspin](https://github.com/theckman/yacspin) : 用于终端的`CLi Spinner` 工具包。
-
----
 
 ## 配置管理
 
@@ -315,8 +218,6 @@ banner_img:
 - [viper](https://github.com/spf13/viper) :`Go`语言配置工具
 - [xdg](https://github.com/OpenPeeDeeP/xdg) : 遵守` XDG` 标准 的配置工具[XDG 标准](https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html)
 
----
-
 ## 持续集成
 
 `持续集成的辅助工具`
@@ -329,16 +230,12 @@ banner_img:
 - [overalls](https://github.com/go-playground/overalls) : 针对多`package` 的` Go` 语言项目,为 `Goveralls` 这样的工具生成覆盖率报告
 - [roveralls](https://github.com/LawrenceWoodman/roveralls) : 回归覆盖测试工具
 
----
-
 ## CSS 预处理
 
 `预处理css文件的库`
 
 - [gcss](https://github.com/yosssi/gcss) : 纯 `Go` 语言编写的 `CSS `预处理器
 - [go-libsass](https://github.com/wellington/go-libsass) : 100%兼容 `Sass` 的库 `libsass` 的` Go` 语言封装
-
----
 
 ## 数据结构
 
@@ -405,8 +302,6 @@ banner_img:
 - [ttlcache](https://github.com/ReneKroon/ttlcache) : 基于过期时间的内存字符串缓存接口。
 - [typ](https://github.com/gurukami/typ) : 空类型安全的基础类型转换器和从复杂结构中取值的开发库。
 - [willf/bloom](https://github.com/willf/bloom) : 实现了布隆过滤器的库
-
----
 
 ## 数据库
 
@@ -516,13 +411,12 @@ banner_img:
 - [Squirrel](https://github.com/Masterminds/squirrel) : 一个帮助你构建 `SQL` 查询的库
 - [xo](https://github.com/knq/xo) : 基于已知的数据库表或自定义查询生成地道的`Go`语言代码,支持 `PostgreSQL, MySQL, SQLite, Oracle`, 以及 `Microsoft SQL Server`.
 
----
-
 ## 数据库驱动
 
 `连接和操作数据库工具`
 
 - 关系型数据库
+
   - [avatica](https://github.com/apache/calcite-avatica-go)`Apache Phoenix/Avatica SQL `驱动
   - [bgc](https://github.com/viant/bgc) : 数据库连接工具包,用于通过 `Go `语言访问` BigQuery`
   - [firebirdsql](https://github.com/nakagami/firebirdsql) : `Firebird RDBMS SQL `驱动
@@ -538,9 +432,8 @@ banner_img:
   - [pq](https://github.com/lib/pq) : 用于`database/sql`的`Pure Go Postgres`驱动。
   - [Sqinn-Go](https://github.com/cvilsmeier/sqinn-go) : 纯 Go 的`SQLite`驱动。
 
----
-
 - NoSQL 数据库
+
   - [aerospike-client-go](https://github.com/aerospike/aerospike-client-go) : `Go`语言的`Aerospike`客户端。
   - [arangolite](https://github.com/solher/arangolite) : `ArangoDB`的轻量级`golang`驱动
   - [asc](https://github.com/viant/asc) : 用于`Aerospike for go`的数据存储连接。
@@ -568,8 +461,6 @@ banner_img:
   - [redis](https://github.com/go-redis/redis) : 兼容 R`edis`协议的 `TCP` 服务器/服务.
   - [xredis](https://github.com/shomali11/xredis) : 类型安全的、可定制的、简洁易用的 `Redis` 客户端
 
----
-
 - 搜索引擎和文本数据库
   - [bleve](https://github.com/blevesearch/bleve) : 现代文本索引库
   - [elastic](https://github.com/olivere/elastic) : ` Go` 语言的 `Elasticsearch `客户端
@@ -584,8 +475,6 @@ banner_img:
   - [cayley](https://github.com/google/cayley) : 支持多个后端的图形数据库。
   - [dsc](https://github.com/viant/dsc) : ` SQL、NoSQL`、结构化文件的数据存储连接。
   - [gokv](https://github.com/philippgille/gokv) : 为`go（Redis、Consul、etcd、bbolt、BadgerDB、LevelDB、Memcached、DynamoDB、S3、PostgreSQL、MongoDB、CockroachDB`等）提供简单的键值存储抽象和实现。
-
----
 
 ## 日期和时间
 
@@ -609,8 +498,6 @@ banner_img:
 - [timespan](https://github.com/SaidinWoT/timespan) : 用于与时间间隔交互,定义为开始时间和持续时间
 - [timeutil](https://github.com/leekchan/timeutil) : 为 `Go` 语言时间包扩展了有用的功能,例如时间间隔和格式化
 - [tuesday](https://github.com/osteele/tuesday) : `Ruby`兼容的`Strftime`函数。
-
----
 
 ## 分布式系统
 
@@ -661,8 +548,6 @@ banner_img:
 - [tendermint](https://github.com/tendermint/tendermint) : 使用`Tendermint` 一致性及区块链协议的高性能的中间件,用于将任何语言编写的状态机转换为一个拜占庭容错状态机,
 - [torrent](https://github.com/anacrolix/torrent) : `BitTorrent` 客户端
 
----
-
 ## 动态 DNS
 
 `更新动态dns记录的库和工具`
@@ -670,8 +555,6 @@ banner_img:
 - [DDNS](https://github.com/skibish/ddns) : 以`digital ocean `DNS 为后台的个人 DDNS 客户端。
 - [dyndns](https://gitlab.com/alcastle/dyndns) : 后台`Go`进程,定期自动检查您的 IP 地址,并在您的地址发生变化时更新（一个或多个）谷歌域名的动态 DNS 记录。
 - [GoDNS](https://github.com/timothyye/godns) : 用 Go 编写的动态`DNS`客户端工具,支持`DNSPod`和`HE.net`。
-
----
 
 ## 邮件库
 
@@ -692,8 +575,6 @@ banner_img:
 - [MailHog](https://github.com/mailhog/MailHog) : `Email` 及 `SMTP` 测试工具,具有 web 及 API 接口
 - [SendGrid](https://github.com/sendgrid/sendgrid-go) : `SendGrid`的 Go 语言库,用于发送电子邮件
 - [smtp](https://github.com/mailhog/smtp) : `SMTP` 服务器协议状态机
-
----
 
 ## 脚本语言与嵌入式编程
 
@@ -717,8 +598,6 @@ banner_img:
 - [purl](https://github.com/ian-kent/purl) : 嵌入 `Go` 语言的 `Perl 5.18.2`
 - [tengo](https://github.com/d5/tengo) : `Go`的字节码编译脚本语言。
 
----
-
 ## 错误处理
 
 `go 语言错误处理库`
@@ -735,8 +614,6 @@ banner_img:
 - [Falcon](https://github.com/SonicRoshan/falcon) : 简单但功能强大的错误处理包。
 - [go-multierror](https://github.com/hashicorp/go-multierror) : 用于将错误列表表示为单个错误的包
 - [tracerr](https://github.com/ztrue/tracerr) ： 带有堆栈跟踪和源片段的`Golang`错误处理包。
-
----
 
 ## 文件处理
 
@@ -764,8 +641,6 @@ banner_img:
 - [todotxt](https://github.com/1set/todotxt)` todo.txt`文件的 go 语言解析器。
 - [vfs](https://github.com/C2FO/vfs) : 适用于 `Go` 的多个文件系统类型,如 `os、S3 `和 `GCS`的可插拔、可扩展的文件系统功能库。
 
----
-
 ## 金融领域相关库
 
 `处理货币与金融领域的库`
@@ -786,8 +661,6 @@ banner_img:
 - [transaction](https://github.com/claygod/transaction) : 以多线程模式运行的嵌入式的账户交易数据库,。
 - [vat](https://github.com/dannyvankooten/vat) : VAT 验证及欧洲增值税率工具
 
----
-
 ## 表单
 
 `表单解析与绑定`
@@ -803,15 +676,11 @@ banner_img:
 - [qs](https://github.com/sonh/qs) : 用于将结构体编码为 `URL` 查询参数的` Go` 模块
 - [queryparam](https://github.com/tomwright/queryparam) : 将`url.Values`解码为标准或自定义类型的可用结构体值。
 
----
-
 ## 函数式编程
 
 - [fpGo](https://github.com/TeaEntityLab/fpGo) : `Golang`中的单项式函数式编程功能
 - [fuego](https://github.com/seborama/fuego) : `Go`中实验室的函数式编程。
 - [go-underscore](https://github.com/tobyhede/go-underscore) : `Go`函数式集合工具。
-
----
 
 ## 游戏开发
 
@@ -835,8 +704,6 @@ banner_img:
 - [termloop](https://github.com/JoelOtter/termloop) : 终端游戏引擎,基于 `Termbox`
 - [tile](https://github.com/kelindar/tile) : 面向数据和缓存友好的 `2D` 网格库 (`TileMap`)。
 
----
-
 ## 代码生成与泛型
 
 - [efaceconv](https://github.com/t0pep0/efaceconv) : 代码生成工具,用于高效的将 `interface{} `转换为不可变类型,并且不需要进行任何内存分配
@@ -852,8 +719,6 @@ banner_img:
 - [jennifer](https://github.com/dave/jennifer) : 不适用模板生成任意 `Go` 语言代码
 - [pkgreflect](https://github.com/ungerik/pkgreflect) : 用于包作用域反射的 `Go `语言预处理器
 - [typeregistry](https://github.com/xiaoxin01/typeregistry) : 用于动态创建类型的库。
-
----
 
 ## 位置信息与地理 GEO 处理库
 
@@ -872,8 +737,6 @@ banner_img:
 - [gopherjs](https://github.com/gopherjs/gopherjs) : 把` Go` 编译为` JavaScript.`
 - [llgo](https://github.com/go-llvm/llgo) : 基于 `LLVM` 的` Go` 语言编译器
 - [tardisgo](https://github.com/tardisgo/tardisgo) : G`olang`转换为 `Haxe` 进而转换为 `CPP/CSharp/Java/JavaScript `的编译器.
-
----
 
 ## Goroutines
 
@@ -918,8 +781,6 @@ banner_img:
 - [worker-pool](https://github.com/vardius/worker-pool) : `Go`简单的异步`worker`池。
 - [workerpool](https://github.com/gammazero/workerpool) : 用于限制任务执行的并发性的`goroutine`缓冲池。
 
----
-
 ## GUI
 
 - [app](https://github.com/murlokswarm/app) : 使用`Go, HTML` 和 `CSS` 进行应用程序开发的库， 支持` MacOS, Windows`。
@@ -942,15 +803,11 @@ banner_img:
 - [systray](https://github.com/getlantern/systray) : 跨平台的` Go` 语言库,用于在桌面提醒区域放置按钮及菜单
 - [trayhost](https://github.com/shurcooL/trayhost) : 跨平台的 `Go` 语言库,用于在主机系统任务条区域放置按钮及菜单
 
----
-
 ## 硬件
 
 `与硬件交互的库、工具`
 
 - 请参考 [go-hardware](https://github.com/rakyll/go-hardware)
-
----
 
 ## Images 图像处理
 
@@ -1020,8 +877,6 @@ banner_img:
 - [leprechaun](https://github.com/kilgaloon/leprechaun) : 工作调度器,支持`webhooks、crons`和经典调度系统。
 - [scheduler](https://github.com/carlescere/scheduler) : `  Cronjobs`调度系统。
 
----
-
 ## JSON
 
 - [ajson](https://github.com/spyzhov/ajson) : `golang`实现的支持`JSONPath`的抽象`JSON`格式解析库。
@@ -1046,8 +901,6 @@ banner_img:
 - [kazaam](https://github.com/Qntfy/kazaam) : 转换任意`json`文档的的`API`库。
 - [mapslice-json](https://github.com/mickep76/mapslice-json) : 用于有序地对`JSON`中的`map`结构进行`marshal/unmarshal`。
 - [mp](https://github.com/sanbornm/mp) : 简单的 `cli `电子邮件解析器，能够接受标准输入并输出`JSON`日志
-
----
 
 ## Logging 日志库
 
@@ -1100,8 +953,6 @@ banner_img:
 - [zap](https://github.com/uber-go/zap) : 快速的、结构化的、分级的日志库
 - [zerolog](https://github.com/rs/zerolog) : 零内存分配 的`JSON `日志库.
 
----
-
 ## 机器学习
 
 - [bayesian](https://github.com/jbrukh/bayesian) : 贝叶斯分类器
@@ -1139,8 +990,6 @@ banner_img:
 - [shield](https://github.com/eaigner/shield) : `go`语言实现的贝叶斯文本分类器,具有灵活的标记器和存储后端。
 - [tfgo](https://github.com/galeone/tfgo) : 易于使用的` Tensorflow `` g `o 语言封装：简化了官方`Tensorflow Go`的使用。
 - [Varis](https://github.com/Xamber/Varis) : `Golang`神经网络。
-
----
 
 ## 消息系统
 
@@ -1230,8 +1079,6 @@ banner_img:
 - [modern-go-application](https://github.com/sagikazarmark/modern-go-application) : 应用现代实践的` Go` 应用程序模板和示例。
 - [scaffold](https://github.com/catchplay/scaffold) : `Scaffold` 生成一个入门的 Go 项目布局。让您专注于业务逻辑的实现。
 
----
-
 ### 字符串处理
 
 - [go-formatter](https://gitlab.com/tymonx/go-formatter) : 实现大括号{}格式字符串的替换字段。
@@ -1294,8 +1141,6 @@ banner_img:
 - [xdg](https://github.com/rkoesters/xdg) : `Go`中实现的`FreeDesktop.org` (xdg)规范。
 - [xkg](https://github.com/go-xkg/xkg) : 键盘抓取器
 
----
-
 ## 自然语言处理
 
 - [detectlanguage](https://github.com/detectlanguage/detectlanguage-go) : 语言检测 API Go 客户端。支持批量请求、短语或单字语言检测。
@@ -1338,8 +1183,6 @@ banner_img:
 - [transliterator](https://github.com/alexsergivan/transliterator) : 提供单向字符串翻译,支持特定语言的翻译规则
 - [whatlanggo](https://github.com/abadojack/whatlanggo) : `Go`语言的自然语言检测包。支持 84 种语言和 24 种书写 (如拉丁,西里尔等书写系统)。
 - [when](https://github.com/olebedev/when) : 英语、俄语的自然语言日期、时间表达解析器。
-
----
 
 ## 网络相关库
 
@@ -1404,8 +1247,6 @@ banner_img:
 - [winrm](https://github.com/masterzen/winrm) : 用于在` Windows` 机器上远程执行命令的`Go WinRM`客户端。
 - [xtcp](https://github.com/xfxdev/xtcp) : `TCP` 服务器框架,支持同时全双工通信。可以优雅的关闭,并且支持自定义协议
 
----
-
 ### Http Client
 
 - [gentleman](https://github.com/h2non/gentleman) : -插件驱动的`HTTP`客户端库。
@@ -1419,8 +1260,6 @@ banner_img:
 - [rq](https://github.com/ddo/rq) : `golang`标准客户端的更好的接口封装
 - [sling](https://github.com/dghubble/sling) : 用于创建和发送` API`请求的`Go HTTP`客户端库。
 
----
-
 ### OpenGL
 
 - [gl](https://github.com/go-gl/gl) : `OpenGL`的`Go`语言接口
@@ -1429,8 +1268,6 @@ banner_img:
 - [goxjs/gl](https://github.com/goxjs/gl) : `Go`语言跨平台`OpenGL` 接口(`OS X, Linux, Windows, browsers, iOS, Android`).
 - [goxjs/glfw](https://github.com/goxjs/glfw) :` Go` 语言跨平台` glfw`库,用于创建` OpenGL`上下文并接收事件
 - [mathgl](https://github.com/go-gl/mathgl) : `Go`语言` 3D`数学库,专注于`3D`,受到`GLM` 启发
-
----
 
 ### ORM
 
@@ -1456,8 +1293,6 @@ banner_img:
 - [upper.io/db](https://github.com/upper/db) : - 通过使用封装了成熟的数据库驱动的适配器,来使用单一接口与不同的数据源进行交互
 - [XORM](https://gitea.com/xorm/xorm) : 简单、强大的` Go` 语言` orm`
 - [Zoom](https://github.com/albrow/zoom) : 基于` Redis` 构建的超快的数据存储于查询引擎。
-
----
 
 ## Go 语言包管理
 
@@ -1485,8 +1320,6 @@ banner_img:
 - [statsviz](https://github.com/arl/statsviz) : 实时可视化你的`Go`应用程序运行时的统计数据。
 - [tracer](https://github.com/kamilsk/tracer) : 简单、轻量级的代码追踪库。
 
----
-
 ### 查询语
 
 - [api-fu](https://github.com/ccbrown/api-fu) :`GraphQL`的 go 语言实现。
@@ -1502,8 +1335,6 @@ banner_img:
 - [rqp](https://github.com/timsolov/rest-query-parser) : ` REST API`的查询分析器。在查询中直接支持过滤、验证、AND、OR 操作。
 - [straf](https://github.com/SonicRoshan/straf) : - 轻松地将`Golang`结构转换为`GraphQL`对象。
 
----
-
 ## 资源嵌入
 
 - [esc](https://github.com/mjibson/esc) : - 在`Go`语言程序中嵌入文件并为其提供`HTTP.FileSystem` 接口
@@ -1517,8 +1348,6 @@ banner_img:
 - [statik](https://github.com/rakyll/statik) : 将静态文件嵌入到`Go` 语言可执行文件中
 - [templify](https://github.com/wlbr/templify) : 将外部目标文件嵌入到` Go` 代码中来创建单独的二进制文件
 - [vfsgen](https://github.com/shurcooL/vfsgen) : 生成一个`vfsdata.Go`文件,静态实现了一个虚拟文件系统
-
----
 
 ## 数据分析与数据科学
 
@@ -1552,8 +1381,6 @@ banner_img:
 - [TextRank](https://github.com/DavidBelicza/TextRank) :` Golang`中的`TextRank` 实现,具有可扩展的特性（摘要、加权、短语提取）和多线程（goroutine）支持。
 - [triangolatte](https://github.com/tchayen/triangolatte) : `2D`三角测量库。允许将线条和多边形（基于点）翻译成`GPU`语言。
 
----
-
 ## 安全领域相关库
 
 - [acmetool](https://github.com/hlandau/acme) :` ACME (Let's Encrypt)` 客户端工具,支持自动续期.
@@ -1583,8 +1410,6 @@ banner_img:
 - [sslmgr](https://github.com/adrianosela/sslmgr) : 通过对`acme/autocert`的高级封装,使`SSL`证书的使用变得简单。
 - [themis](https://github.com/cossacklabs/themis) : 高级加密库,用于解决典型的数据安全任务（安全数据存储、安全消息传递、零知识证明认证）,提供 14 种语言,最适合多平台应用。
 
----
-
 ## 序列化
 
 - [asn1](https://github.com/PromonLogicalis/asn1) :` Asn.1 BE`R 及` DER` 编码库
@@ -1607,8 +1432,6 @@ banner_img:
 - [php_session_decoder](https://github.com/yvasiyarov/php_session_decoder) : 用于处理` PHP session` 格式和`PHP Serialize/Unserialize`函数的 GoLang 库。
 - [pletter](https://github.com/vimeda/pletter) : 为消息中介包装原消息的标准方法。
 - [structomap](https://github.com/tuvistavie/structomap) : 用于从静态结构中轻松动态地生成映射的库。
-
----
 
 ## 服务端应用
 
@@ -1636,8 +1459,6 @@ banner_img:
 - [simple-jwt-provider](https://github.com/leberKleber/simple-jwt-provider) : 简单轻量级的`provider`,它展示了`JWTs`,支持登录、密码重置（通过邮件）和用户管理。
 - [Trickster](https://github.com/tricksterproxy/trickster) : `HTTP`反向代理缓存和时间序列加速器。
 
----
-
 ## 流处理
 
 `流式数据处理和响应式编程库`
@@ -1645,8 +1466,6 @@ banner_img:
 - [go-streams](https://github.com/reugn/go-streams) :` Go`流处理库。
 - [machine](https://github.com/whitaker-io/machine) : 内置度量和具有可跟踪的用于编写和生成流式`worker`的`Go` 库
 - [stream](https://github.com/youthlin/stream) :` Go Stream`,像`Java 8 Stream`一样。支持`Filter/Map/FlatMap/Peek/Sorted/ForEach/Reduce...`等特性
-
----
 
 ## 模板引擎
 
@@ -1674,13 +1493,12 @@ banner_img:
 - [Soy](https://github.com/robfig/soy) :`go`语言实现的谷歌闭包模板(也就是`Soy templates`), 参见[官方说明文档](https://developers.google.com/closure/templates/) :
 - [velvet](https://github.com/gobuffalo/velvet) : 使用` Go`语言实现的完整的` handlebars
 
----
-
 ## 测试相关
 
 `测试库和测试数据集生成库`
 
 - 测试框架
+
   - [apitest](https://apitest.dev) : 为基于`REST`的服务或`HTTP`处理程序提供简单且可扩展的行为测试库,支持模拟外部`http`调用和渲染序列图。
   - [assert](https://github.com/go-playground/assert) : 基础断言库,用于对`Go`语言程序进行测试,提供了一些用于自定义断言的代码块
   - [badio](https://github.com/cavaliercoder/badio) : Go 语言` testing/iotest`包的扩展
@@ -1732,8 +1550,6 @@ banner_img:
   - [Tt](https://github.com/vcaesar/tt) : 简单而多彩的测试工具。
   - [wstest](https://github.com/posener/wstest) : ` Websocket`客户端,用于对于` websocket HTTP.Handler`进行单元测试
 
----
-
 - Mock
   - [counterfeiter](https://github.com/maxbrunsfeld/counterfeiter) : 用于生成自包含`mock`对象的工具
   - [go-localstack](https://github.com/elgohr/go-localstack) : 在`AWS`测试中使用`localstack`的工具。
@@ -1759,8 +1575,6 @@ banner_img:
   - [selenoid](https://github.com/aerokube/selenoid) : ` Selenium hub`服务器的替代品,可以在容器中启动浏览器
 - Fail injection
   - [failpoint](https://github.com/pingcap/failpoint) : Golang 中[failpoints](http://www.freebsd.org/cgi/man.cgi?query=fail) 的实现。
-
----
 
 ## 文本处理
 
@@ -1827,8 +1641,6 @@ banner_img:
   - [TySug](https://github.com/Dynom/TySug) : 关于键盘布局的替代建议。
   - [xj2go](https://github.com/stackerzzq/xj2go) : 将`xm`l 或`json`转换为`go`结构。
   - [xurls](https://github.com/mvdan/xurls) : 从文本中提取`URLs`。
-
----
 
 ## 第三方 API
 
@@ -1920,8 +1732,6 @@ banner_img:
 - [wit-go](https://github.com/wit-ai/wit-go) : 用于`wit.ai HTTP API` 的`Go` 客户端。
 - [ynab](https://github.com/brunomvsouza/ynab.go) : `YNAB API`的`Go`语言封装。
 - [zooz](https://github.com/gojuno/go-zooz) : `Zooz API` 的`Go`语言客户端
-
----
 
 ## 工具库
 
@@ -2071,8 +1881,6 @@ banner_img:
 - [wuzz](https://github.com/asciimoo/wuzz) : 交互式命令行程序,用于进行`HTTP` 检查
 - [xferspdy](https://github.com/monmohan/xferspdy) : `Xferspdy` 提供了二进制比对以及`patch`补丁功能
 
----
-
 ## UUID
 
 `UUID 生成和操作库`
@@ -2087,8 +1895,6 @@ banner_img:
 - [uuid](https://github.com/gofrs/uuid) : 通用唯一标识符`（UUID）`的实现。支持`UUID`的创建和解析。
 - [uuid](https://github.com/google/uuid) : 基于`RFC 4122`和`DCE 1.1`的`UUIDs Go`包。
 - [wuid](https://github.com/edwingeng/wuid) : 极快的唯一数字生成器,比`UUID`快 10-135 倍。
-
----
 
 ## 校验库
 
@@ -2106,8 +1912,6 @@ banner_img:
 - [validate](https://github.com/gobuffalo/validate) : 为`Go`语言程序编写验证工具的框架
 - [validator](https://github.com/go-playground/validator) : `Go`结构体及域验证,包括：跨域、跨结构体,`Map`, 切片和数组
 
----
-
 ### 版本控制
 
 `版本控制相关库`
@@ -2118,8 +1922,6 @@ banner_img:
 - [go-vcs](https://github.com/sourcegraph/go-vcs) : 通过`Go`语言来操作和检视` VCS`代码仓
 - [hercules](https://github.com/src-d/hercules) : 查看`git repo`历史的代码库
 - [hgo](https://github.com/beyang/hgo) : `HGo` 是一个`Go`语言软件包集合,提供了对本地` Mercurial`仓库的读取能力.
-
----
 
 ## 视频
 
@@ -2136,8 +1938,6 @@ banner_img:
 - [libvlc-go](https://github.com/adrg/libvlc-go) : `libvlc 2.X/3.X/4.X`的 go 语言封装)(`VLC` 媒体播放器使用）。
 - [m3u8](https://github.com/grafov/m3u8) : 用于苹果`HLS`的`M3U8`播放列表解析器和生成器库
 - [v4l](https://github.com/korandiz/v4l) :` Go`语言编写的`Linux`下使用的视频截图库
-
----
 
 ## web 框架
 
@@ -2187,8 +1987,6 @@ banner_img:
 - [WebGo](https://github.com/bnkamalesh/webgo) : 构建`Web`应用的微服务框架；具有处理程序链、中间件和上下文注入功能。具有标准库兼容的`HTTP`处理程序（即`http.HandlerFunc`）。
 - [YARF](https://github.com/yarf-framework/yarf) : 微服务框架,用于快速、简单地构建`REST APIs`以及` web` 服务
 
----
-
 ## 中间件
 
 ### 中间件
@@ -2202,8 +2000,6 @@ banner_img:
 - [ln-paywall](https://github.com/philippgille/ln-paywall) : Go 中间件,用于通过`Lightning Network (Bitcoin)` 请求将`API` 货币化。
 - [Tollbooth](https://github.com/didip/tollbooth) : `HTTP` 请求限速中间件
 - [XFF](https://github.com/sebest/xff) : 理`X-Forwarded-For`头的中间件
-
----
 
 ### 创建 http 中间件的代码库
 
@@ -2220,8 +2016,6 @@ banner_img:
 - [renderer](https://github.com/thedevsaddam/renderer) : 简单、轻量级和更快的响应`JSON、JSONP、XML、YAML、HTML、File`的 Go 渲染包。
 - [rye](https://github.com/InVisionApp/rye) : 小型 Go 语言中间件库 ,支持`JWT, CORS, Statsd`, 及`Go 1.7 context`
 - [stats](https://github.com/thoas/stats) : `Go`语言中间件,用于存储`web`应用的多种信息
-
----
 
 ## 路由
 
@@ -2249,8 +2043,6 @@ banner_img:
 - [xmux](https://github.com/rs/xmux) : 高性能 muxer,基于` httprouter` ,支持` net/context`
 - [xujiajun/gorouter](https://github.com/xujiajun/gorouter) : 简单快速的`go HTTP`路由器。
 
----
-
 ## WebAssembly
 
 - [dom](https://github.com/dennwc/dom) : `DOM库`。
@@ -2260,15 +2052,11 @@ banner_img:
 - [wasmbrowsertest](https://github.com/agnivade/wasmbrowsertest) : 在浏览器中运行`Go WASM`测试。
 - [webapi](https://github.com/gowebapi/webapi) : 从`WebIDL`生成`DOM`和`HTML`的封装。
 
----
-
 ## Windows
 
 - [d3d9](https://github.com/gonutz/d3d9) : `Direct3D9` 的`Go` 语言封装
 - [go-ole](https://github.com/go-ole/go-ole) : 为`Go`语言实现的`Win32 OLE`
 - [gosddl](https://github.com/MonaxGT/gosddl) : 从`SDDL-string`到用户友好的 JSON 的转换器。`SDDL`由四个部分组成。`Owner、Primary Group、DACL、SACL`。
-
----
 
 ## XML
 
@@ -2278,8 +2066,6 @@ banner_img:
 - [xpath](https://github.com/antchfx/xpath) : `XPath` 库
 - [xquery](https://github.com/antchfx/xquery) :`  XQuery` 使你可以使用`XPath`表达式从` HTML/XML`文档中抽取数据和求值,
 - [zek](https://github.com/miku/zek) : 从` XML` 生成一个` Go`结构体。
-
----
 
 ## 相关工具
 
@@ -2315,8 +2101,6 @@ banner_img:
 - [unused](https://github.com/dominikh/go-tools/tree/master/cmd/unused) : `unused`会检查 Go 语言代码中没有用到的常量,变量,函数和类型
 - [validate](https://github.com/mccoyst/validate) : 根据结构体`tag`自动验证结构体字段
 
----
-
 ## 编辑器插件
 
 - [Go plugin for JetBrains IDEs](https://plugins.jetbrains.com/plugin/9568-go) :`JetBrains IDEs` 使用的`Go`语言插件
@@ -2334,8 +2118,6 @@ banner_img:
 - [vscode-go](https://github.com/golang/vscode-go) : `Visual Studio Code (VS Code)` : 使用的一个扩展,为` Go` 语言提供了支持
 - [Watch](https://github.com/eaburns/Watch) : 当文件变动时,在` acme`窗口中执行命令
 
----
-
 ## Go 代码生成工具
 
 - [generic](https://github.com/usk81/generic) : 针对`Go`的灵活数据类型。
@@ -2348,8 +2130,6 @@ banner_img:
 - [re2dfa](https://github.com/opennota/re2dfa) : 将正则表达式转换为有限状态机并输出`Go`源代码。
 - [TOML-to-Go](https://xuri.me/toml-to-go) : 在浏览器中将` TOML`转成` Go` 类型。
 - [xgen](https://github.com/xuri/xgen) : ` XSD (XML Schema Definition)` 解析器,能够生成`Go/C/Java/Rust/Typescript`代码
-
----
 
 ## Go 工具
 
@@ -2370,8 +2150,6 @@ banner_img:
 - [richgo](https://github.com/kyoh86/richgo) : 用文本装饰丰富`go`代码测试输出。
 - [rts](https://github.com/galeone/rts) : `RTS`（是`response to struct`的缩写）用于根据服务器的响应生成` Go`语言结构体
 - [typex](https://github.com/dtgorski/typex) : 检查 Go 类型和它们的转换依赖关系,或者将结果导出为`TypeScrip`t 值对象（或类型）声明。
-
----
 
 ## 软件包
 
@@ -2439,8 +2217,6 @@ banner_img:
 - [webhook](https://github.com/adnanh/webhook) : 允许用户创建`HTTP`钩子,并在服务器上执行命令
 - [Wide](https://wide.b3log.org/login) : 基于` Web` 的` IDE`,为使用` Go`语言的团队设计
 - [winrm-cli](https://github.com/masterzen/winrm-cli) : 命令行工具,可以远程在` windows`机器上执行命令
-
----
 
 ### 其他软件库和软件包
 
