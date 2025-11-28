@@ -24,4 +24,4 @@ tags:
 
 ## 效果
 
-![](aligned.png)
+![](monospaced_font/aligned.png)
