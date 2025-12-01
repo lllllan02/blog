@@ -27,6 +27,8 @@ minikube start
 
 ## 2.1 [Docker 作为驱动](https://minikube.kubernetes.ac.cn/docs/drivers/docker/)
 
+> 虽然 Docker 作为驱动使用较为广泛，但对于 minikube 而言，这里更推荐使用 vfkit 作为驱动。因为通过 Docker 启动的 minikube 本质上运行在 Docker 容器中，在集群中部署的服务，无论是使用 NodePort 还是 LoadBalancer 类型暴露端口，都需要额外的端口转发或 `minikube tunnel` 才能从宿主机访问，稍显麻烦。如果你希望更接近真实生产环境，建议选择 vfkit 驱动。
+
 [在 Mac 上安装 Docker Desktop](https://docs.container.net.cn/desktop/setup/install/mac-install/)
 
 如果安装过 docker，docker 大概率会成为 minikube 的默认驱动。则直接 `minikube start` 与下面指定 docker 作为驱动方式启动等效
@@ -55,7 +57,7 @@ docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kicbase:v0.0.48
 minikube start --base-image='registry.cn-hangzhou.aliyuncs.com/google_containers/kicbase:v0.0.48'
 ```
 
-## 2.2 [VFkit 作为驱动](https://minikube.kubernetes.ac.cn/docs/drivers/vfkit/)
+## 2.2 [VFkit 作为驱动(推荐)](https://minikube.kubernetes.ac.cn/docs/drivers/vfkit/)
 
 ### 2.2.1 安装 vfkit
 
