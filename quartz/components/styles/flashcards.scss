@@ -1,0 +1,101 @@
+.flashcards {
+  margin-top: 1rem;
+  
+  .flashcards-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+
+    h3 {
+      margin: 0;
+    }
+
+    .flashcards-toggle {
+      background: none;
+      border: none;
+      padding: 4px;
+      color: var(--darkgray);
+      cursor: pointer;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: var(--highlight);
+        color: var(--secondary);
+      }
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .flashcards-container {
+    background-color: var(--light);
+    border: 1px solid var(--lightgray);
+    border-radius: 8px;
+    padding: 1rem;
+    display: block; // Changed from none to block to show by default
+
+    &.inactive {
+      display: none;
+    }
+
+    .flashcard-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      .flashcard-question {
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        font-weight: 600;
+        color: var(--dark);
+      }
+
+      .flashcard-controls {
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+
+        button {
+          flex: 1;
+          padding: 0.4rem;
+          cursor: pointer;
+          background-color: var(--light);
+          border: 1px solid var(--lightgray);
+          color: var(--darkgray);
+          border-radius: 4px;
+          font-size: 0.8rem;
+
+          &:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+          }
+
+          &#flashcard-view {
+            flex: 2;
+            background-color: var(--secondary);
+            color: var(--light);
+            border: none;
+
+            &:hover {
+              background-color: var(--tertiary);
+            }
+          }
+        }
+      }
+
+      .flashcard-stats {
+        font-size: 0.7rem;
+        color: var(--gray);
+      }
+    }
+  }
+}

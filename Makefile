@@ -8,5 +8,5 @@ new:
 	filename="content/$$name.md"; \
 	date=$$(date "+%Y-%m-%d %H:%M:%S"); \
 	alias=$$(uuidgen | tr '[:upper:]' '[:lower:]'); \
-	printf -- "---\ntitle: %s\naliases: %s\ntags:\ndate: %s\norder:\n---\n" "$$name" "$$alias" "$$date" > $$filename; \
+	printf -- "---\ntitle: %s\naliases: %s\ndate: %s\ncard: true\norder:\ntags:\n---\n" "$$name" "$$alias" "$$date" > $$filename; \
 	echo "Created $$filename"
