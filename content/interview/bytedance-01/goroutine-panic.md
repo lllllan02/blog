@@ -6,7 +6,6 @@ card: true
 date: 2026-01-27 10:33:44
 order: 1
 tags:
-  - interview
   - golang
   - goroutine
   - panic
