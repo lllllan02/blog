@@ -1,12 +1,19 @@
-.PHONY: dev new
+.PHONY: dev doc dir
 dev:
 	-lsof -ti:3001 | xargs kill -9 2>/dev/null || true
 	npx quartz build --serve
 
-new:
+doc:
 	@read -p "Enter file name (without .md): " name; \
-	filename="content/$$name.md"; \
-	date=$$(date "+%Y-%m-%d %H:%M:%S"); \
+	$(MAKE) create-file filename="content/$$name.md" title="$$name"
+
+dir:
+	@read -p "Enter directory name: " dirname; \
+	mkdir -p "content/$$dirname"; \
+	$(MAKE) create-file filename="content/$$dirname/index.md" title="$$dirname"
+
+create-file:
+	@date=$$(date "+%Y-%m-%d %H:%M:%S"); \
 	alias=$$(uuidgen | tr '[:upper:]' '[:lower:]'); \
-	printf -- "---\ntitle: %s\naliases: %s\ndate: %s\ncard: true\norder:\ntags:\n---\n" "$$name" "$$alias" "$$date" > $$filename; \
-	echo "Created $$filename"
+	printf -- "---\ntitle: %s\naliases: %s\ndate: %s\ncard: true\norder:\ntags:\n---\n" "$(title)" "$$alias" "$$date" > $(filename); \
+	echo "Created $(filename)"
