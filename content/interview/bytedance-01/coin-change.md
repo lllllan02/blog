@@ -4,9 +4,8 @@ card: true
 date: 2026-01-27 10:33:44
 order: 4
 tags:
-  - interview
-  - bytedance
   - leetcode
+  - dp
 ---
 
 [零钱兑换](https://leetcode.cn/problems/coin-change/description/)

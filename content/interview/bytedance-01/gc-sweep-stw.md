@@ -4,9 +4,8 @@ card: true
 date: 2026-01-27 10:33:44
 order: 3
 tags:
-  - interview
-  - bytedance
   - golang
+  - gc
 ---
 
 Sweeping 清理过程本事是并发运行的，不会出现 STW(Stop The World)。

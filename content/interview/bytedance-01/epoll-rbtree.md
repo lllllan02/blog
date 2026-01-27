@@ -4,9 +4,8 @@ card: true
 date: 2026-01-27 10:33:44
 order: 7
 tags:
-  - interview
-  - bytedance
-  - os
+  - io
+  - epoll
 ---
 
 > select 和 poll 的缺点对上以及红黑树的优点，以及为什么不用哈希表之类的其他方案

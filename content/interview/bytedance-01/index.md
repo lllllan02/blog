@@ -5,6 +5,8 @@ date: 2026-01-27 10:33:44
 card: false
 order: 1
 tags:
+  - interview
+  - bytedance
 ---
 
 > [15.字节跳动-懂车帝后端校招二面（挂）| 牛客网](https://www.nowcoder.com/feed/main/detail/7473702c27b244e7b033f323386a522b)
