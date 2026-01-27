@@ -34,12 +34,14 @@ export default (() => {
               <p id="flashcard-q-text">Loading cards...</p>
             </div>
             <div class="flashcard-controls">
-              <button id="flashcard-prev">←</button>
-              <button id="flashcard-view">View Answer</button>
-              <button id="flashcard-next">→</button>
-            </div>
-            <div class="flashcard-stats">
-               <span id="flashcard-count">0/0</span>
+              <button id="flashcard-view" class="control-btn flip-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                View Answer
+              </button>
+              <button id="flashcard-known" class="control-btn known-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Mastered
+              </button>
             </div>
           </div>
         </div>

@@ -9,13 +9,13 @@ async function setupFlashcards() {
   const container = document.querySelector(".flashcards-container") as HTMLElement
   const toggle = document.querySelector(".flashcards-toggle") as HTMLElement
   const qText = document.getElementById("flashcard-q-text") as HTMLElement
-  const countText = document.getElementById("flashcard-count") as HTMLElement
   const viewBtn = document.getElementById("flashcard-view") as HTMLButtonElement
-  const prevBtn = document.getElementById("flashcard-prev") as HTMLButtonElement
-  const nextBtn = document.getElementById("flashcard-next") as HTMLButtonElement
+  const knownBtn = document.getElementById("flashcard-known") as HTMLButtonElement
 
   if (!container || !toggle) return
 
+  const STORAGE_KEY = "quartz-flashcards-known"
+  let knownSlugs: Set<string> = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"))
   let cards: Card[] = []
   let currentIndex = 0
 
@@ -29,16 +29,31 @@ async function setupFlashcards() {
     const response = await fetch("/static/contentIndex.json")
     const data = await response.json()
     
-    cards = Object.entries(data)
+    const allCards = Object.entries(data)
       .filter(([_, details]: [string, any]) => details.frontmatter?.card === true)
       .map(([slug, details]: [string, any]) => ({
         title: details.title,
         slug: slug as FullSlug,
       }))
 
-    if (cards.length === 0) {
+    // Filter unknown cards first
+    cards = allCards.filter(card => !knownSlugs.has(card.slug))
+
+    if (cards.length === 0 && allCards.length > 0) {
+      // If all cards are known, maybe show them all again or show a message
+      qText.innerText = "All cards mastered! Resetting..."
+      knownSlugs.clear()
+      localStorage.setItem(STORAGE_KEY, "[]")
+      cards = allCards
+    } else if (cards.length === 0) {
       qText.innerText = "No cards found. Add 'card: true' to your frontmatter."
       return
+    }
+
+    // Shuffle cards
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]]
     }
 
     updateCard()
@@ -51,26 +66,31 @@ async function setupFlashcards() {
     if (cards.length === 0) return
     const card = cards[currentIndex]
     qText.innerText = card.title
-    countText.innerText = `${currentIndex + 1}/${cards.length}`
   }
+
+  knownBtn?.addEventListener("click", () => {
+    if (cards.length === 0) return
+    const card = cards[currentIndex]
+    knownSlugs.add(card.slug)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(knownSlugs)))
+    
+    // Remove current card from active list
+    cards.splice(currentIndex, 1)
+    if (cards.length === 0) {
+      qText.innerText = "All cards mastered! Refresh to restart."
+    } else {
+      if (currentIndex >= cards.length) {
+        currentIndex = 0
+      }
+      updateCard()
+    }
+  })
 
   viewBtn.addEventListener("click", () => {
     if (cards.length === 0) return
     const card = cards[currentIndex]
     const destination = window.location.origin + "/" + card.slug
     window.spaNavigate(new URL(destination))
-  })
-
-  prevBtn.addEventListener("click", () => {
-    if (cards.length === 0) return
-    currentIndex = (currentIndex - 1 + cards.length) % cards.length
-    updateCard()
-  })
-
-  nextBtn.addEventListener("click", () => {
-    if (cards.length === 0) return
-    currentIndex = (currentIndex + 1) % cards.length
-    updateCard()
   })
 }
 

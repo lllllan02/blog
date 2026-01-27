@@ -63,30 +63,45 @@
         display: flex;
         gap: 0.5rem;
         width: 100%;
+        justify-content: center;
 
-        button {
+        .control-btn {
           flex: 1;
-          padding: 0.4rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.3rem;
+          padding: 0.4rem 0.6rem;
           cursor: pointer;
-          background-color: var(--light);
-          border: 1px solid var(--lightgray);
-          color: var(--darkgray);
-          border-radius: 4px;
-          font-size: 0.8rem;
+          border-radius: 6px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          border: none;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          min-width: 0; // Allow shrinking
 
-          &:hover {
-            border-color: var(--secondary);
-            color: var(--secondary);
+          svg {
+            flex-shrink: 0;
+            width: 14px;
+            height: 14px;
           }
 
-          &#flashcard-view {
-            flex: 2;
+          &.flip-btn, &.next-btn {
             background-color: var(--secondary);
             color: var(--light);
-            border: none;
 
             &:hover {
               background-color: var(--tertiary);
+            }
+          }
+
+          &.known-btn {
+            background-color: #72b043; // Keep green for success
+            color: white;
+
+            &:hover {
+              filter: brightness(1.1);
             }
           }
         }
