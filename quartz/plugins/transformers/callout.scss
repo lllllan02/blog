@@ -1,0 +1,102 @@
+// 自定义标注样式增强（统一引用全局 CSS 变量）
+.callout {
+  padding: 0 var(--article-margin) !important;
+  border-radius: 5px !important;
+  margin: var(--article-margin) 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow-y: hidden;
+  box-sizing: border-box;
+  
+  .callout-title {
+    // 标题的上下 padding 统一使用全局间距变量，确保视觉一致
+    padding: var(--article-margin) 0 !important;
+    display: flex;
+    align-items: center !important; // 切换为居中对齐
+    gap: 8px !important;
+    font-weight: 600;
+    line-height: var(--article-line-height);
+    cursor: default;
+  }
+
+  &.is-collapsible {
+    .callout-title {
+      cursor: pointer;
+    }
+  }
+
+  .callout-content {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.1s cubic-bezier(0.02, 0.01, 0.47, 1);
+    opacity: 1;
+    margin: 0;
+    
+    .callout-content-inner {
+      overflow: hidden;
+      // 底部留出一个标准的全局间距
+      padding: 0 0 var(--article-margin) 0;
+      
+      // 第一个元素去掉上边距，因为它紧跟在已经有 padding 的标题后面
+      & > :first-child { 
+        margin-top: 0 !important; 
+      }
+      & > :last-child { 
+        margin-bottom: 0 !important; 
+      }
+    }
+  }
+
+  // 折叠逻辑
+  &.is-collapsed {
+    .callout-content {
+      grid-template-rows: 0fr;
+      opacity: 0;
+    }
+
+    .fold-callout-icon {
+      transform: rotateZ(-90deg) translateY(-1px) !important; // 旋转时保持位置一致
+    }
+  }
+
+  // 图标对齐优化
+  .fold-callout-icon, .callout-icon {
+    width: 18px !important;
+    height: 18px !important;
+    flex: 0 0 18px !important;
+    background-color: currentColor; // 基础背景色，确保自定义图标在无 color 时也可见
+    margin-top: 0 !important;
+    transform: translateY(1px); // 视觉对齐基线的微调
+  }
+
+  .fold-callout-icon {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    mask-size: 18px 18px !important;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    transition: transform 0.15s ease !important;
+    opacity: 0.8 !important;
+    margin-left: auto;
+  }
+
+  // 自定义颜色支持
+  &[style*="--callout-color"] {
+    background-color: var(--bg) !important;
+    border: 1px solid var(--border) !important;
+    border-left: 4px solid var(--color) !important;
+
+    .callout-title, .callout-title-inner, .callout-title-inner > p {
+      color: var(--color) !important;
+    }
+
+    .callout-icon, .fold-callout-icon {
+      background-color: var(--color) !important;
+    }
+  }
+
+  .callout-icon[style*="mask-image"] {
+    mask-repeat: no-repeat;
+    mask-size: 18px 18px !important;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 18px 18px !important;
+  }
+}
