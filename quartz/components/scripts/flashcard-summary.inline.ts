@@ -2,10 +2,12 @@ async function setupFlashcardSummary() {
   const STORAGE_KEY_KNOWN = "quartz-flashcards-known"
   const STORAGE_KEY_VIEWS = "quartz-flashcards-views"
   const STORAGE_KEY_MASTERED_COUNT = "quartz-flashcards-mastered-count"
+  const STORAGE_KEY_LAST_SEEN = "quartz-flashcards-last-seen"
 
   const knownSlugs: string[] = JSON.parse(localStorage.getItem(STORAGE_KEY_KNOWN) || "[]")
   const viewCounts: Record<string, number> = JSON.parse(localStorage.getItem(STORAGE_KEY_VIEWS) || "{}")
   const masteredCounts: Record<string, number> = JSON.parse(localStorage.getItem(STORAGE_KEY_MASTERED_COUNT) || "{}")
+  const lastSeen: Record<string, number> = JSON.parse(localStorage.getItem(STORAGE_KEY_LAST_SEEN) || "{}")
 
   const statsContainer = document.getElementById("summary-stats")
   if (statsContainer) {
@@ -23,6 +25,7 @@ async function setupFlashcardSummary() {
         localStorage.removeItem(STORAGE_KEY_KNOWN)
         localStorage.removeItem(STORAGE_KEY_VIEWS)
         localStorage.removeItem(STORAGE_KEY_MASTERED_COUNT)
+        localStorage.removeItem(STORAGE_KEY_LAST_SEEN)
         window.location.reload()
       } else {
         // First click: enter confirmation state
@@ -73,6 +76,8 @@ async function setupFlashcardSummary() {
           localStorage.setItem(STORAGE_KEY_VIEWS, JSON.stringify(viewCounts))
           delete masteredCounts[slug]
           localStorage.setItem(STORAGE_KEY_MASTERED_COUNT, JSON.stringify(masteredCounts))
+          delete lastSeen[slug]
+          localStorage.setItem(STORAGE_KEY_LAST_SEEN, JSON.stringify(lastSeen))
           window.location.reload()
         } else {
           // First click: enter confirmation state
