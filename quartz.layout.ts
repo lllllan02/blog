@@ -22,6 +22,10 @@ export const defaultContentPageLayout: PageLayout = {
       condition: (page) => page.fileData.slug !== "index",
     }),
     Component.ArticleTitle(),
+    Component.ConditionalRender({
+      component: Component.FlashcardSummary(),
+      condition: (page) => page.fileData.slug === "flashcards",
+    }),
     Component.ContentMeta(),
     Component.TagList(),
   ],

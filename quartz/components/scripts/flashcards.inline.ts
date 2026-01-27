@@ -14,8 +14,14 @@ async function setupFlashcards() {
 
   if (!container || !toggle) return
 
-  const STORAGE_KEY = "quartz-flashcards-known"
-  let knownSlugs: Set<string> = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"))
+  const STORAGE_KEY_KNOWN = "quartz-flashcards-known"
+  const STORAGE_KEY_VIEWS = "quartz-flashcards-views"
+  const STORAGE_KEY_MASTERED_COUNT = "quartz-flashcards-mastered-count"
+
+  let knownSlugs: Set<string> = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY_KNOWN) || "[]"))
+  let viewCounts: Record<string, number> = JSON.parse(localStorage.getItem(STORAGE_KEY_VIEWS) || "{}")
+  let masteredCounts: Record<string, number> = JSON.parse(localStorage.getItem(STORAGE_KEY_MASTERED_COUNT) || "{}")
+
   let cards: Card[] = []
   let currentIndex = 0
 
@@ -43,7 +49,7 @@ async function setupFlashcards() {
       // If all cards are known, maybe show them all again or show a message
       qText.innerText = "All cards mastered! Resetting..."
       knownSlugs.clear()
-      localStorage.setItem(STORAGE_KEY, "[]")
+      localStorage.setItem(STORAGE_KEY_KNOWN, "[]")
       cards = allCards
     } else if (cards.length === 0) {
       qText.innerText = "No cards found. Add 'card: true' to your frontmatter."
@@ -68,12 +74,28 @@ async function setupFlashcards() {
     qText.innerText = card.title
   }
 
+  viewBtn.addEventListener("click", () => {
+    if (cards.length === 0) return
+    const card = cards[currentIndex]
+    
+    // Record view
+    viewCounts[card.slug] = (viewCounts[card.slug] || 0) + 1
+    localStorage.setItem(STORAGE_KEY_VIEWS, JSON.stringify(viewCounts))
+
+    const destination = window.location.origin + "/" + card.slug
+    window.spaNavigate(new URL(destination))
+  })
+
   knownBtn?.addEventListener("click", () => {
     if (cards.length === 0) return
     const card = cards[currentIndex]
     knownSlugs.add(card.slug)
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(knownSlugs)))
+    localStorage.setItem(STORAGE_KEY_KNOWN, JSON.stringify(Array.from(knownSlugs)))
     
+    // Record mastery count
+    masteredCounts[card.slug] = (masteredCounts[card.slug] || 0) + 1
+    localStorage.setItem(STORAGE_KEY_MASTERED_COUNT, JSON.stringify(masteredCounts))
+
     // Remove current card from active list
     cards.splice(currentIndex, 1)
     if (cards.length === 0) {
@@ -84,13 +106,6 @@ async function setupFlashcards() {
       }
       updateCard()
     }
-  })
-
-  viewBtn.addEventListener("click", () => {
-    if (cards.length === 0) return
-    const card = cards[currentIndex]
-    const destination = window.location.origin + "/" + card.slug
-    window.spaNavigate(new URL(destination))
   })
 }
 

@@ -1,3 +1,103 @@
+.flashcard-summary {
+  margin-top: 2rem;
+  
+  #flashcard-summary-container {
+    margin-bottom: 1.5rem;
+    
+    .summary-info {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-weight: bold;
+      color: var(--darkgray);
+
+        .clear-all-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          background-color: var(--highlight);
+          color: var(--darkgray);
+          border: 1px solid var(--lightgray);
+          padding: 0.3rem 0.7rem;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 0.75rem;
+          font-weight: 600;
+          transition: all 0.2s;
+
+          &:hover, &.confirming {
+            background-color: #d32f2f !important; // 明确的红色
+            color: white !important;
+            border-color: #d32f2f !important;
+          }
+
+          svg {
+            width: 14px;
+            height: 14px;
+          }
+        }
+    }
+  }
+
+  .flashcard-list {
+    overflow-x: auto;
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+
+      th, td {
+        text-align: left;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--lightgray);
+      }
+
+      th {
+        background-color: var(--highlight);
+      }
+
+      .status-mastered {
+        color: #72b043;
+        font-weight: bold;
+      }
+
+      .status-learning {
+        color: var(--gray);
+      }
+
+      .clear-single-btn {
+        background: none;
+        border: none;
+        color: var(--gray);
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        min-width: 60px;
+
+        &.confirming {
+          color: var(--red);
+          font-weight: bold;
+        }
+
+        &:hover {
+          background-color: var(--highlight);
+          color: var(--red);
+        }
+
+        svg {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+  }
+}
+
 .flashcards {
   margin-top: 1rem;
   
