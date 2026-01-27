@@ -2,6 +2,7 @@
 title: 为什么 select 的文件描述符集合是有序的？
 card: true
 date: 2026-01-27 10:33:44
+order: 8
 tags:
   - interview
   - bytedance

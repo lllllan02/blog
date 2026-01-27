@@ -2,6 +2,7 @@
 title: Goroutine 中出现 panic 会发生什么
 card: true
 date: 2026-01-27 10:33:44
+order: 1
 tags:
   - interview
   - bytedance

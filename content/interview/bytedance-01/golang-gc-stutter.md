@@ -2,6 +2,7 @@
 title: Golang 的 GC 什么时候回出现卡顿
 card: true
 date: 2026-01-27 10:33:44
+order: 2
 tags:
   - interview
   - bytedance

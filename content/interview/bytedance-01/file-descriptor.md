@@ -2,6 +2,7 @@
 title: 文件描述符是什么
 card: true
 date: 2026-01-27 10:33:44
+order: 5
 tags:
   - interview
   - bytedance

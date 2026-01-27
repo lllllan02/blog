@@ -130,6 +130,10 @@ button.desktop-explorer {
       color: var(--dark);
       opacity: 0.75;
       pointer-events: all;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &.active {
         opacity: 1;
@@ -199,6 +203,9 @@ button.desktop-explorer {
       margin: 0;
       line-height: 1.5rem;
       pointer-events: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }

@@ -2,6 +2,7 @@
 title: 为什么 epoll 底层用红黑树管理？
 card: true
 date: 2026-01-27 10:33:44
+order: 7
 tags:
   - interview
   - bytedance
