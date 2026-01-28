@@ -1,19 +1,23 @@
 @use "./base.scss";
 
 :root {
-  --article-font-size: 1.2rem;
+  --article-font-size: 1.3rem;
   --article-line-height: 2rem;
   --article-margin: 1rem;
   --article-h1-size: 1.8rem;
-  --article-h2-size: 1.5rem;
-  --article-h3-size: 1.35rem;
-  --article-h4-size: 1.25rem;
+  --article-h2-size: 1.6rem;
+  --article-h3-size: 1.45rem;
+  --article-h4-size: 1.35rem;
 }
 
 // 自定义字号及排版设置
 article {
   font-size: var(--article-font-size);
   line-height: var(--article-line-height);
+
+  p {
+    line-height: var(--article-line-height);
+  }
 
   // 标题层级优化
   h1 { font-size: var(--article-h1-size); margin-top: 1.8rem; }

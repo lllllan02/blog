@@ -12,8 +12,8 @@ tags:
 > [15.字节跳动-懂车帝后端校招二面（挂）| 牛客网](https://www.nowcoder.com/feed/main/detail/7473702c27b244e7b033f323386a522b)
 
 
-1. [[interview/bytedance-01/goroutine-panic|Goroutine 中出现 panic 会发生什么]]
-2. [[interview/bytedance-01/golang-gc-stutter|Golang 的 GC 什么时候回出现卡顿]]
+1. [[4e2b1a3d-5f6c-4b8a-9d0e-1f2a3b4c5d6e|Goroutine 中出现 panic 会发生什么]]
+2. [[C36AB45D-B3F7-436E-99A0-9A32E1F93769|Golang 的 GC 什么时候回出现卡顿]]
 3. [[interview/bytedance-01/gc-sweep-stw|清理过程会出现 STW 吗？]]
 4. [[interview/bytedance-01/coin-change|手撕：零钱兑换]]
 5. [[interview/bytedance-01/file-descriptor|文件描述符是什么]]

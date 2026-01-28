@@ -1,10 +1,10 @@
 ---
-title: Goroutine 中出现 panic 会发生什么
+title: 1. Goroutine 中出现 panic 会发生什么
 aliases:
   - 4e2b1a3d-5f6c-4b8a-9d0e-1f2a3b4c5d6e
 card: true
 date: 2026-01-27 10:33:44
-order: 1
+order: 10
 tags:
   - golang
   - goroutine
