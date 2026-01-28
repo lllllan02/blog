@@ -14,11 +14,7 @@
 article {
   font-size: var(--article-font-size);
   line-height: var(--article-line-height);
-
-  p {
-    line-height: var(--article-line-height);
-  }
-
+ 
   // 标题层级优化
   h1 { font-size: var(--article-h1-size); margin-top: 1.8rem; }
   h2 { font-size: var(--article-h2-size); margin-top: 1.6rem; }
@@ -29,12 +25,14 @@ article {
   p, ul, ol, dl, blockquote {
     margin-top: var(--article-margin);
     margin-bottom: var(--article-margin);
+    line-height: var(--article-line-height);
   }
 
   /* 列表项保持较小的间距 */
   li {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+    line-height: var(--article-line-height);
   }
 
   // 增强加粗字体对比度
