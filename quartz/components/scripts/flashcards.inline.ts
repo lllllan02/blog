@@ -27,13 +27,15 @@ interface Card {
     const STORAGE_KEY_VIEWS = "quartz-flashcards-views"
     const STORAGE_KEY_MASTERED_COUNT = "quartz-flashcards-mastered-count"
     const STORAGE_KEY_LAST_SEEN = "quartz-flashcards-last-seen"
+    const STORAGE_KEY_WEIGHTS = "quartz-flashcards-weights"
 
     let knownSlugs: Set<string> = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY_KNOWN) || "[]"))
     let viewCounts: Record<string, number> = JSON.parse(localStorage.getItem(STORAGE_KEY_VIEWS) || "{}")
     let masteredCounts: Record<string, number> = JSON.parse(localStorage.getItem(STORAGE_KEY_MASTERED_COUNT) || "{}")
     let lastSeen: Record<string, number> = JSON.parse(localStorage.getItem(STORAGE_KEY_LAST_SEEN) || "{}")
+    let weights: Record<string, number> = JSON.parse(localStorage.getItem(STORAGE_KEY_WEIGHTS) || "{}")
 
-    const COOLDOWN_MS = 30 * 60 * 1000 // 30 minutes in milliseconds
+    const COOLDOWN_MS = 10 * 60 * 1000 // 10 minutes for soft penalty
 
     let cards: Card[] = []
     let currentIndex = 0
@@ -55,23 +57,10 @@ interface Card {
           slug: slug as FullSlug,
         }))
 
-      // Filter unknown cards and respect cooldown
-      const now = Date.now()
-      cards = allCards.filter(card => {
-        if (knownSlugs.has(card.slug)) return false
-        const lastTime = lastSeen[card.slug] || 0
-        return now - lastTime > COOLDOWN_MS
-      })
+      // Filter only mastered cards
+      cards = allCards.filter(card => !knownSlugs.has(card.slug))
 
       if (cards.length === 0 && allCards.length > 0) {
-        // Check if all cards are filtered out due to cooldown
-        const unmasteredCards = allCards.filter(card => !knownSlugs.has(card.slug))
-        if (unmasteredCards.length > 0) {
-          qText.innerText = "No new cards for now. Come back later!"
-          controls.style.display = "none"
-          return
-        }
-
         // If all cards are known, show a message and don't reset automatically
         qText.innerText = "All cards mastered! Go to summary to reset."
         controls.style.display = "none"
@@ -85,16 +74,58 @@ interface Card {
       // Ensure buttons are visible if we have cards
       controls.style.display = "flex"
 
-      // Shuffle cards
-      for (let i = cards.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [cards[i], cards[j]] = [cards[j], cards[i]]
-      }
-
+      // Initial selection
+      selectNextCard()
       updateCard()
     } catch (e) {
       console.error("Failed to fetch flashcards", e)
       qText.innerText = "Error loading cards."
+    }
+
+    function selectNextCard() {
+      if (cards.length === 0) return
+
+      const now = Date.now()
+      const ONE_DAY_MS = 24 * 60 * 60 * 1000
+
+      // Weighted Random Selection with Time Compensation & Soft Penalty
+      const cardWeights = cards.map(card => {
+        let baseWeight = weights[card.slug] || 1
+        const views = viewCounts[card.slug] || 0
+        const lastTime = lastSeen[card.slug] || 0
+
+        // 1. New Card Boost: Never seen cards get a higher initial weight
+        if (views === 0) {
+          baseWeight = 3
+        }
+
+        // 2. Time Compensation (Anti-Starvation): 
+        // Increase weight if the card hasn't been seen for a long time.
+        if (lastTime > 0) {
+          const daysSinceLastSeen = Math.floor((now - lastTime) / ONE_DAY_MS)
+          baseWeight += daysSinceLastSeen
+        }
+
+        // 3. Soft Penalty (Cooldown):
+        // If the card was seen very recently, significantly reduce its weight.
+        if (lastTime > 0 && (now - lastTime) < COOLDOWN_MS) {
+          baseWeight *= 0.1
+        }
+
+        return baseWeight
+      })
+
+      const totalWeight = cardWeights.reduce((a, b) => a + b, 0)
+      let random = Math.random() * totalWeight
+      
+      for (let i = 0; i < cards.length; i++) {
+        if (random < cardWeights[i]) {
+          currentIndex = i
+          return
+        }
+        random -= cardWeights[i]
+      }
+      currentIndex = 0
     }
 
     function updateCard() {
@@ -111,6 +142,10 @@ interface Card {
       viewCounts[card.slug] = (viewCounts[card.slug] || 0) + 1
       localStorage.setItem(STORAGE_KEY_VIEWS, JSON.stringify(viewCounts))
 
+      // Increase weight because user needed to see the answer
+      weights[card.slug] = (weights[card.slug] || 1) + 2
+      localStorage.setItem(STORAGE_KEY_WEIGHTS, JSON.stringify(weights))
+
       // Record last seen
       lastSeen[card.slug] = Date.now()
       localStorage.setItem(STORAGE_KEY_LAST_SEEN, JSON.stringify(lastSeen))
@@ -122,6 +157,11 @@ interface Card {
     newKnownBtn?.addEventListener("click", () => {
       if (cards.length === 0) return
       const card = cards[currentIndex]
+
+      // Decrease weight because user knows it
+      weights[card.slug] = Math.max(1, (weights[card.slug] || 1) - 1)
+      localStorage.setItem(STORAGE_KEY_WEIGHTS, JSON.stringify(weights))
+
       knownSlugs.add(card.slug)
       localStorage.setItem(STORAGE_KEY_KNOWN, JSON.stringify(Array.from(knownSlugs)))
       
@@ -139,9 +179,7 @@ interface Card {
         qText.innerText = "All cards mastered! Refresh to restart."
         controls.style.display = "none"
       } else {
-        if (currentIndex >= cards.length) {
-          currentIndex = 0
-        }
+        selectNextCard()
         updateCard()
       }
     })
