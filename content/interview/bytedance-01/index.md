@@ -19,5 +19,5 @@ tags:
 5. [[F763D7B0-C729-48A8-8E9F-CA8C7F5745E8|文件描述符是什么]]
 6. [[1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d|I/O 多路复用是什么]]
 7. [[6c1d2e3f-4a5b-6c7d-8e9f-0a1b2c3d4e5f|为什么 epoll 底层用红黑树管理？]]
-8. [[interview/bytedance-01/select-fd-set-order|为什么 select 的文件描述符集合是有序的？]]
+8. [[8e9d2c4b-7a1f-4b3c-9d5e-6f8a2b1c3d4e|为什么 select 的文件描述符集合是有序的？]]
 9. [[interview/bytedance-01/async-vs-nonblocking-io|说说异步 Asynchronous I/O 和非阻塞 Non-Blocking I/O]]
