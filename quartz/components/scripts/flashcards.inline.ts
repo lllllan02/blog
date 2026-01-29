@@ -3,6 +3,7 @@ import { FullSlug } from "../../util/path"
 interface Card {
   title: string
   slug: FullSlug
+  content: string
 }
 
   async function setupFlashcards() {
@@ -55,6 +56,7 @@ interface Card {
         .map(([slug, details]: [string, any]) => ({
           title: details.title,
           slug: slug as FullSlug,
+          content: details.content,
         }))
 
       // Filter only mastered cards
@@ -131,7 +133,14 @@ interface Card {
     function updateCard() {
       if (cards.length === 0) return
       const card = cards[currentIndex]
-      qText.innerText = card.title
+      
+      // Use marked if available, otherwise fallback to innerText
+      if (typeof (window as any).marked !== 'undefined') {
+        // @ts-ignore
+        qText.innerHTML = marked.parse(card.content)
+      } else {
+        qText.innerText = card.title
+      }
     }
 
     newViewBtn.addEventListener("click", () => {

@@ -51,6 +51,15 @@ export default (() => {
 
   Flashcards.css = style
   Flashcards.afterDOMLoaded = script
+  Flashcards.externalResources = () => ({
+    js: [
+      {
+        src: "https://cdn.jsdelivr.net/npm/marked/marked.min.js",
+        loadTime: "beforeDOMReady",
+        contentType: "external",
+      },
+    ],
+  })
 
   return Flashcards
 }) satisfies QuartzComponentConstructor
