@@ -62,8 +62,14 @@ interface Card {
           tags: details.tags || [],
         }))
 
-      // Filter only mastered cards
-      cards = allCards.filter(card => !knownSlugs.has(card.slug))
+      // Filter only mastered cards and those in cooldown
+      const now = Date.now()
+      cards = allCards.filter(card => {
+        const isKnown = knownSlugs.has(card.slug)
+        const lastTime = lastSeen[card.slug] || 0
+        const isInCooldown = (now - lastTime) < COOLDOWN_MS
+        return !isKnown && !isInCooldown
+      })
 
       if (cards.length === 0 && allCards.length > 0) {
         // If all cards are known, show a message and don't reset automatically
@@ -170,6 +176,10 @@ interface Card {
       localStorage.setItem(STORAGE_KEY_LAST_SEEN, JSON.stringify(lastSeen))
 
       const destination = window.location.origin + "/" + card.slug
+      
+      // Remove current card from active list to avoid seeing it again too soon
+      cards.splice(currentIndex, 1)
+      
       window.spaNavigate(new URL(destination))
     })
 
