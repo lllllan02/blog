@@ -47,4 +47,4 @@ title: 欢迎来到我的知识库
 
 ## 坚持做题
 
-![LeetCode Stats](https://leetcard.jacoblin.cool/lllllan02?theme=light&font=Kurale&ext=heatmap)
+![LeetCode Stats](https://leetcard.jacoblin.cool/friendly-almeidaelk?theme=light&font=Kurale&ext=heatmap&site=cn)
