@@ -30,6 +30,7 @@ export default (() => {
         </div>
         <div class="flashcards-container">
           <div class="flashcard-card">
+            <div class="flashcard-tags" id="flashcard-tags"></div>
             <div class="flashcard-question">
               <p id="flashcard-q-text">Loading cards...</p>
             </div>

@@ -4,11 +4,13 @@ interface Card {
   title: string
   slug: FullSlug
   content: string
+  tags: string[]
 }
 
   async function setupFlashcards() {
     const container = document.querySelector(".flashcards-container") as HTMLElement
     const toggle = document.querySelector(".flashcards-toggle") as HTMLElement
+    const tagsContainer = document.getElementById("flashcard-tags") as HTMLElement
     const qText = document.getElementById("flashcard-q-text") as HTMLElement
     const controls = document.querySelector(".flashcard-controls") as HTMLElement
     const viewBtn = document.getElementById("flashcard-view") as HTMLButtonElement
@@ -57,6 +59,7 @@ interface Card {
           title: details.title,
           slug: slug as FullSlug,
           content: details.content,
+          tags: details.tags || [],
         }))
 
       // Filter only mastered cards
@@ -134,6 +137,13 @@ interface Card {
       if (cards.length === 0) return
       const card = cards[currentIndex]
       
+      // Update tags
+      if (tagsContainer) {
+        tagsContainer.innerHTML = card.tags
+          .map(tag => `<span class="flashcard-tag">#${tag}</span>`)
+          .join("")
+      }
+
       // Use marked if available, otherwise fallback to innerText
       if (typeof (window as any).marked !== 'undefined') {
         // @ts-ignore
