@@ -3,7 +3,6 @@ title: Go 处理 JSON 脏数据：泛型 Flexible 类型实现自动转换
 aliases: 7d8e9f2a-1b3c-4d5e-8a9b-c0d1e2f3a4b5
 date: 2026-01-29 11:45:00
 order: 10
-card: true
 tags:
     - golang
     - json
