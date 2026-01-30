@@ -3,7 +3,7 @@ title: 1. 线程栈为什么通常是 MB 级别
 aliases: 32BB6D3A-DF95-4C92-BA9C-22EBA5BF940F
 date: 2026-01-30 15:05:00
 card: true
-order: 2
+order: 11
 tags:
   - interview
   - operating-system
