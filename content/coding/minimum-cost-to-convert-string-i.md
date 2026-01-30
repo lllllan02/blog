@@ -7,6 +7,8 @@ order:
 tags: [最短路, Floyd, Dijkstra]
 ---
 
+> [转换字符串的最小成本 I](https://leetcode.cn/problems/minimum-cost-to-convert-string-i/)
+
 ![[Pasted image 20260129201550.png]]
 
 ```go
