@@ -11,7 +11,7 @@ tags: [最短路, Floyd, Dijkstra]
 
 ![[Pasted image 20260129201550.png]]
 
-```go
+```go fold="Go 解决方案"
 func minimumCost(source string, target string, original []byte, changed []byte, cost []int) int64 {
     const INF = math.MaxInt / 2
 

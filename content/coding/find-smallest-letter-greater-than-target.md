@@ -11,7 +11,7 @@ tags: [数组, 线性查找, 二分查找]
 
 ![[Pasted image 20260131101912.png]]
 
-```go
+```go fold="Go 解决方案"
 func nextGreatestLetter(letters []byte, target byte) byte {
     left, right := 0, len(letters) - 1
 

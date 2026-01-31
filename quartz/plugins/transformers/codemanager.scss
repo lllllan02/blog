@@ -1,0 +1,133 @@
+.code-manager-fold {
+  border: 1px solid var(--lightgray);
+  border-radius: 5px;
+  margin: 1rem 0;
+  overflow: hidden;
+
+  // 关键修复：当折叠框嵌套在代码组内部时，去除外层边框和边距，避免出现双重边框
+  .code-manager-tab-content & {
+    border: none;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .code-manager-fold-header {
+    background-color: var(--lightgray);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+
+    .code-manager-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+      transition: transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--darkgray);
+    }
+
+    .code-manager-fold-title {
+      opacity: 0.8;
+      flex-grow: 1;
+    }
+  }
+
+  .code-manager-fold-content {
+    display: none;
+    padding: 0;
+    margin: 0;
+
+    pre {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      border: none !important;
+    }
+
+    // 关键修复：当折叠框嵌套在代码组内部时，去除外层不必要的边框和阴影
+    .code-manager-tab-content & {
+      border: none;
+      box-shadow: none;
+    }
+  }
+
+  &.open {
+    .code-manager-icon {
+      transform: rotate(90deg);
+    }
+
+    .code-manager-fold-content {
+      display: block;
+    }
+  }
+}
+
+  .code-manager-group {
+    border: 1px solid var(--lightgray);
+    border-radius: 6px;
+    margin: 1rem 0;
+    overflow: hidden;
+    background-color: var(--light);
+
+    // 关键修复：当代码组被折叠框包裹时，移除外层边框和边距，避免双重边框
+    .code-manager-fold-content & {
+      border: none;
+      margin: 0;
+      border-radius: 0;
+    }
+
+  .code-manager-group-header {
+    display: flex;
+    background-color: var(--lightgray);
+    border-bottom: 1px solid var(--lightgray);
+    padding: 0 0.5rem;
+    gap: 0.25rem;
+    overflow-x: auto;
+
+    .code-manager-tab-button {
+      background: none;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-family: var(--bodyFont);
+      font-size: 0.9rem;
+      color: var(--darkgray);
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: var(--dark);
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      &.active {
+        color: var(--secondary);
+        border-bottom-color: var(--secondary);
+      }
+    }
+  }
+
+  .code-manager-group-content {
+    .code-manager-tab-content {
+      display: none;
+      padding: 0;
+
+      &.active {
+        display: block;
+      }
+
+      pre {
+        margin: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+      }
+    }
+  }
+}
