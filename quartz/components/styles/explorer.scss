@@ -177,10 +177,20 @@ button.desktop-explorer {
     font-weight: $semiBoldWeight;
     line-height: 1.5rem;
     display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
   }
 
   & div > a:hover {
     color: var(--tertiary);
+  }
+
+  & div {
+    display: flex;
+    flex: 1;
+    min-width: 0;
   }
 
   & div > button {
@@ -194,6 +204,8 @@ button.desktop-explorer {
     display: flex;
     align-items: center;
     font-family: var(--headerFont);
+    width: 100%;
+    min-width: 0;
 
     & span {
       font-size: 0.95rem;
@@ -206,6 +218,7 @@ button.desktop-explorer {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      width: 100%;
     }
   }
 }
