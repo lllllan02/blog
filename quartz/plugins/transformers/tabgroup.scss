@@ -52,6 +52,65 @@
       & > *:last-child {
         margin-bottom: 0;
       }
+
+      // 当内容以代码块结尾时，去除底部的间隙，并让代码块左右撑满
+      &.code-ends {
+        padding-bottom: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+
+        // 顶部的文本仍然需要 padding
+        & > *:not(figure):not(pre):not(.code-only) {
+          margin-left: 1rem;
+          margin-right: 1rem;
+        }
+
+        & > figure[data-rehype-pretty-code-figure]:last-child,
+        & > pre:last-child {
+          margin-bottom: 0 !important;
+          border-bottom: none !important;
+          border-left: none !important;
+          border-right: none !important;
+          border-radius: 0 !important;
+          border-top: 1px solid var(--lightgray) !important;
+
+          & > pre {
+            border: none !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+          }
+        }
+      }
+
+      // 纯代码块模式：完全填满，去除所有内边距和边框
+      &.code-only {
+        padding: 0 !important;
+
+        & > figure[data-rehype-pretty-code-figure],
+        & > pre {
+          margin: 0 !important;
+          border: none !important;
+          border-radius: 0 !important;
+
+          & > pre {
+            border: none !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+        }
+        
+        // 针对 Shiki 生成的代码块结构进行深度优化
+        pre {
+          border: none !important;
+          border-radius: 0 !important;
+          margin: 0 !important;
+          
+          code {
+            padding: 1rem 0 !important; // 恢复上下内边距，保持美观
+          }
+        }
+      }
     }
   }
 }

@@ -58,7 +58,23 @@ export const TabGroup: QuartzTransformerPlugin = () => {
               .map((tab, idx) => `<button class="tab-button${idx === 0 ? " active" : ""}" data-tab="${idx}">${tab.title}</button>`)
               .join("")
             const tabContents = tabs
-              .map((tab, idx) => `<div class="tab-content${idx === 0 ? " active" : ""}" data-tab="${idx}">\n\n${tab.content.join("\n")}\n\n</div>`)
+              .map((tab, idx) => {
+                const contentStr = tab.content.join("\n").trim()
+                // 判断内容是否仅包含一个代码块
+                const isCodeOnly =
+                  contentStr.startsWith("```") &&
+                  contentStr.endsWith("```") &&
+                  (contentStr.match(/^```/gm) || []).length === 2
+                // 判断内容是否以代码块结尾
+                const endsWithCode = contentStr.endsWith("```")
+
+                let className = "tab-content"
+                if (idx === 0) className += " active"
+                if (isCodeOnly) className += " code-only"
+                else if (endsWithCode) className += " code-ends"
+
+                return `<div class="${className}" data-tab="${idx}">\n\n${tab.content.join("\n")}\n\n</div>`
+              })
               .join("\n")
             
             const groupHtml = `<div class="tab-group">\n<div class="tab-group-header">${tabButtons}</div>\n<div class="tab-group-content">\n${tabContents}\n</div>\n</div>`
