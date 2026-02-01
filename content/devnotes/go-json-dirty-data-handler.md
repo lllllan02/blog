@@ -16,7 +16,7 @@ tags:
 
 定义一个泛型结构体 `Flexible[T]`，并实现 `json.Unmarshaler` 接口。在解析失败时，利用 `cast` 包将原始数据转换为目标类型。
 
-```go
+```go fold="Flexible 实现"
 package utils
 
 import (
