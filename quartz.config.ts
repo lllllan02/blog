@@ -69,6 +69,7 @@ const config: QuartzConfig = {
       Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: false, callouts: false }),
       Plugin.Callout(),
       Plugin.CodeManager(),
+      Plugin.TabGroup(),
       Plugin.GitHubFlavoredMarkdown(),
       Plugin.TableOfContents(),
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest", openLinksInNewTab: true }),
