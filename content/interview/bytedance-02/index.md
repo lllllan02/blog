@@ -12,9 +12,8 @@ tags:
 > [字节 Golang 后端实习一面](https://www.nowcoder.com/feed/main/detail/21f8633225794b9a8238825420e45d63)
 
 1. [[44A2277A-FBC8-4EA7-A58E-B6C120FEBDE4|Golang 初始栈为什么只有 2KB]] 与 [[32BB6D3A-DF95-4C92-BA9C-22EBA5BF940F|线程栈为什么通常是 MB 级别]]？
-    - [[783D0B97-DB2D-4453-B211-212721863184|Go 栈伸缩机制详解]]
-    - [[B89ED37C-E417-4304-BDF6-B1BA6CC23C5C|分段栈与连续栈详解]]
-2. sync.Mutex 的实现原理:(1.18 前后版本差异)?为什么要引入饥饿模式?
+2. [[f8db303e-ccba-4463-a400-401c33296dd1|sync.Mutex 的实现原理（1.18 前后版本差异 / 饥饿模式）]]
+	- https://victoriametrics.com/blog/go-sync-mutex/
 3. Golang 中 for range 遍历 slice/map 时，变量的内存地址是否变化?为什么会出现“遍历赋值后值不对”的问题?
 4. Golang 的 interface{}空接口的底层实现?为什么空接口可以接收任意类型?类型断言的两种方式及区别?
 5. 分布式 ID 生成方案?
