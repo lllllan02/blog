@@ -124,6 +124,11 @@ func (m *Mutex) Lock() {
 
 退出饥饿模式的条件（原文描述）大意是：当队列变短（自己是最后一个等待者）或等待时间已明显变小（<1ms）时，会切回正常模式以恢复吞吐。
 
+<div style="display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap;">
+  <img src="/assets/Pasted-image-20260202165554.png" alt="mutex starvation exit condition (1)" style="max-width: calc(50% - 6px); height: auto;" />
+  <img src="/assets/Pasted-image-20260202165604.png" alt="mutex starvation exit condition (2)" style="max-width: calc(50% - 6px); height: auto;" />
+</div>
+
 ## `Unlock`：快路径与慢路径
 
 `Unlock()` 同样有快/慢路径：
