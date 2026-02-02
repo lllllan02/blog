@@ -13,10 +13,11 @@ interface Options {
 
 const defaultOptions: Options = {
   theme: {
-    light: "github-light",
+    // 默认让代码块在亮色模式下也使用暗色主题
+    light: "github-dark",
     dark: "github-dark",
   },
-  keepBackground: false,
+  keepBackground: true,
 }
 
 export const SyntaxHighlighting: QuartzTransformerPlugin<Partial<Options>> = (userOpts) => {

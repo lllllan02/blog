@@ -1,15 +1,17 @@
 .clipboard-button {
   position: absolute;
   display: flex;
-  float: right;
-  right: 0;
+  // 固定在代码块右上角（mac 主题的“标题栏”区域）
+  top: 0.4rem;
+  right: 0.5rem;
   padding: 0.4rem;
-  margin: 0.3rem;
+  margin: 0;
   color: var(--gray);
   border-color: var(--dark);
   background-color: var(--light);
   border: 1px solid;
   border-radius: 5px;
+  z-index: 2;
   opacity: 0;
   transition: 0.2s;
 

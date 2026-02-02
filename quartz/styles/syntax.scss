@@ -3,12 +3,21 @@ code[data-theme*=" "] {
   background-color: var(--shiki-light-bg);
 }
 
+// 兜底：让代码块容器也吃到背景色（避免边缘/滚动区域露出页面底色）
+figure[data-rehype-pretty-code-figure] > pre {
+  background-color: var(--shiki-light-bg);
+}
+
 code[data-theme*=" "] span {
   color: var(--shiki-light);
 }
 
 [saved-theme="dark"] code[data-theme*=" "] {
   color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+
+[saved-theme="dark"] figure[data-rehype-pretty-code-figure] > pre {
   background-color: var(--shiki-dark-bg);
 }
 

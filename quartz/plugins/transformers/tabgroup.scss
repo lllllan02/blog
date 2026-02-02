@@ -100,6 +100,13 @@
           }
         }
         
+        // macOS 代码块主题需要顶部“标题栏”空间（红黄绿圆点 & 复制按钮）
+        // code-only 会把 padding 清零，这里只补回顶部 padding，保持左右全宽不变
+        & > figure[data-rehype-pretty-code-figure] > pre,
+        & > pre {
+          padding: 1.4rem 0 0 0 !important;
+        }
+        
         // 针对 Shiki 生成的代码块结构进行深度优化
         pre {
           border: none !important;

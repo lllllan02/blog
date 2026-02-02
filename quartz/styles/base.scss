@@ -434,7 +434,7 @@ figure[data-rehype-pretty-code-figure] {
     padding: 0.1rem 0.5rem;
     border: 1px solid var(--lightgray);
     width: fit-content;
-    border-radius: 5px;
+    border-radius: 8px;
     margin-bottom: -0.5rem;
     color: var(--darkgray);
   }
@@ -444,10 +444,32 @@ figure[data-rehype-pretty-code-figure] {
   }
 }
 
+// macOS 风格代码块（左上角红黄绿圆点）
+figure[data-rehype-pretty-code-figure] > pre {
+  // 给“标题栏/圆点”留空间
+  padding-top: 1.4rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0.55rem;
+    left: 0.7rem;
+    width: 0.72rem;
+    height: 0.72rem;
+    border-radius: 999px;
+    background: #ff5f56; // close
+    box-shadow:
+      1.1rem 0 0 #ffbd2e, // minimize
+      2.2rem 0 0 #27c93f; // zoom
+    opacity: 0.95;
+    pointer-events: none;
+  }
+}
+
 pre {
   font-family: var(--codeFont);
   padding: 0 0.5rem;
-  border-radius: 5px;
+  border-radius: 8px;
   overflow-x: auto;
   border: 1px solid var(--lightgray);
   position: relative;

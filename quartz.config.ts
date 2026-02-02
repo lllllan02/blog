@@ -61,10 +61,12 @@ const config: QuartzConfig = {
       }),
       Plugin.SyntaxHighlighting({
         theme: {
-          light: "github-light",
+          // 让代码块在亮色模式下也使用暗色（黑色）主题
+          light: "github-dark",
           dark: "github-dark",
         },
-        keepBackground: false,
+        // rehype-pretty-code 默认会移除背景（transparent），打开它才能让 Shiki 的背景色生效
+        keepBackground: true,
       }),
       Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: false, callouts: false }),
       Plugin.Callout(),
