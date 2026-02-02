@@ -10,6 +10,8 @@ tags:
   - interview
 ---
 
+> 详细请看 [[c2f5ae40-3686-46b7-896c-bcdf12ae5cc7|Go sync.Mutex：正常模式与饥饿模式]]
+
 ## 核心解答
 
 `sync.Mutex` 的核心实现可以概括为：<u>一个 `state` 整型字段（bit 标志 + 等待者计数）配合一个信号量 `sema`</u>。
