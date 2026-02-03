@@ -24,7 +24,7 @@ tags:
 
 使用 `Mutex` 的方式很直接：用 `Lock/Unlock` 把临界区包起来（工程上通常推荐 `defer Unlock()`，确保一定释放锁）。
 
-```go
+```go fold="Mutex 保护" {6,8}
 var counter = 0
 var wg sync.WaitGroup
 var mutex sync.Mutex
@@ -63,9 +63,7 @@ type Mutex struct {
 
 ![[Pasted image 20260202163702.png]]
 
-原文给出的 `state` 语义可以概括为：
-
-| 位/区间 | 含义（压缩译） |
+| 位/区间 | 含义 |
 | --- | --- |
 | bit0 `Locked` | 是否已加锁（1 表示被持有） |
 | bit1 `Woken` | 是否已经唤醒过一个等待者（避免重复唤醒造成惊群） |
