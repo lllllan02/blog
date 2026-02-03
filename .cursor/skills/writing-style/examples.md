@@ -9,11 +9,11 @@
 title: <SIMPLE_TITLE_DIRECT_TO_POINT: e.g., "协程栈 Goroutine Stack" (概念) or "如何优化协程内存占用" (问题)>
 aliases: <UUIDv4:GENERATED>
 date: <SYSTEM_NOW:YYYY-MM-DD HH:mm:ss>
+order: <AUTO:CURRENT_DIR_FILE_COUNT_PLUS_1>
+card: <BOOL:IS_CONCRETE_QA_OR_KNOWLEDGE_POINT_FOR_FLASHCARDS>
 tags:
   # 从正文提取重点/关键词，并映射到 `.cursor/data/tags.txt` 中的标签
   - <EXTRACTED_FROM_CONTENT:tag>
-order: <AUTO:CURRENT_DIR_FILE_COUNT_PLUS_1>
-card: <BOOL:IS_CONCRETE_QA_OR_KNOWLEDGE_POINT_FOR_FLASHCARDS>
 ---
 ```
 
