@@ -515,6 +515,7 @@ pre {
   border-radius: 8px;
   overflow-x: auto;
   border: 1px solid var(--lightgray);
+  tab-size: 4;
   // position: relative; // Removed to allow clipboard button to position relative to figure
 
   &:has(> code.mermaid) {
