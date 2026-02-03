@@ -3,7 +3,7 @@ title: Go sync.Mutex：正常模式与饥饿模式
 aliases: c2f5ae40-3686-46b7-896c-bcdf12ae5cc7
 date: 2026-02-02 16:29:31
 card: false
-order: 
+order: 1
 tags:
   - golang
   - goroutine
