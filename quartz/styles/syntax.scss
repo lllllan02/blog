@@ -17,8 +17,14 @@ code[data-theme*=" "] span {
   background-color: var(--shiki-dark-bg);
 }
 
-[saved-theme="dark"] figure[data-rehype-pretty-code-figure] > pre {
-  background-color: var(--shiki-dark-bg);
+[saved-theme="dark"] figure[data-rehype-pretty-code-figure] {
+  background-color: var(--shiki-dark-bg, #24292e);
+  border-color: rgba(255, 255, 255, 0.1);
+
+  & > [data-rehype-pretty-code-title] {
+    background-color: var(--shiki-dark-bg, #24292e);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
 }
 
 [saved-theme="dark"] code[data-theme*=" "] span {

@@ -40,7 +40,7 @@ export const CodeManager: QuartzTransformerPlugin = () => {
             const cleanMeta = meta.replace(/fold(="[^"]*")?/, "").trim()
             
             result.push(`<div class="code-fold">`)
-            result.push(`<div class="code-fold-header"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="code-fold-icon"><polyline points="9 18 15 12 9 6"></polyline></svg><span class="code-fold-title">${title}</span></div>`)
+            result.push(`<div class="code-fold-header"><span class="mac-buttons"></span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="code-fold-icon"><polyline points="9 18 15 12 9 6"></polyline></svg><span class="code-fold-title">${title}</span></div>`)
             result.push(`<div class="code-fold-content">`)
             result.push("\n" + backticks + lang + (cleanMeta ? " " + cleanMeta : ""))
             result.push(codeLines.join("\n"))

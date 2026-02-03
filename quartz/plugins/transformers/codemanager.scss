@@ -3,10 +3,13 @@
   border-radius: 8px;
   margin: 1rem 0;
   overflow: hidden;
+  background-color: var(--shiki-light-bg, #24292e);
+  transition: max-height 0.3s ease;
+  border-color: rgba(255, 255, 255, 0.1);
 
   .code-fold-header {
-    background-color: var(--lightgray);
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1rem;
+    padding-left: 1rem; // Reset padding, use flex for layout
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -14,6 +17,36 @@
     user-select: none;
     font-size: 0.9rem;
     font-weight: bold;
+    position: relative;
+    color: var(--darkgray);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--shiki-light-bg, #24292e); // Ensure header matches body
+    color: #e1e4e8; // Default text color for dark theme
+
+    // macOS dots container
+    .mac-buttons {
+      display: flex;
+      gap: 0.4rem;
+      margin-right: 0.5rem;
+      
+      &::before, &::after {
+        content: "";
+        width: 0.72rem;
+        height: 0.72rem;
+        border-radius: 50%;
+      }
+
+      // Red dot (using box-shadow for others to save elements if needed, but here we can use pseudo elements on the span)
+      // Actually, let's use the span as the first dot and pseudos for others, or just one element with box-shadows
+      width: 0.72rem;
+      height: 0.72rem;
+      border-radius: 50%;
+      background: #ff5f56;
+      box-shadow:
+        1.1rem 0 0 #ffbd2e,
+        2.2rem 0 0 #27c93f;
+      flex-shrink: 0;
+    }
 
     .code-fold-icon {
       width: 1.2rem;
@@ -23,12 +56,14 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      color: var(--darkgray);
+      color: #e1e4e8; // Match title color
+      margin-left: 2.5rem; // Space after dots
     }
 
     .code-fold-title {
-      opacity: 0.8;
+      opacity: 1; // Remove opacity to match regular code block title
       flex-grow: 1;
+      font-family: var(--codeFont);
     }
   }
 
@@ -37,10 +72,35 @@
     padding: 0;
     margin: 0;
 
-    pre {
+    // Override internal code block styles
+    figure[data-rehype-pretty-code-figure] {
+      margin: 0;
+      overflow: visible !important; // Allow clipboard button to pop out
+      border: none !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      
+      pre {
+        margin: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        padding-top: 0.5rem !important;
+        background-color: transparent !important;
+
+        // Hide internal macOS dots
+        &::before {
+          display: none !important;
+        }
+      }
+    }
+    
+    // Fallback for raw pre tags
+    & > pre {
       margin: 0 !important;
       border-radius: 0 !important;
       border: none !important;
+      padding-top: 0.5rem !important;
+      background-color: transparent !important;
     }
   }
 
@@ -52,5 +112,15 @@
     .code-fold-content {
       display: block;
     }
+  }
+}
+
+[saved-theme="dark"] .code-fold {
+  background-color: var(--shiki-dark-bg, #24292e);
+  border-color: rgba(255, 255, 255, 0.1);
+  
+  .code-fold-header {
+    background-color: var(--shiki-dark-bg, #24292e);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
   }
 }

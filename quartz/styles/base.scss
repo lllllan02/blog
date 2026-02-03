@@ -423,40 +423,83 @@ h6 {
 }
 
 figure[data-rehype-pretty-code-figure] {
-  margin: 0;
+  margin: 1rem 0;
   position: relative;
   line-height: 1.6rem;
-  position: relative;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  background-color: var(--shiki-light-bg, #24292e);
 
   & > [data-rehype-pretty-code-title] {
     font-family: var(--codeFont);
     font-size: 0.9rem;
-    padding: 0.1rem 0.5rem;
-    border: 1px solid var(--lightgray);
-    width: fit-content;
-    border-radius: 8px;
-    margin-bottom: -0.5rem;
-    color: var(--darkgray);
+    padding: 0.6rem 1rem;
+    padding-left: 5.5rem; // Increased padding to separate title from dots
+    
+    // Reset capsule styles
+    border: none;
+    width: 100%;
+    border-radius: 0;
+    margin-bottom: 0;
+    
+    color: #e1e4e8;
+    background-color: var(--shiki-light-bg, #24292e);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+    display: block;
+
+    // macOS Dots on Title
+    &::before {
+      content: "";
+      position: absolute;
+      top: 1.05rem;
+      left: 1rem;
+      width: 0.72rem;
+      height: 0.72rem;
+      border-radius: 50%;
+      background: #ff5f56;
+      box-shadow:
+        1.1rem 0 0 #ffbd2e,
+        2.2rem 0 0 #27c93f;
+      opacity: 0.95;
+      pointer-events: none;
+    }
   }
 
   & > pre {
-    padding: 0;
+    margin: 0;
+    padding: 0.5rem 0;
+    border: none;
+    border-radius: 0;
+    background: transparent !important;
   }
 }
 
-// macOS 风格代码块（左上角红黄绿圆点）
-figure[data-rehype-pretty-code-figure] > pre {
-  // 给“标题栏/圆点”留空间
-  padding-top: 1.4rem;
+// Case 1: Code block WITH title
+// Title handles the dots and header style. Pre just needs to sit below it.
+figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title]) > pre {
+  padding-top: 0.5rem;
+  
+  // Hide dots on pre since title has them
+  &::before {
+    display: none;
+  }
+}
+
+// Case 2: Code block WITHOUT title
+// Pre needs to simulate the header space and dots
+figure[data-rehype-pretty-code-figure]:not(:has(> [data-rehype-pretty-code-title])) > pre {
+  padding-top: 2.2rem; // Space for dots
 
   &::before {
     content: "";
     position: absolute;
-    top: 0.55rem;
-    left: 0.7rem;
+    top: 0.8rem;
+    left: 1rem;
     width: 0.72rem;
     height: 0.72rem;
-    border-radius: 999px;
+    border-radius: 50%;
     background: #ff5f56; // close
     box-shadow:
       1.1rem 0 0 #ffbd2e, // minimize
@@ -472,7 +515,7 @@ pre {
   border-radius: 8px;
   overflow-x: auto;
   border: 1px solid var(--lightgray);
-  position: relative;
+  // position: relative; // Removed to allow clipboard button to position relative to figure
 
   &:has(> code.mermaid) {
     border: none;

@@ -1,28 +1,30 @@
 .clipboard-button {
   position: absolute;
   display: flex;
-  // 固定在代码块右上角（mac 主题的“标题栏”区域）
-  top: 0.4rem;
-  right: 0.5rem;
-  padding: 0.4rem;
+  // 默认位置（相对于 figure，位于右上角）
+  top: 0.6rem;
+  right: 0.8rem;
+  padding: 0.25rem;
   margin: 0;
-  color: var(--gray);
-  border-color: var(--dark);
-  background-color: var(--light);
-  border: 1px solid;
-  border-radius: 5px;
-  z-index: 2;
+  color: #8b949e; // GitHub 灰
+  border: none;
+  background-color: transparent;
+  border-radius: 4px;
+  z-index: 10;
   opacity: 0;
-  transition: 0.2s;
+  transition: all 0.2s ease;
 
   & > svg {
-    fill: var(--light);
-    filter: contrast(0.3);
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+    filter: none;
   }
 
   &:hover {
     cursor: pointer;
-    border-color: var(--secondary);
+    background-color: rgba(177, 186, 196, 0.12);
+    color: #c9d1d9; // GitHub 亮灰
   }
 
   &:focus {
@@ -30,9 +32,19 @@
   }
 }
 
-pre {
-  &:hover > .clipboard-button {
-    opacity: 1;
-    transition: 0.2s;
-  }
+// 针对有标题的代码块，按钮位置不变（因为 figure 包含标题，top: 0.6rem 刚好在标题栏）
+figure[data-rehype-pretty-code-figure]:has(> [data-rehype-pretty-code-title]) .clipboard-button {
+  top: 0.6rem;
+}
+
+// 针对折叠代码块，按钮需要上移到折叠头（相对于 inner figure）
+.code-fold .clipboard-button {
+  top: -2.2rem;
+}
+
+// 显示逻辑：hover figure 或 pre 时显示
+figure[data-rehype-pretty-code-figure]:hover .clipboard-button,
+.code-fold:hover .clipboard-button,
+pre:hover > .clipboard-button {
+  opacity: 1;
 }
