@@ -48,3 +48,7 @@ title: 欢迎来到我的知识库
 ## 坚持做题
 
 ![LeetCode Stats](https://leetcard.jacoblin.cool/friendly-almeidaelk?theme=light&font=Kurale&ext=heatmap&site=cn)
+
+## 推荐阅读
+
+- [Uber Go 风格指南](https://github.com/uber-go/guide/blob/master/style.md)
