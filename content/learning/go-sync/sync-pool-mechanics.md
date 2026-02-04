@@ -4,19 +4,24 @@ aliases: f65e93d8-cbb9-4882-af67-76c401bfbd09
 date: 2026-02-04 10:00:00
 tags:
   - golang
-  - gc
+  - sync.Pool
 order: 3
 card: false
 ---
 
-> [!note] 译者注
-> 本文翻译自 VictoriaMetrics 的技术博客 [Go sync.Pool and the Mechanics Behind It](https://victoriametrics.com/blog/go-sync-pool/)。
-> 
-> 文章深入剖析了 `sync.Pool` 的设计初衷、使用陷阱（如分配陷阱）、底层实现（PMG 模型、本地池、伪共享问题）以及独特的 Victim Cache 清理机制。对于理解 Go 高性能编程和内存优化非常有帮助。文中对“伪共享”和“无锁队列”的讲解尤为精彩。
+> 来自 [Go sync.Pool and the Mechanics Behind It](https://victoriametrics.com/blog/go-sync-pool/)（VictoriaMetrics Blog，2024-08-23）
+
+文章深入剖析了 `sync.Pool` 的设计初衷、使用陷阱（如分配陷阱）、底层实现（PMG 模型、本地池、伪共享问题）以及独特的 Victim Cache 清理机制。对于理解 Go 高性能编程和内存优化非常有帮助。
+
+## 引子
 
 在 [VictoriaMetrics](https://github.com/VictoriaMetrics/VictoriaMetrics/) 的源码中，我们大量使用了 `sync.Pool`。对于处理临时对象（尤其是字节缓冲区或切片），它简直是天作之合。
 
+#### encoding/json
+
 标准库中也广泛使用了它。例如在 `encoding/json` 包中：
+
+在这里，`sync.Pool` 被用来复用 `*encodeState` 对象，这些对象负责将 JSON 编码处理到 `bytes.Buffer` 中。
 
 ```go
 package json
@@ -31,9 +36,9 @@ type encodeState struct {
 }
 ```
 
-在这里，`sync.Pool` 被用来复用 `*encodeState` 对象，这些对象负责将 JSON 编码处理到 `bytes.Buffer` 中。
-
 我们没有在每次使用后就丢弃这些对象（这会给垃圾回收器增加更多工作），而是将它们存放在池中（`sync.Pool`）。下次我们需要类似对象时，直接从池中获取，而不是从头创建一个新的。
+
+#### net/http
 
 你还会在 `net/http` 包中发现多个 `sync.Pool` 实例，用于优化 I/O 操作：
 
@@ -69,7 +74,7 @@ func bufioWriterPool(size int) *sync.Pool {
 
 ## 什么是 sync.Pool？
 
-简单来说，Go 中的 `sync.Pool` 是一个存放临时对象以供后续复用的地方。
+简单来说，Go 中的 `sync.Pool` 是<u>一个存放临时对象以供后续复用的地方</u>。
 
 但有一点要注意：**你无法控制池中有多少对象保留，而且放入其中的任何东西都可能在没有任何警告的情况下被随时移除**。读到最后一节你会明白原因。
 
@@ -120,40 +125,36 @@ func main() {
 
 如果你不喜欢使用类型断言 `pool.Get().(*Object)`，有几种方法可以避免：
 
-1.  使用专用函数从池中获取对象：
+```go fold="1. 使用专用函数从池中获取对象"
+func getObjectFromPool() *Object {
+    obj := pool.Get().(*Object)
+    return obj
+}
+```
 
-    ```go
-    func getObjectFromPool() *Object {
-        obj := pool.Get().(*Object)
-        return obj
-    }
-    ```
+```go fold="2. 创建你自己的泛型版 sync.Pool"
+type Pool[T any] struct {
+    sync.Pool
+}
 
-2.  创建你自己的泛型版 `sync.Pool`：
+func (p *Pool[T]) Get() T {
+    return p.Pool.Get().(T)
+}
 
-    ```go
-    type Pool[T any] struct {
-        sync.Pool
-    }
+func (p *Pool[T]) Put(x T) {
+    p.Pool.Put(x)
+}
 
-    func (p *Pool[T]) Get() T {
-        return p.Pool.Get().(T)
-    }
-
-    func (p *Pool[T]) Put(x T) {
-        p.Pool.Put(x)
-    }
-
-    func NewPool[T any](newF func() T) *Pool[T] {
-        return &Pool[T]{
-            Pool: sync.Pool{
-                New: func() interface{} {
-                    return newF()
-                },
+func NewPool[T any](newF func() T) *Pool[T] {
+    return &Pool[T]{
+        Pool: sync.Pool{
+            New: func() interface{} {
+                return newF()
             },
-        }
+        },
     }
-    ```
+}
+```
 
 泛型包装器为你提供了一种更类型安全的方式来使用池，避免了类型断言。
 
@@ -187,7 +188,6 @@ func main() {
 如果你使用逃逸分析进行检查：
 
 ```bash
-// escape analysis
 $ go build -gcflags=-m
 bytes escapes to heap
 ```
@@ -238,7 +238,7 @@ PMG 代表 **P** (Logical Processors, 逻辑处理器)，**M** (Machine Threads,
 
 但问题是，Go 中的 `sync.Pool` 不仅仅是一个大池子，它实际上是由几个“本地”池组成的，每个池都绑定到一个特定的处理器上下文（P），Go 的运行时在任何给定时间都在管理这个上下文。
 
-![Local Pools](https://victoriametrics.com/blog/go-sync-pool/sync-pool-locals.webp)
+![[Pasted image 20260204203944.png]]
 
 当在一个处理器 (P) 上运行的 Goroutine 需要池中的对象时，它会首先检查自己的 **P-local pool**（P 本地池），然后再去其他地方寻找。
 
@@ -248,11 +248,11 @@ PMG 代表 **P** (Logical Processors, 逻辑处理器)，**M** (Machine Threads,
 
 ### 本地池与伪共享问题 (False Sharing)
 
-早些时候，我们提到*“一次只有一个 Goroutine 可以访问 P-local pool”*，但现实要微妙得多。
+我们提到 *“一次只有一个 Goroutine 可以访问 P-local pool”*，但现实要微妙得多。
 
 看下面的图，每个 P-local pool 实际上有两个主要部分：共享池链 (`shared`) 和私有对象 (`private`)。
 
-![Local Pool Structure](https://victoriametrics.com/blog/go-sync-pool/sync-pool-local.webp)
+![[Pasted image 20260204204050.png]]
 
 这是 Go 源代码中本地池的定义：
 
@@ -284,7 +284,7 @@ type poolLocal struct {
 
 所以 `Get()` 流程可以简单地想象成这样：
 
-![Get Flow](https://victoriametrics.com/blog/go-sync-pool/sync-pool-get-simple.webp)
+![[Pasted image 20260204204209.png]]
 
 *上面的图并不完全准确，因为它没有考虑到 victim pool（受害者池）。*
 
@@ -352,7 +352,7 @@ type poolChainElt struct {
 *   **生产者**（拥有当前 P-local pool 的 P）只向最近的池双端队列（我们称之为 **head**）添加新项目。由于只有生产者在接触 head，所以不需要锁或任何花哨的同步技巧，所以它非常快。
 *   **消费者**（其他 P）从列表 **tail** 处的池双端队列中获取项目。由于多个消费者可能试图同时弹出项目，因此对 tail 的访问使用原子操作进行同步，以保持秩序。
 
-![Pool Chain Mechanism](https://victoriametrics.com/blog/go-sync-pool/sync-pool-shared-pool-chain.webp)
+![[Pasted image 20260204204458.png]]
 
 但这里是关键部分：
 
@@ -399,7 +399,7 @@ type poolDequeue struct {
 
 简而言之，pool chain 结合了链表和每个节点的环形缓冲区。当一个 dequeue 填满时，一个新的、更大的 dequeue 被创建并链接到链的头部。这种设置有助于有效地管理大量的对象。
 
-## Pool.Put() 流程
+## Put() 流程
 
 让我们从 `Put()` 流程开始，因为它比 `Get()` 稍微直接一点，而且它与另一个过程有关：将 Goroutine 绑定（Pin）到 P。
 
@@ -462,7 +462,7 @@ func (p *Pool) pin() (*poolLocal, int) { ... }
 
 这就是 `Put()` 流程。这是一个相对简单的过程，因为它不涉及与其他处理器的本地池交互；一切都发生在 pool chain 的当前 head 内。
 
-## sync.Pool.Get() 流程
+## Get() 流程
 
 乍一看，`Get()` 函数似乎与 `Put()` 非常相似。
 
@@ -502,7 +502,7 @@ func (p *Pool) Get() interface{} {
 
 窃取背后的想法是复用可能闲置在其他处理器缓存中的对象，而不是从头创建新对象。如果另一个 P 在其缓存池中有额外的对象，当前 P 可以抓取这些对象并投入使用。
 
-![Steal Process](https://victoriametrics.com/blog/go-sync-pool/sync-pool-steal.webp)
+![[Pasted image 20260204211224.png]]
 
 窃取过程基本上循环遍历所有 P（除了当前的 `pid`），并尝试从每个 P 的共享池链中抓取一个对象：
 
