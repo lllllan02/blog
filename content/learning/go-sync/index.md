@@ -17,3 +17,5 @@ tags:
 - [ ] [Go sync.Map: The Right Tool for the Right Job](https://victoriametrics.com/blog/go-sync-map/)
 - [ ] [Go Sync.Once is Simple… Does It Really?](https://victoriametrics.com/blog/go-sync-once/)
 - [ ] [Go Singleflight Melts in Your Code, Not in Your DB](https://victoriametrics.com/blog/go-singleflight/)
+- [ ] [Performance optimization techniques in time series databases: sync.Pool for CPU-bound operations](https://victoriametrics.com/blog/tsdb-performance-techniques-sync-pool/)
+- [ ] [Goroutine Scheduler Revealed: Never See Goroutines the Same Way Again](https://blog.devtrovert.com/p/goroutine-scheduler-revealed-youll)
