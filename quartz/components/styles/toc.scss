@@ -47,12 +47,23 @@ ul.toc-content.overflow {
   overscroll-behavior: contain;
   list-style: none;
 
+  & > li.toc-hidden {
+    display: none;
+  }
+
   & > li > a {
     color: var(--dark);
+    // restore Quartz's original contrast
+    // - unviewed: much lighter
+    // - passed/current: noticeably darker
     opacity: 0.35;
     transition:
       0.5s ease opacity,
       0.3s ease color;
+    &.passed {
+      opacity: 0.75;
+    }
+    // keep for compatibility; do not introduce a third color level
     &.in-view {
       opacity: 0.75;
     }
