@@ -5,6 +5,8 @@ import { GlobalConfiguration } from "../cfg"
 import { Node } from "hast"
 import { BuildCtx } from "../util/ctx"
 
+type ExternalResourcesFn = (ctx: BuildCtx) => Partial<StaticResources> | undefined
+
 export type QuartzComponentProps = {
   ctx: BuildCtx
   externalResources: StaticResources
@@ -22,6 +24,7 @@ export type QuartzComponent = ComponentType<QuartzComponentProps> & {
   css?: StringResource
   beforeDOMLoaded?: StringResource
   afterDOMLoaded?: StringResource
+  externalResources?: ExternalResourcesFn
 }
 
 export type QuartzComponentConstructor<Options extends object | undefined = undefined> = (
