@@ -31,8 +31,9 @@ article {
     font-weight: 700;
     color: var(--dark);
     letter-spacing: -0.01em;
-    border-bottom: 1px solid color-mix(in srgb, var(--lightgray) 50%, transparent);
-    padding-bottom: 0.2rem;
+    // 二级标题：保留“分割线”感觉（细线），但颜色更深
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid color-mix(in srgb, var(--darkgray) 35%, var(--lightgray));
   }
 
   h3 { 
@@ -40,7 +41,39 @@ article {
     margin-top: 1.8rem; 
     margin-bottom: 0.8rem;
     font-weight: 600;
-    color: var(--darkgray);
+    color: var(--dark);
+    // 三级标题：保留渐变效果，并让下划线随“标题文字长度”变化
+    // 关键：h3 宽度收缩到内容宽度；锚点图标绝对定位，避免撑长下划线
+    width: fit-content;
+    max-width: 100%;
+    position: relative;
+    padding-bottom: 0.55rem;
+    letter-spacing: -0.01em;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0.12rem;
+      height: 0.22rem;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--tertiary) 75%, var(--secondary)),
+        transparent
+      );
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    > a[role="anchor"] {
+      position: absolute;
+      left: 100%;
+      top: 0;
+      margin: 0;
+      margin-left: 0.35rem;
+    }
   }
 
   h4 { 
