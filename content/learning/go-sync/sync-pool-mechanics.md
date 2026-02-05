@@ -30,9 +30,9 @@ package json
 
 var encodeStatePool sync.Pool
 
-// An encodeState encodes JSON into a bytes.Buffer.
+// encodeState 将 JSON 编码到 bytes.Buffer 中。
 type encodeState struct {
-    bytes.Buffer // accumulated output
+    bytes.Buffer // 累积的输出
     ptrLevel uint
     ptrSeen  map[any]struct{}
 }
@@ -168,7 +168,7 @@ func (o *Object) Reset() {
 
 func main() {
     testObject := pool.Get().(*Object)
-    // do something with testObject
+    // 对 testObject 执行某些操作
     testObject.Reset()
     pool.Put(testObject)
 }
@@ -234,7 +234,7 @@ var pool = sync.Pool{
 
 func main() {
     bytes := pool.Get().([]byte)
-    // do something with bytes
+    // 对 bytes 执行某些操作
     _ = bytes
     pool.Put(bytes)
 }
@@ -254,11 +254,11 @@ bytes escapes to heap
 现在，我不会说我们的变量 `bytes` 移动到了堆上，我会说“bytes 的值通过接口逃逸到了堆上”。
 
 ::: [!abstract]- 深度解析：为什么传值会导致逃逸？
-`sync.Pool` 的 `Put` 方法签名是 `Put(x any)`。当你传入一个非指针值（如 `[]byte` 结构头、`int` 等）时，Go 运行时需要将这个值包装成一个 `interface{}`。
+sync.Pool 的 Put 方法签名是 `Put(x any)`。当你传入一个非指针值（如 []byte 结构头、int 等）时，Go 运行时需要将这个值包装成一个 `interface{}`。
 
-如果这个值较大或者编译器无法确定其生命周期，为了保证接口对象在 `Put` 函数内部及之后依然有效，编译器可能会在堆上分配一块内存来拷贝这个值，并将接口指向这块堆内存。这就产生了一次额外的内存分配，违背了我们使用 `sync.Pool` 减少分配的初衷。
+如果这个值较大或者编译器无法确定其生命周期，为了保证接口对象在 Put 函数内部及之后依然有效，编译器可能会在堆上分配一块内存来拷贝这个值，并将接口指向这块堆内存。这就产生了一次额外的内存分配，违背了我们使用 sync.Pool 减少分配的初衷。
 
-传递指针（如 `*[]byte` 或 `*Object`）时，接口只需要持有这个指针。指针本身很小，通常不需要额外的堆分配（或者说开销极小）。
+传递指针（如 *[]byte 或 *Object）时，接口只需要持有这个指针。指针本身很小，通常不需要额外的堆分配（或者说开销极小）。
 :::
 
 ### 规避：在 Pool 里存指针
@@ -274,7 +274,7 @@ var pool = sync.Pool{
 
 func main() {
     bytes := pool.Get().(*[]byte)
-    // do something with bytes
+    // 对 bytes 执行某些操作
     _ = bytes
     pool.Put(bytes)
 }
@@ -423,12 +423,12 @@ type poolChainElt struct {
 }
 ```
 
-`poolChain` 的设计非常具有策略性。它看起来只有 `head` 和 `tail` 两个字段，但它们指向的是**一条链**的两端：链上的每个节点（`poolChainElt`）都内嵌了一个 `poolDequeue`（你可以把它理解为一段“共享池段”）。因此图里画出多个 shared pool，实际对应的是链上的多个 `poolDequeue` 段。
+`poolChain` 的设计非常具有策略性。它看起来只有 head 和 tail 两个字段，但它们指向的是**一条链**的两端：链上的每个节点（`poolChainElt`）都内嵌了一个 `poolDequeue`（你可以把它理解为一段“共享池段”）。因此图里画出多个 shared pool，实际对应的是链上的多个 `poolDequeue` 段。
 
 这两个端点在运行过程中各自会发生不同的“移动/变动”：
 
-*   **`head` 侧的扩容与前移**：当当前 `head` 指向的 `poolDequeue` 被写满时，会创建一个新的、更大的 `poolDequeue`（通常是前一个的 2 倍容量），把它链接到链表头部，并让 `head` 指向这个新段。由于只有“拥有当前 P-local pool 的 P”会往 `head` 侧写入，所以 `head` 可以是普通指针，走无锁快路径。
-*   **`tail` 侧的竞争读取与前移/移除**：其他 P 作为消费者（steal）会从 `tail` 侧读取对象；多个消费者可能并发竞争同一个 `tail` 段，所以 `tail` 使用原子指针来同步。当 `tail` 指向的 `poolDequeue` 被完全取空后，该段会从链上移除，`tail` 原子地前移到下一个仍可能有数据的段。
+*   **head 侧的扩容与前移**：当当前 `head` 指向的 `poolDequeue` 被写满时，会创建一个新的、更大的 poolDequeue（通常是前一个的 2 倍容量），把它链接到链表头部，并让 head 指向这个新段。由于只有“拥有当前 P-local pool 的 P”会往 head 侧写入，所以 head 可以是普通指针，走无锁快路径。
+*   **tail 侧的竞争读取与前移/移除**：其他 P 作为消费者（steal）会从 `tail` 侧读取对象；多个消费者可能并发竞争同一个 tail 段，所以 tail 使用原子指针来同步。当 tail 指向的 `poolDequeue` 被完全取空后，该段会从链上移除，tail 原子地前移到下一个仍可能有数据的段。
 
 ![[Pasted image 20260204204458.png]]
 
@@ -487,22 +487,22 @@ type poolDequeue struct {
 
 ```go
 func (p *Pool) Put(x interface{}) {
-    // If the object is nil, it will do nothing
+    // 如果对象为 nil，则不执行任何操作
     if x == nil {
         return
     }
-    // Pin the current P's P-local pool
+    // 固定当前 P 的 P-local pool
     l, _ := p.pin()
-    // If the private pool is not there, create it and set the object to it
+    // 如果私有缓存为空，则直接将对象存入
     if l.private == nil {
         l.private = x
         x = nil
     }
-    // If the private object is there, push it to the head of the shared chain
+    // 如果私有缓存已占用，则将对象推入共享链表的头部
     if x != nil {
         l.shared.pushHead(x)
     }
-    // Unpin the current P
+    // 解除当前 P 的固定状态
     runtime_procUnpin()
 }
 ```
@@ -511,26 +511,25 @@ func (p *Pool) Put(x interface{}) {
 
 我们还没有谈到 `pin()` 或 `runtime_procUnpin()` 函数，但它们对于 `Get()` 和 `Put()` 操作都很重要，因为它们确保 Goroutine 保持“绑定”到当前的 P。
 
-从 Go 1.14 开始，Go 引入了抢占式调度，这意味着如果一个 Goroutine 在处理器 P 上运行时间过长（通常约为 10ms），运行时可以暂停它，给其他 Goroutine 运行的机会。
-
-这通常有利于保持公平和响应性，但在处理 `sync.Pool` 时可能会导致问题。
+> 从 Go 1.14 开始，Go 引入了抢占式调度，这意味着如果一个 Goroutine 在处理器 P 上运行时间过长（通常约为 10ms），运行时可以暂停它，给其他 Goroutine 运行的机会。
+>
+> 这通常有利于保持公平和响应性，但在处理 `sync.Pool` 时可能会导致问题。
 
 `sync.Pool` 中的 `Put()` 和 `Get()` 等操作假设 Goroutine 在整个操作过程中停留在同一个处理器（比如 P1）上。如果 Goroutine 在这些操作中间被抢占，然后在不同的处理器（P2）上恢复，它正在处理的本地数据可能最终来自错误的处理器。
 
 那么，`pin()` 函数做什么呢？
 
 ```go
-// pin pins the current goroutine to P, disables preemption and
-// returns poolLocal pool for the P and the P's id.
-// Caller must call runtime_procUnpin() when done with the pool.
+// 将当前 goroutine 固定到 P 上，禁用抢占并返回 P 的 poolLocal 池以及 P 的 id。
+// 完成使用 pool 后，调用者必须调用 runtime_procUnpin()。
 func (p *Pool) pin() (*poolLocal, int) { ... }
 ```
 
-基本上，`pin()` 暂时禁止调度器抢占 Goroutine 的能力，当它正在将对象放入池中时。
+简而言之，`pin()` 的作用是在将对象存入池中时，暂时禁用调度器的抢占机制。
 
-尽管它说“将当前 Goroutine 绑定到 P”，但实际发生的是当前线程（M）被锁定到处理器（P），这防止了它被抢占。结果，运行在该线程上的 Goroutine 也不会被抢占。
+虽然文档描述为“将当前 Goroutine 绑定到 P”，但其实际效果是锁定当前线程（M）与处理器（P）的绑定关系，从而防止 Goroutine 被抢占。这样一来，运行在该线程上的 Goroutine 就能在不被干扰的情况下完成操作。
 
-作为副作用，如果你在运行时更改 `GOMAXPROCS(n)`（控制 P 的数量），`pin()` 还会更新处理器（P）的数量。
+此外，`pin()` 还有一个副作用：如果你在运行时通过 `GOMAXPROCS(n)` 更改了处理器数量，它会同步更新池中记录的 P 的数量。
 
 #### 共享池链的处理
 
@@ -554,21 +553,21 @@ func (p *Pool) pin() (*poolLocal, int) { ... }
 
 ```go
 func (p *Pool) Get() interface{} {
-    // Pin the current P's P-local pool
+    // 固定当前 P 的 P-local pool
     l, pid := p.pin()
-    // Get the private object from the current P-local pool
+    // 从当前 P-local pool 获取私有对象
     x := l.private
     l.private = nil
-    // If the private object is not there, pop the head of the shared pool chain
+    // 如果私有对象不存在，则从共享池链表的头部弹出
     if x == nil {
         x, _ = l.shared.popHead()
-        // Steal from other P's cache
+        // 从其他 P 的缓存中窃取
         if x == nil {
             x = p.getSlow(pid)
         }
     }
     runtime_procUnpin()
-    // If the object is still not there, create a new object from the factory function
+    // 如果仍然没有获取到对象，则通过工厂函数创建一个新对象
     if x == nil && p.New != nil {
         x = p.New()
     }
@@ -579,6 +578,8 @@ func (p *Pool) Get() interface{} {
 与 `Put()` 中的 `p.pin()` 不同，这里我们也得到了 `pid`，即当前 Goroutine 正在运行的 P 的 ID。我们需要这个来进行**窃取 (Stealing)** 过程，如果快速路径失败，就会进入这个过程。
 
 **快速路径**是指对象在当前 P 的缓存中可用。但如果那不起作用，意味着私有对象和共享链的头部都是空的，慢速路径 (`getSlow`) 就会接管。
+
+#### 慢速路径 / 窃取
 
 在慢速路径中，我们尝试从其他处理器 (P) 的缓存池中窃取对象。
 
@@ -606,13 +607,14 @@ for i := 0; i < int(size); i++ {
 
 这个过程一直持续到它成功窃取一些数据或者在所有 pool chain 中用尽选项。
 
-> “所以如果窃取过程失败，它会使用 `New()` 创建一个新对象吗？”
+::: [!question] Q: “所以如果窃取过程失败，它会使用 New() 创建一个新对象吗？”
 
-不完全是。
+A: 不完全是。
 
 如果在所有窃取尝试之后，它仍然找不到任何数据，该函数随后尝试从所谓的“**Victim (受害者)**”中获取数据。这是与 `sync.Pool` 如何清理对象有关的一个新概念，我们将在下一节详细介绍 victim 机制。
+:::
 
-总结一下 `Get()` 流程：
+#### 总结 Get() 流程
 
 我们尝试以各种可能的方式抓取对象，如果什么都没找到，它最终使用 `New()` 创建一个新对象。但如果 `New()` 为 nil，那么它只是返回 nil。就这么简单。
 
@@ -632,13 +634,12 @@ package sync
 var (
     allPoolsMu Mutex
 
-    // allPools is the set of pools that have non-empty primary
-    // caches. Protected by either 1) allPoolsMu and pinning or 2)
-    // STW.
+    // allPools 是拥有一级缓存（primary cache）且不为空的池集合。
+    // 受 1) allPoolsMu 锁和 pinning 机制，或 2) STW（Stop The World）保护。
     allPools []*Pool
 
-    // oldPools is the set of pools that may have non-empty victim
-    // caches. Protected by STW.
+    // oldPools 是可能拥有非空受害者缓存（victim cache）的池集合。
+    // 受 STW 保护。
     oldPools []*Pool
 )
 ```
@@ -655,13 +656,13 @@ var (
 
 ```go
 func poolCleanup() {
-    // Drop victim caches from all pools.
+    // 从所有池中丢弃受害者缓存（victim cache）。
     for _, p := range oldPools {
         p.victim = nil
         p.victimSize = 0
     }
 
-    // Move primary cache to victim cache.
+    // 将一级缓存（primary cache）转移到受害者缓存。
     for _, p := range allPools {
         p.victim = p.local
         p.victimSize = p.localSize
@@ -669,13 +670,12 @@ func poolCleanup() {
         p.localSize = 0
     }
 
-    // The pools with non-empty primary caches now have non-empty
-    // victim caches and no pools have primary caches.
+    // 之前拥有一级缓存的池现在拥有受害者缓存，并且所有池的一级缓存都已清空。
     oldPools, allPools = allPools, nil
 }
 ```
 
-**为什么我们需要这个 victim 机制？**
+#### 为什么我们需要这个 victim 机制？
 
 使用 victim 机制的原因是为了避免在 GC 周期之后立即突然完全清空池。如果池被一次性清空，可能会导致性能问题，因为任何新的对象请求都需要从头重新创建。所以我们先将对象移动到 victim area，`sync.Pool` 确保有一个缓冲期，对象在被完全丢弃之前仍然可以被复用。
 
