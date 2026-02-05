@@ -1,0 +1,73 @@
+name: Update LeetCode Stats Image
+
+on:
+  schedule:
+    - cron: "0 16 * * *" # daily at 00:00 Asia/Shanghai (UTC+8)
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-leetcode-stats
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    # avoid an extra run triggered by this workflow's own commit
+    if: ${{ github.event_name != 'push' || github.actor != 'github-actions[bot]' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download LeetCode stats image
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          URL="https://leetcard.jacoblin.cool/friendly-almeidaelk?theme=light&font=Kurale&ext=heatmap&site=cn"
+          OUT="content/assets/leetcode-stats.svg"
+          TMP="$(mktemp)"
+
+          mkdir -p "$(dirname "$OUT")"
+
+          curl -L --fail --retry 3 --retry-all-errors --connect-timeout 10 --max-time 60 \
+            -H "User-Agent: github-actions" \
+            "$URL" \
+            -o "$TMP"
+
+          # basic sanity check: avoid committing HTML error pages
+          SIZE="$(stat -c%s "$TMP")"
+          if [ "$SIZE" -lt 500 ]; then
+            echo "Downloaded file is too small ($SIZE bytes), aborting."
+            exit 1
+          fi
+          if ! head -c 200 "$TMP" | tr -d '\n' | grep -qi "<svg"; then
+            echo "Downloaded file does not look like SVG, aborting."
+            exit 1
+          fi
+
+          mv "$TMP" "$OUT"
+
+      - name: Commit and push if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- "content/assets/leetcode-stats.svg"; then
+            echo "No changes."
+            exit 0
+          fi
+
+          git add "content/assets/leetcode-stats.svg"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: update leetcode stats image"
+          git push
+
