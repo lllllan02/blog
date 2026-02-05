@@ -16,6 +16,7 @@ function getDepth(li: Element): number {
 
 let currentActiveSlug: string | undefined
 const visibleHeaders = new Map<string, number>()
+let observedHeaders: HTMLElement[] = []
 
 function updateTocProgress(toc: Element, activeSlug?: string) {
   const content = toc.querySelector(".toc-content") as HTMLElement | null
@@ -153,8 +154,7 @@ function setActiveSlug(next?: string) {
   currentActiveSlug = next
 }
 
-function updateActiveFromVisible() {
-  if (visibleHeaders.size === 0) return
+function computeActiveSlugFromHeaders(headers: HTMLElement[]) {
   // Prefer the heading closest to the top of the viewport (slightly above is ok),
   // otherwise fall back to the first heading below the top.
   const TOP_EPS = 120
@@ -163,7 +163,11 @@ function updateActiveFromVisible() {
   let bestBelowSlug: string | undefined
   let bestBelowTop = Infinity
 
-  for (const [slug, top] of visibleHeaders) {
+  for (const header of headers) {
+    const top = header.getBoundingClientRect().top
+    const slug = header.id
+    if (!slug) continue
+
     if (top <= TOP_EPS && top > bestAboveTop) {
       bestAboveTop = top
       bestAboveSlug = slug
@@ -174,7 +178,36 @@ function updateActiveFromVisible() {
     }
   }
 
-  setActiveSlug(bestAboveSlug ?? bestBelowSlug)
+  return bestAboveSlug ?? bestBelowSlug
+}
+
+function updateActiveFromVisible() {
+  // Normal path: pick from headings currently intersecting viewport
+  if (visibleHeaders.size > 0) {
+    const TOP_EPS = 120
+    let bestAboveSlug: string | undefined
+    let bestAboveTop = -Infinity
+    let bestBelowSlug: string | undefined
+    let bestBelowTop = Infinity
+
+    for (const [slug, top] of visibleHeaders) {
+      if (top <= TOP_EPS && top > bestAboveTop) {
+        bestAboveTop = top
+        bestAboveSlug = slug
+      }
+      if (top > TOP_EPS && top < bestBelowTop) {
+        bestBelowTop = top
+        bestBelowSlug = slug
+      }
+    }
+
+    setActiveSlug(bestAboveSlug ?? bestBelowSlug)
+    return
+  }
+
+  // Fallback: when no headings are visible (long text between headings),
+  // derive active heading from DOM positions so the ToC doesn't collapse.
+  setActiveSlug(computeActiveSlugFromHeaders(observedHeaders))
 }
 
 let observer: IntersectionObserver | undefined
@@ -210,8 +243,8 @@ function setupHeaderObserver() {
   )
 
   // Keep this in sync with ToC maxDepth (currently 4): only observe headings we can show in the ToC.
-  const headers = document.querySelectorAll("h1[id], h2[id], h3[id], h4[id]")
-  headers.forEach((header) => observer?.observe(header))
+  observedHeaders = Array.from(document.querySelectorAll("h1[id], h2[id], h3[id], h4[id]"))
+  observedHeaders.forEach((header) => observer?.observe(header))
 }
 
 function toggleToc(this: HTMLElement) {
@@ -243,8 +276,12 @@ document.addEventListener("nav", () => {
   // Initialize default visibility (only depth-0), then expand based on current location/hash as we scroll
   const hash = typeof location !== "undefined" ? location.hash.replace(/^#/, "") : ""
   currentActiveSlug = hash ? decodeURIComponent(hash) : undefined
-  updateAllTocs(currentActiveSlug)
-
-  // update toc entry highlighting + active section folding
   setupHeaderObserver()
+
+  // If we land in the middle of a long section with no visible headings,
+  // compute active slug from scroll position so the ToC stays expanded correctly.
+  if (!currentActiveSlug) {
+    currentActiveSlug = computeActiveSlugFromHeaders(observedHeaders)
+  }
+  updateAllTocs(currentActiveSlug)
 })
