@@ -17,6 +17,8 @@ card: false
 
 在 [VictoriaMetrics](https://github.com/VictoriaMetrics/VictoriaMetrics/) 的源码中，我们大量使用了 `sync.Pool`。对于处理临时对象（尤其是字节缓冲区或切片），它简直是天作之合。
 
+### 标准库示例
+
 #### encoding/json
 
 标准库中也广泛使用了它。例如在 `encoding/json` 包中：
@@ -88,6 +90,8 @@ func bufioWriterPool(size int) *sync.Pool {
 
 这种情况造成了一个循环：高并发导致高内存使用，进而拖慢垃圾回收器。`sync.Pool` 旨在帮助打破这个循环。
 
+#### 示例：一个简单的对象池
+
 ```go
 type Object struct {
     Data []byte
@@ -101,6 +105,8 @@ var pool = sync.Pool{
     },
 }
 ```
+
+#### New() 与空池行为
 
 要创建一个池，你可以提供一个 `New()` 函数，当池为空时，它会返回一个新的对象。这个函数是可选的，如果你不提供，池在为空时只会返回 `nil`。
 
@@ -215,6 +221,8 @@ func NewPool[T any](newF func() T) *Pool[T] {
 
 如果你注意到前面的许多例子，包括标准库中的例子，我们在池中存储的通常不是对象本身，而是**对象的指针**。
 
+### 现象：传值 Put() 可能触发额外分配
+
 让我用一个例子来解释原因：
 
 ```go
@@ -241,6 +249,8 @@ $ go build -gcflags=-m
 bytes escapes to heap
 ```
 
+### 原因：接口装箱与逃逸
+
 现在，我不会说我们的变量 `bytes` 移动到了堆上，我会说“bytes 的值通过接口逃逸到了堆上”。
 
 ::: [!abstract]- 深度解析：为什么传值会导致逃逸？
@@ -250,6 +260,8 @@ bytes escapes to heap
 
 传递指针（如 `*[]byte` 或 `*Object`）时，接口只需要持有这个指针。指针本身很小，通常不需要额外的堆分配（或者说开销极小）。
 :::
+
+### 规避：在 Pool 里存指针
 
 要真正理解为什么会发生这种情况，我们需要深入研究逃逸分析的工作原理（我们可能会在另一篇文章中讨论）。但是，如果我们传递一个**指针**给 `pool.Put()`，就没有额外的分配：
 
@@ -272,6 +284,8 @@ func main() {
 
 ## sync.Pool 内部实现
 
+### PMG 背景
+
 在深入了解 `sync.Pool` 实际如何工作之前，有必要掌握 Go 的 PMG 调度模型的基础知识，这真的是 `sync.Pool` 如此高效的支柱。
 
 有一篇很好的文章通过一些视觉效果分解了 PMG 模型：[PMG models in Go](https://blog.devtrovert.com/p/goroutine-scheduler-revealed-youll)。
@@ -283,9 +297,9 @@ PMG 代表 **P** (Logical Processors, 逻辑处理器)，**M** (Machine Threads,
 ::: [!tip]- PMG 相互之间的数量关系
 |关系|详情|特殊情况|
 |--|--|--|
-|P 与 M|同一时刻，一个 P 上只能运行一个 M；<br>从运行过程看，一个 P 可与多个 M 关联，一个 M 也能和不同 P 协作|M 执行系统调用等长时间操作时，P 会与 M 解绑，去寻找其他空闲 M 继续执行任务|
-|P 与 G|一个 P 可管理多个 G，同一时刻最多运行一个 G，通过调度让不同 G 轮流执行|G 在进行系统调用等情况时，会与原绑定 P 解绑，可被其他 P 调度执行|
-|M 与 G|一个 M 可承载多个 G 运行，G 执行中因阻塞等情况会与 M 分离再重新关联|当 G 发生栈增长等复杂操作时，可能会导致与 M 的关系变化| 
+|P 与 M|同一时刻，一个 P **至多绑定一个**正在执行 Go 代码的 M；<br>从运行过程看，P 可能在不同时间绑定不同 M，M 也可能与不同 P 绑定协作|当 M 进入**阻塞系统调用 / cgo** 等长时间操作时，runtime 通常让该 M 与 P 解绑，把 P 交给其他可用 M 继续调度运行 G|
+|P 与 G|一个 P 的运行队列可挂多个 G，同一时刻 P **至多运行一个** G（时间片轮转）|当 G 因 channel/锁/等待等被 **park**，P 会立刻切换去运行其他 runnable G；当 G 进入**阻塞 syscall** 时，该 G 会停在 syscall 中，runtime 往往让 **M 与 P 解绑**，P 继续运行其他 G；syscall 返回后该 G 重新变为 runnable，之后可能被任意 P 调度|
+|M 与 G|一个 M 在不同时间片上可以运行多个 G，但同一时刻只执行一个（要么某个 G，要么 runtime 的 `g0`）|`runtime.LockOSThread` 会让 G 固定在同一 M 上；阻塞 syscall / cgo 期间该 G 可能长时间占用该 M| 
 :::
 
 这归结为 2 个关键点：
@@ -296,8 +310,8 @@ PMG 代表 **P** (Logical Processors, 逻辑处理器)，**M** (Machine Threads,
 ::: [!tip]- 并发与并行
 |概念|含义|与 PMG 关系|
 |--|--|--|
-|并发|宏观上，一段时间内多个任务“同时”进行，微观上可能是交替执行|大量 Goroutine（G）可并发运行，通过 P 的调度，利用少量 M 实现|
-|并行|同一时刻多个任务真正同时执行|n 个逻辑处理器（P）最多并行运行 n 个 Goroutine，需至少 n 个机器线程（M）支持| 
+|并发|宏观上，一段时间内多个任务“同时”推进，微观上通常是交替执行|大量 Goroutine（G）可并发运行：在固定数量的 P（≈`GOMAXPROCS`）上通过调度与时间片轮转推进；M 只是执行载体，数量可能因 syscall/cgo 等临时增多|
+|并行|同一时刻多个任务真正同时执行|若有 `n` 个逻辑处理器（P），最多并行运行 `n` 个正在执行 Go 代码的 Goroutine；通常需要至少 `n` 个可用的 M 与这些 P 绑定（但 M 的总数不等于并行度，且可能动态变化）| 
 :::
 
 但问题是，Go 中的 `sync.Pool` 不仅仅是一个大池子，它实际上是由几个“本地”池组成的，每个池都绑定到一个特定的处理器上下文（P），Go 的运行时在任何给定时间都在管理这个上下文。
@@ -310,7 +324,7 @@ PMG 代表 **P** (Logical Processors, 逻辑处理器)，**M** (Machine Threads,
 
 所以，这个过程超级快，因为不可能有两个 Goroutine 试图同时从同一个本地池中抓取同一个对象。
 
-### 本地池与伪共享问题 (False Sharing)
+### 本地池结构
 
 我们提到 *“一次只有一个 Goroutine 可以访问 P-local pool”*，但现实要微妙得多。
 
@@ -354,6 +368,8 @@ type poolLocal struct {
 
 如果共享池链也是空的，`sync.Pool` 将创建一个新对象（假设你提供了 `New()` 函数）或者直接返回 nil。顺便说一句，共享池内部还有一个 victim 机制，我们将在最后介绍。
 
+### 伪共享（False Sharing）
+
 > “等等，我看到 P-local pool 中有一个 `pad` 字段。那是怎么回事？”
 
 当你查看 P-local pool 结构时，有一件事会跳出来，那就是这个 `pad` 属性。这是 VictoriaMetrics 的 CTO [Aliaksandr Valialkin](https://x.com/valyala) 在[这个提交](https://go-review.googlesource.com/c/go/+/40918)中调整的：
@@ -387,7 +403,9 @@ type poolLocal struct {
 它计算需要多少字节来填充 P-local pool，使其总大小是 128 字节的倍数。这种填充有助于确保每个 `poolLocal` 都有自己的缓存行，防止伪共享，并保持运行速度更快、无冲突。
 :::
 
-### 池链 (Pool Chain) 与池双端队列 (Pool Dequeue)
+### 共享池链
+
+#### poolChain
 
 `sync.Pool` 中的共享池链由一个名为 `poolChain` 的类型表示。
 
@@ -405,23 +423,21 @@ type poolChainElt struct {
 }
 ```
 
-`poolChain` 的设计非常具有策略性：
+`poolChain` 的设计非常具有策略性。它看起来只有 `head` 和 `tail` 两个字段，但它们指向的是**一条链**的两端：链上的每个节点（`poolChainElt`）都内嵌了一个 `poolDequeue`（你可以把它理解为一段“共享池段”）。因此图里画出多个 shared pool，实际对应的是链上的多个 `poolDequeue` 段。
 
-当当前的池双端队列（列表头部的那个）变满时，会创建一个新的池双端队列，其大小是前一个的两倍。这个新的、更大的池随后被添加到链中。
+这两个端点在运行过程中各自会发生不同的“移动/变动”：
 
-如果你看看 `poolChain` 结构体，你会注意到它有两个字段：一个指针 `head *poolChainElt` 和一个原子指针 `tail atomic.Pointer[poolChainElt]`。
-
-这些字段揭示了机制是如何工作的：
-
-*   **生产者**（拥有当前 P-local pool 的 P）只向最近的池双端队列（我们称之为 **head**）添加新项目。由于只有生产者在接触 head，所以不需要锁或任何花哨的同步技巧，所以它非常快。
-*   **消费者**（其他 P）从列表 **tail** 处的池双端队列中获取项目。由于多个消费者可能试图同时弹出项目，因此对 tail 的访问使用原子操作进行同步，以保持秩序。
+*   **`head` 侧的扩容与前移**：当当前 `head` 指向的 `poolDequeue` 被写满时，会创建一个新的、更大的 `poolDequeue`（通常是前一个的 2 倍容量），把它链接到链表头部，并让 `head` 指向这个新段。由于只有“拥有当前 P-local pool 的 P”会往 `head` 侧写入，所以 `head` 可以是普通指针，走无锁快路径。
+*   **`tail` 侧的竞争读取与前移/移除**：其他 P 作为消费者（steal）会从 `tail` 侧读取对象；多个消费者可能并发竞争同一个 `tail` 段，所以 `tail` 使用原子指针来同步。当 `tail` 指向的 `poolDequeue` 被完全取空后，该段会从链上移除，`tail` 原子地前移到下一个仍可能有数据的段。
 
 ![[Pasted image 20260204204458.png]]
 
-但这里是关键部分：
+和图里的两个细节对应：
 
 1.  当 tail 处的池双端队列完全被清空时，它会从列表中移除，下一个排队的池双端队列成为新的 tail。
 2.  当 head 处的池双端队列用完项目时，它不会被移除。相反，它留在原地，准备在添加新项目时被重新填充。
+
+#### poolDequeue
 
 现在，让我们看看 `poolDequeue` 是如何定义的。正如“dequeue”（双端队列）这个名字所暗示的，它是一个双端队列。
 
@@ -463,7 +479,7 @@ type poolDequeue struct {
 
 简而言之，pool chain 结合了链表和每个节点的环形缓冲区。当一个 dequeue 填满时，一个新的、更大的 dequeue 被创建并链接到链的头部。这种设置有助于有效地管理大量的对象。
 
-## Put() 流程
+### Put() 流程
 
 让我们从 `Put()` 流程开始，因为它比 `Get()` 稍微直接一点，而且它与另一个过程有关：将 Goroutine 绑定（Pin）到 P。
 
@@ -491,6 +507,8 @@ func (p *Pool) Put(x interface{}) {
 }
 ```
 
+#### pin()
+
 我们还没有谈到 `pin()` 或 `runtime_procUnpin()` 函数，但它们对于 `Get()` 和 `Put()` 操作都很重要，因为它们确保 Goroutine 保持“绑定”到当前的 P。
 
 从 Go 1.14 开始，Go 引入了抢占式调度，这意味着如果一个 Goroutine 在处理器 P 上运行时间过长（通常约为 10ms），运行时可以暂停它，给其他 Goroutine 运行的机会。
@@ -514,7 +532,7 @@ func (p *Pool) pin() (*poolLocal, int) { ... }
 
 作为副作用，如果你在运行时更改 `GOMAXPROCS(n)`（控制 P 的数量），`pin()` 还会更新处理器（P）的数量。
 
-**共享池链的处理：**
+#### 共享池链的处理
 
 当你需要向链中添加一个项目时，操作首先检查链的头部。还记得 `head *poolChainElt` 指针吗？那是列表中最近的 pool dequeue。
 
@@ -526,7 +544,7 @@ func (p *Pool) pin() (*poolLocal, int) { ... }
 
 这就是 `Put()` 流程。这是一个相对简单的过程，因为它不涉及与其他处理器的本地池交互；一切都发生在 pool chain 的当前 head 内。
 
-## Get() 流程
+### Get() 流程
 
 乍一看，`Get()` 函数似乎与 `Put()` 非常相似。
 
@@ -600,7 +618,7 @@ for i := 0; i < int(size); i++ {
 
 现在，在尝试了 victim pool 之后，它被原子地标记为空（尽管并发访问可能仍然从中检索）。随后的 `Get()` 操作将跳过检查 victim cache，直到它再次被填充。
 
-## Victim Pool (受害者池)
+### GC 与 Victim Pool
 
 尽管 `sync.Pool` 是为了更好地管理资源而构建的，但它并没有给我们开发者直接的工具来清理或管理对象生命周期。相反，`sync.Pool` 在幕后处理清理工作，以避免不受控制的增长，这可能导致内存泄漏。
 
