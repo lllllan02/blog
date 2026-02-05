@@ -353,6 +353,31 @@ blockquote {
   transition: border-color 0.2s ease;
 }
 
+// Make plain markdown blockquotes (">") visually distinct without affecting callouts.
+article blockquote:not([data-callout]) {
+  // Slightly muted compared to body text, but not too light.
+  color: color-mix(in srgb, var(--darkgray) 75%, var(--gray));
+  font-size: 0.97em;
+  font-style: italic;
+}
+
+// Most text elements have their color explicitly set elsewhere, so override them within plain blockquotes.
+article blockquote:not([data-callout]) :is(p, ul, ol, dl, li, tr, td, text, .katex, .math, .typst-doc) {
+  color: color-mix(in srgb, var(--darkgray) 75%, var(--gray));
+  fill: color-mix(in srgb, var(--darkgray) 75%, var(--gray));
+}
+
+// Avoid italicizing code-like content inside quotes.
+article blockquote:not([data-callout]) :is(code, pre, kbd, samp) {
+  font-style: normal;
+}
+
+// In this repo, `strong` is styled to be darker; keep emphasis but inherit quote color.
+article blockquote:not([data-callout]) strong {
+  color: inherit;
+  text-shadow: none;
+}
+
 h1,
 h2,
 h3,
