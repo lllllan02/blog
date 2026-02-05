@@ -8,6 +8,29 @@
   --article-h2-size: 1.6rem;
   --article-h3-size: 1.35rem;
   --article-h4-size: 1.25rem;
+
+  // 更显眼的链接颜色（仅用于正文链接，不影响全站 secondary/tertiary 配色）
+  --link-color: #1a73e8;
+  --link-hover-color: #1558b0;
+  --link-visited-color: #7b61ff;
+}
+
+:root[saved-theme="dark"] {
+  --link-color: #8ab4f8;
+  --link-hover-color: #a8c7ff;
+  --link-visited-color: #d2a8ff;
+}
+
+article a:not([role="anchor"]) {
+  color: var(--link-color);
+}
+
+article a:not([role="anchor"]):hover {
+  color: var(--link-hover-color);
+}
+
+article a:not([role="anchor"]):visited {
+  color: var(--link-visited-color);
 }
 
 // 自定义字号及排版设置
