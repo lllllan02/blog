@@ -13,7 +13,7 @@ tags:
 - [x] [[c2f5ae40-3686-46b7-896c-bcdf12ae5cc7|Go sync.Mutex：正常模式与饥饿模式]] (2026-02-02)
 - [x] [[f47ac10b-58cc-4372-a567-0e02b2c3d479|Go sync.WaitGroup 与内存对齐问题]] (2026-02-03)
 - [x] [[f65e93d8-cbb9-4882-af67-76c401bfbd09|Go sync.Pool 及其底层机制]] (2026-02-04)
-- [ ] [Go sync.Cond, the Most Overlooked Sync Mechanism](https://victoriametrics.com/blog/go-sync-cond/)
+- [x] [[b1ce097b-c5a1-4822-8c0f-808122754932|Go sync.Cond：最被忽视的同步机制]] (2026-02-06)
 - [ ] [Go sync.Map: The Right Tool for the Right Job](https://victoriametrics.com/blog/go-sync-map/)
 - [ ] [Go Sync.Once is Simple… Does It Really?](https://victoriametrics.com/blog/go-sync-once/)
 - [ ] [Go Singleflight Melts in Your Code, Not in Your DB](https://victoriametrics.com/blog/go-singleflight/)

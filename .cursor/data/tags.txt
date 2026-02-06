@@ -1,4 +1,5 @@
 golang
+sync
 goroutine
 panic
 io
@@ -9,3 +10,4 @@ algorithm
 leetcode
 dp
 epoll
+译文
