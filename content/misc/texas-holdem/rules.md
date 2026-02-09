@@ -3,7 +3,7 @@ title: 德州扑克规则速览
 aliases: 0d2f6a3f-0d4c-4e6f-b39a-b537f8582a07
 date: 2026-02-08 22:11:44
 card: false
-order:
+order: 1
 tags:
 ---
 
