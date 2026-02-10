@@ -7,17 +7,9 @@ order: 2
 tags:
 ---
 
-## [uintptr](https://github.com/golang/go/blob/8bba868de983dd7bf55fcd121495ba8d6e2734e7/src/builtin/builtin.go#L85)
-
-`uintptr` 是一个无符号整数类型，在 32 位平台上为 4 字节、64 位为 8 字节，用来存储指针的数值（即地址）。它**不是**指针类型：<u>GC 不会把 `uintptr` 当作引用，不会因为某个变量里存了地址就认为该对象仍在使用</u>。
-
-用途是做“指针算术”：Go 不允许对普通指针加减，可先转成 `uintptr` 加偏移（如 `Offsetof`）再转回 `Pointer`/`*T`，即 runtime 里常见的 `*T → Pointer → uintptr → 运算 → Pointer → *T`。注意：不要长期保存 `uintptr`，转换链要在同一表达式或小范围内完成，否则 GC 可能已回收原对象，再访问会未定义。
-
 ## [unsafe](https://pkg.go.dev/unsafe@go1.21.13)
 
 `unsafe` 是标准库中用于“绕过类型安全”的包，常见于运行时、反射、与 C 互操作等场景。它只暴露少量 API：`Pointer` 类型，以及 `Sizeof`、`Offsetof`、`Alignof` 等与内存布局相关的函数。
-
-
 
 :::tabgroup
 === unsafe
@@ -42,83 +34,361 @@ type IntegerType int
 
 === Sizeof
 ```go
-// Sizeof 接受任意类型的表达式 x，返回“若声明 var v = x 则变量 v”的字节大小。
-// 该大小不包含 x 可能引用的任何内存。例如若 x 是 slice，Sizeof 返回的是 slice 描述符的
-// 大小，而非 slice 所引用内存的大小。对结构体而言，大小包含由字段对齐引入的填充。
-// 若实参 x 的类型不具有可变大小，则 Sizeof 的返回值是 Go 常量。
-// （若类型为类型参数，或为元素具有可变大小的数组/结构体，则该类型具有可变大小。）
 func Sizeof(x ArbitraryType) uintptr
+```
+
+Sizeof 接受任意类型的表达式 x，返回若声明 var v = x 则变量 v的字节大小。
+
+<u>该大小不包含 x 可能引用的任何内存</u>。例如若 x 是 slice，Sizeof 返回的是 slice 描述符的大小，而非 slice 所引用内存的大小。对结构体而言，大小包含由字段对齐引入的填充。
+
+若实参 x 的类型不具有可变大小，则 Sizeof 的返回值是 Go 常量。（若类型为类型参数，或为元素具有可变大小的数组/结构体，则该类型具有可变大小。）
+
+```go fold
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+type Struct struct {
+	i   int
+	i64 int64
+	f64 float64
+	arr [3]int
+	sli []int
+	str string
+}
+
+func main() {
+	s := Struct{sli: make([]int, 100)}
+
+	fmt.Printf("size of int: %v\n", unsafe.Sizeof(s.i))
+	fmt.Printf("size of int64: %v\n", unsafe.Sizeof(s.i64))
+	fmt.Printf("size of float64: %v\n", unsafe.Sizeof(s.f64))
+	fmt.Printf("size of [3]int: %v\n", unsafe.Sizeof(s.arr))
+	fmt.Printf("size of []int: %v\n", unsafe.Sizeof(s.sli))
+	fmt.Printf("size of string: %v\n", unsafe.Sizeof(s.str))
+	fmt.Printf("Struct size: %v\n", unsafe.Sizeof(s))
+}
+```
+
+```text
+size of int: 8
+size of int64: 8
+size of float64: 8
+size of [3]int: 24
+size of []int: 24
+size of string: 16
+Struct size: 88
 ```
 
 === Offsetof
 ```go
-// Offsetof 返回 x 所表示字段在结构体内的偏移，x 必须为 structValue.field 形式。
-// 换言之，它返回结构体起始与该字段起始之间的字节数。若实参 x 的类型不具有可变大小，
-// 则 Offsetof 的返回值是 Go 常量。（可变大小类型的定义见 [Sizeof] 的说明。）
 func Offsetof(x ArbitraryType) uintptr
+```
+
+Offsetof 返回 x 所表示字段在结构体内的偏移，x 必须为 structValue.field 形式。
+
+换言之，它返回结构体起始与该字段起始之间的字节数。若实参 x 的类型不具有可变大小，则 Offsetof 的返回值是 Go 常量。（可变大小类型的定义见 [Sizeof] 的说明。）
+
+```go fold
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+type Struct struct {
+	i   int
+	i64 int64
+	f64 float64
+	arr [3]int
+	sli []int
+	str string
+}
+
+func main() {
+	s := Struct{sli: make([]int, 100)}
+
+	fmt.Printf("offset of int: %v\n", unsafe.Offsetof(s.i))
+	fmt.Printf("offset of int64: %v\n", unsafe.Offsetof(s.i64))
+	fmt.Printf("offset of float64: %v\n", unsafe.Offsetof(s.f64))
+	fmt.Printf("offset of [3]int: %v\n", unsafe.Offsetof(s.arr))
+	fmt.Printf("offset of []int: %v\n", unsafe.Offsetof(s.sli))
+	fmt.Printf("offset of string: %v\n", unsafe.Offsetof(s.str))
+}
+```
+
+> 其实就是前面字段的 sizeof 和
+
+```text
+offset of int: 0
+offset of int64: 8
+offset of float64: 16
+offset of [3]int: 24
+offset of []int: 48
+offset of string: 72
 ```
 
 === Alignof
 ```go
-// Alignof 接受任意类型的表达式 x，返回“若声明 var v = x 则变量 v”所需的对齐值。
-// 它是满足“v 的地址恒为 0 mod m”的最大值 m。与 reflect.TypeOf(x).Align() 的返回值相同。
-// 特殊地，若变量 s 为结构体类型且 f 为该结构体内的字段，则 Alignof(s.f) 返回该类型
-// 在结构体内作为字段时所需的对齐，与 reflect.TypeOf(s.f).FieldAlign() 的返回值相同。
-// 若实参类型不具有可变大小，则 Alignof 的返回值是 Go 常量。
-// （可变大小类型的定义见 [Sizeof] 的说明。）
 func Alignof(x ArbitraryType) uintptr
+```
+
+Alignof 接受任意类型的表达式 x，返回若声明 var v = x 则变量 v所需的对齐值。
+
+它是满足v 的地址恒为 0 mod m的最大值 m。与 `reflect.TypeOf(x).Align()` 的返回值相同。
+
+特殊地，若变量 s 为结构体类型且 f 为该结构体内的字段，则 Alignof(s.f) 返回该类型在结构体内作为字段时所需的对齐，与 `reflect.TypeOf(s.f).FieldAlign()` 的返回值相同。
+
+若实参类型不具有可变大小，则 Alignof 的返回值是 Go 常量。（可变大小类型的定义见 [Sizeof] 的说明。）
+
+```go fold
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+type Struct struct {
+	i   int
+	i64 int64
+	f64 float64
+	arr [3]int
+	sli []int
+	str string
+}
+
+func main() {
+	s := Struct{sli: make([]int, 100)}
+
+	fmt.Printf("align of int: %v\n", unsafe.Alignof(s.i))
+	fmt.Printf("align of int64: %v\n", unsafe.Alignof(s.i64))
+	fmt.Printf("align of float64: %v\n", unsafe.Alignof(s.f64))
+	fmt.Printf("align of [3]int: %v\n", unsafe.Alignof(s.arr))
+	fmt.Printf("align of []int: %v\n", unsafe.Alignof(s.sli))
+	fmt.Printf("align of string: %v\n", unsafe.Alignof(s.str))
+}
+```
+
+```text
+align of int: 8
+align of int64: 8
+align of float64: 8
+align of [3]int: 8
+align of []int: 8
+align of string: 8
 ```
 
 === Add
 ```go
-// Add 将 len 与 ptr 相加，返回更新后的指针 Pointer(uintptr(ptr) + uintptr(len))。
-// 实参 len 必须为整数类型或无类型常量。常量 len 必须能表示为 int 类型的值；
-// 若为无类型常量则赋予类型 int。Pointer 的合法使用规则仍然适用。
 func Add(ptr Pointer, len IntegerType) Pointer
+```
+
+Add 将 len 与 ptr 相加，返回更新后的指针 `Pointer(uintptr(ptr) + uintptr(len))`。
+
+实参 len 必须为整数类型或无类型常量。常量 len 必须能表示为 int 类型的值；若为无类型常量则赋予类型 int。Pointer 的合法使用规则仍然适用。
+
+```go
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+func main() {
+	arr := [3]int{1, 2, 3}
+	pointer := unsafe.Pointer(&arr[0])
+	newPointer := unsafe.Add(pointer, unsafe.Sizeof(int(0)))
+	fmt.Printf("arr[1]: %v\n", *(*int)(newPointer))
+}
+```
+
+```text
+arr[1]: 2
 ```
 
 === Slice
 ```go
-// Slice 返回一个 slice，其底层数组从 ptr 开始，长度和容量均为 len。
-// Slice(ptr, len) 等价于
-//
-//	(*[len]ArbitraryType)(unsafe.Pointer(ptr))[:]
-//
-// 特殊地，若 ptr 为 nil 且 len 为 0，Slice 返回 nil。
-//
-// 实参 len 必须为整数类型或无类型常量。常量 len 必须非负且能表示为 int 类型的值；
-// 若为无类型常量则赋予类型 int。运行时若 len 为负，或 ptr 为 nil 且 len 非零，会发生 panic。
 func Slice(ptr *ArbitraryType, len IntegerType) []ArbitraryType
 ```
 
+Slice 返回一个 slice，其底层数组从 ptr 开始，长度和容量均为 len。
+
+Slice(ptr, len) 等价于 `(*[len]ArbitraryType)(unsafe.Pointer(ptr))[:]`
+
+特殊地，若 ptr 为 nil 且 len 为 0，Slice 返回 nil。
+
+实参 len 必须为整数类型或无类型常量。常量 len 必须非负且能表示为 int 类型的值；若为无类型常量则赋予类型 int。运行时若 len 为负，或 ptr 为 nil 且 len 非零，会发生 panic。
+
+```go
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+func main() {
+	arr := [3]int{1, 2, 3}
+
+	slice := unsafe.Slice(&arr[0], 3)
+	slice = append(slice, 4)
+	fmt.Printf("slice: %v\n", slice)
+}
+```
+
+简单理解就是把一个数组(固定长度)升级成了切片(可变长度)。
+
 === SliceData
 ```go
-// SliceData 返回实参 slice 的底层数组的指针。
-//   - 若 cap(slice) > 0，SliceData 返回 &slice[:1][0]。
-//   - 若 slice == nil，SliceData 返回 nil。
-//   - 否则 SliceData 返回指向未指定内存地址的非 nil 指针。
 func SliceData(slice []ArbitraryType) *ArbitraryType
+```
+
+SliceData 返回实参 slice 的底层数组的指针。
+
+- 若 cap(slice) > 0，SliceData 返回 &slice[:1][0]。
+- 若 slice == nil，SliceData 返回 nil。
+- 否则 SliceData 返回指向未指定内存地址的非 nil 指针。
+
+```go
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+func main() {
+	slice := make([]int, 3, 5)
+	fmt.Printf("slice: %v\n", slice)
+	array := unsafe.SliceData(slice)
+	for i := 0; i < 5; i++ {
+		pointer := unsafe.Pointer(array)
+		pointer = unsafe.Add(pointer, uintptr(i)*unsafe.Sizeof(int(0)))
+		ptr := (*int)(pointer)
+		*ptr = i
+	}
+	fmt.Printf("slice: %v\n", slice)
+}
+```
+
+```text
+slice: [0 0 0]
+slice: [0 1 2]
 ```
 
 === String
 ```go
-// String 返回一个字符串值，其底层字节从 ptr 开始、长度为 len。
-//
-// 实参 len 必须为整数类型或无类型常量。常量 len 必须非负且能表示为 int 类型的值；
-// 若为无类型常量则赋予类型 int。运行时若 len 为负，或 ptr 为 nil 且 len 非零，会发生 panic。
-//
-// 由于 Go 字符串不可变，传给 String 的字节之后不得修改。
 func String(ptr *byte, len IntegerType) string
+```
+
+String 返回一个字符串值，其底层字节从 ptr 开始、长度为 len。
+
+实参 len 必须为整数类型或无类型常量。常量 len 必须非负且能表示为 int 类型的值；若为无类型常量则赋予类型 int。运行时若 len 为负，或 ptr 为 nil 且 len 非零，会发生 panic。
+
+由于 Go 字符串不可变，传给 String 的字节之后不得修改。
+
+```go
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+func main() {
+	bytes := []byte("hello, world!")
+	str := unsafe.String(&bytes[0], len(bytes))
+	fmt.Println(str)
+}
+```
+
+简单理解，就是把一个 []byte 升级了 string 类型。
+
+```text
+hello, world!
 ```
 
 === StringData
 ```go
-// StringData 返回 str 的底层字节的指针。对空字符串返回值未指定，可能为 nil。
-//
-// 由于 Go 字符串不可变，StringData 返回的字节不得修改。
 func StringData(str string) *byte
 ```
+
+StringData 返回 str 的底层字节的指针。对空字符串返回值未指定，可能为 nil。
+
+由于 Go 字符串不可变，StringData 返回的字节不得修改。
+
+
+```go
+package main
+
+import (
+	"fmt"
+	"unsafe"
+)
+
+func main() {
+	str := "hello, world!"
+	bytes := unsafe.StringData(str)
+	for i := 0; i < len(str); i++ {
+		pointer := unsafe.Pointer(bytes)
+		pointer = unsafe.Add(pointer, uintptr(i)*unsafe.Sizeof(byte(0)))
+		fmt.Printf("%c", *(*byte)(pointer))
+	}
+	fmt.Println()
+}
+```
+
+```text
+hello, world!
+```
+
 :::
+
+## [uintptr](https://github.com/golang/go/blob/release-branch.go1.21/src/builtin/builtin.go#L85)
+
+```go
+// uintptr is an integer type that is large enough to hold the bit pattern of
+// any pointer.
+type uintptr uintptr
+```
+
+`uintptr` 是一个无符号整数类型，用来存储指针的数值（即地址），用途是做“指针算术”。
+
+> 它**不是**指针类型：<u>GC 不会把 `uintptr` 当作引用，不会因为某个变量里存了地址就认为该对象仍在使用</u>。
+
+```go
+arr := [3]int{1, 2, 3}
+fmt.Printf("&arr[0]: %v\n", &arr[0])
+fmt.Printf("uintptr: %v\n", uintptr(unsafe.Pointer(&arr[0])))
+
+---
+&arr[0]: 0x14000014198
+uintptr: 1374389617048
+```
+
+### 指针运算
+
+Go 不允许对普通指针加减，因此不能像在 C 中一样直接使用 `arr + 1` 的方式去获取数组上的某一位元素。（其实这里的举例不是很严谨，在 Golang 中数组甚至不是一个指针类型，只是为了方便理解，告诉你在 go 里是不允许直接对一个指针进行加减运算的）
+
+那如果我就是需要进行指针运算怎么办？
+
+`uintptr` 和 `unsafe.Pointer` 就是来完成这件事的，你可以通过 `*T → Pointer → uintptr → 运算 → Pointer → *T` 来获取你想要访问的某个值，比如：
+
+```go
+arr := [3]int{1, 2, 3}
+
+pointer := unsafe.Pointer(&arr[0])
+newPointer := unsafe.Pointer(uintptr(pointer) + unsafe.Sizeof(int(0)))
+fmt.Printf("newPointer: %v\n", *(*int)(newPointer))
+```
+
+> 注意：不要长期保存 `uintptr`，转换链要在同一表达式或小范围内完成，否则 GC 可能已回收原对象，再访问会未定义。
 
 ## unsafe.Pointer
 
@@ -283,7 +553,3 @@ s := *(*string)(unsafe.Pointer(&hdr)) // p 可能早已失效
 
 - [unsafe 包文档](https://pkg.go.dev/unsafe@go1.21.13)
 - [unsafe 源码](https://go.dev/src/unsafe/unsafe.go)
-- [看 Go 源码，你需要了解 unsafe.Pointer](https://juejin.cn/post/7298645450554605568)
-- [unsafe.Pointer 和 uintptr 的区别](https://segmentfault.com/a/1190000047072859)
-- [Go 中 uintptr 和 unsafe.Pointer 的区别](https://aturing.cn/article/94)
-- [指针类型、unsafe.Pointer、uintptr 区别](https://studygolang.com/articles/28391)
