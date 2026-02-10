@@ -6,9 +6,10 @@ order: 3
 tags:
   - golang
   - source-reading
+  - go1.21
 ---
 
-> 本计划旨在提供一个从基础到核心、从标准库到运行时的全方位阅读路径。建议基于 Go 1.21+ 版本。
+> 本计划旨在提供一个从基础到核心、从标准库到运行时的全方位阅读路径。建议基于 [Go 1.21+](https://github.com/golang/go/tree/release-branch.go1.21/src) 版本。
 
 ## 阶段一：基础数据结构 (Basic Data Structures)
 理解 Go 语言最基础的构建块，关注内存布局与扩容机制。
