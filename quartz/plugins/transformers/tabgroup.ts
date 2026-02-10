@@ -60,18 +60,14 @@ export const TabGroup: QuartzTransformerPlugin = () => {
             const tabContents = tabs
               .map((tab, idx) => {
                 const contentStr = tab.content.join("\n").trim()
-                // 判断内容是否仅包含一个代码块
-                const isCodeOnly =
-                  contentStr.startsWith("```") &&
-                  contentStr.endsWith("```") &&
-                  (contentStr.match(/^```/gm) || []).length === 2
-                // 判断内容是否以代码块结尾
+                // 判断内容是否以代码块开头/结尾
+                const startsWithCode = contentStr.startsWith("```")
                 const endsWithCode = contentStr.endsWith("```")
 
                 let className = "tab-content"
                 if (idx === 0) className += " active"
-                if (isCodeOnly) className += " code-only"
-                else if (endsWithCode) className += " code-ends"
+                if (startsWithCode) className += " code-starts"
+                if (endsWithCode) className += " code-ends"
 
                 return `<div class="${className}" data-tab="${idx}">\n\n${tab.content.join("\n")}\n\n</div>`
               })

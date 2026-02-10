@@ -55,14 +55,29 @@
 
       // 当内容以代码块结尾时，去除底部的间隙，并让代码块左右撑满
       &.code-ends {
+        padding-top: 0 !important;
         padding-bottom: 0 !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
 
         // 顶部的文本仍然需要 padding
-        & > *:not(figure):not(pre):not(.code-only) {
+        & > *:not(figure):not(pre):not(.code-fold) {
           margin-left: 1rem;
           margin-right: 1rem;
+          margin-top: 1rem;
+        }
+
+        // 折叠代码块在 TabGroup 内也应贴边
+        & > .code-fold {
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+        }
+
+        // 首个代码块顶到顶部
+        & > figure[data-rehype-pretty-code-figure]:first-child,
+        & > pre:first-child {
+          margin-top: 0 !important;
+          border-top: none !important;
         }
 
         & > figure[data-rehype-pretty-code-figure]:last-child,
@@ -82,42 +97,29 @@
         }
       }
 
-      // 纯代码块模式：完全填满，去除所有内边距和边框
-      &.code-only {
-        padding: 0 !important;
+      // 当内容以代码块开头时，去除顶部和左右空隙
+      &.code-starts {
+        padding-top: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
 
-        & > figure[data-rehype-pretty-code-figure],
-        & > pre {
-          margin: 0 !important;
-          border: none !important;
+        & > figure[data-rehype-pretty-code-figure]:first-child,
+        & > pre:first-child {
+          margin-top: 0 !important;
+          border-top: none !important;
+          border-left: none !important;
+          border-right: none !important;
           border-radius: 0 !important;
+        }
 
-          & > pre {
-            border: none !important;
-            border-radius: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-          }
-        }
-        
-        // macOS 代码块主题需要顶部“标题栏”空间（红黄绿圆点 & 复制按钮）
-        // code-only 会把 padding 清零，这里只补回顶部 padding，保持左右全宽不变
-        & > figure[data-rehype-pretty-code-figure] > pre,
-        & > pre {
-          padding: 1.4rem 0 0 0 !important;
-        }
-        
-        // 针对 Shiki 生成的代码块结构进行深度优化
-        pre {
-          border: none !important;
-          border-radius: 0 !important;
-          margin: 0 !important;
-          
-          code {
-            padding: 1rem 0 !important; // 恢复上下内边距，保持美观
-          }
+        // 顶部的文本仍然需要 padding
+        & > *:not(figure):not(pre):not(.code-fold) {
+          margin-left: 1rem;
+          margin-right: 1rem;
         }
       }
+
+      // 纯代码块与混合内容统一样式，交由 code-ends 处理
     }
   }
 }
