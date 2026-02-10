@@ -9,8 +9,7 @@ tags:
   - go1.21
 ---
 
-> 本文档旨在引导你自主阅读 Go `slice` 的源码。建议阅读路径：`src/runtime/slice.go`。
-
+> 本文档旨在引导你自主阅读 Go 1.21 的 [slice 源码](https://github.com/golang/go/blob/release-branch.go1.21/src/runtime/slice.go)
 ## 阅读前准备
 
 把下面内容当作阅读源码前的准备清单与思考题。
@@ -52,7 +51,8 @@ type slice struct {
 	cap   int
 }
 ```
-![[无标题-2026-02-09-1517.excalidraw.png]]
+
+![[1770716705.excalidraw.png]]
 
 ## 零切片｜空切片｜nil 切片
 
