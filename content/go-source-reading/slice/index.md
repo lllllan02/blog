@@ -59,6 +59,7 @@ type slice struct {
 
 ### [[87762e95-d4ca-4a3a-b0f2-07f81fc4b6fb|零切片｜空切片｜nil 切片]]
 
+### [[b3ea3dce-e697-48c5-b39b-0cd56941489a|切片截取]]
 
 ## growslice
 
