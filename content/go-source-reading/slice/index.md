@@ -2,6 +2,7 @@
 title: Go 源码阅读：Slice
 aliases: 8d2e1c3a-9b4d-4f6d-a1c2-7b3a4f5d6e7f
 date: 2026-02-08 11:00:00
+order: 2
 tags:
   - golang
   - source-reading
@@ -44,6 +45,8 @@ tags:
 
 ## 底层结构
 
+切片是数组段的描述符。它由指向数组的指针、段的长度及其容量（段的最大长度）组成。
+
 ```go
 type slice struct {
 	array unsafe.Pointer
@@ -54,64 +57,8 @@ type slice struct {
 
 ![[1770716705.excalidraw.png]]
 
-## 零切片｜空切片｜nil 切片
+### [[87762e95-d4ca-4a3a-b0f2-07f81fc4b6fb|零切片｜空切片｜nil 切片]]
 
-> [深度解析 Go 语言中「切片」的三种特殊状态](https://juejin.cn/post/6844903712654098446)
-
-创建切片的方式有很多，他们存在着一些细微的差异。
-
-
-```go fold="slice test"
-package main
-
-import (
-	"encoding/json"
-	"fmt"
-	"unsafe"
-)
-
-func printSlice(method string, slice []int) {
-	bytes, _ := json.Marshal(slice)
-	var arr = *(*[3]int)(unsafe.Pointer(&slice))
-	fmt.Printf("%15s: %v, len: %d, cap: %d, address: %p, array.address: %13d, json: %4s, isNil: %t\n",
-		method, slice, len(slice), cap(slice), &slice, arr[0], string(bytes), slice == nil)
-}
-
-func main() {
-	var slice1 []int
-	printSlice("[]int", slice1)
-
-	var slice2 = *new([]int)
-	printSlice("*new([]int)", slice2)
-
-	var slice3 = []int{}
-	printSlice("[]int{}", slice3)
-
-	var slice4 = make([]int, 0)
-	printSlice("make([]int, 0)", slice4)
-
-	var slice5 = make([]int, 3)
-	printSlice("make([]int, 3)", slice5)
-}
-```
-
-执行上门这份代码，你会得到如下的输出。当然其中的 address 每次都是随机的，但有意思的是 `[]int{}` 和 `make([]int, 0)` 创建出来的切片，他们的 array.address 虽然随机确实相同的。
-
-```bash
-          []int: [], len: 0, cap: 0, address: 0x140000b6018, array.address:             0, json: null, isNil: true
-    *new([]int): [], len: 0, cap: 0, address: 0x140000b6060, array.address:             0, json: null, isNil: true
-        []int{}: [], len: 0, cap: 0, address: 0x140000b6078, array.address:    4378872992, json:   [], isNil: false
- make([]int, 0): [], len: 0, cap: 0, address: 0x140000b60c0, array.address:    4378872992, json:   [], isNil: false
- make([]int, 3): [0 0 0], len: 3, cap: 3, address: 0x140000b6108, array.address: 1374390214704, json: [0,0,0], isNil: false
-```
-
-通过这份代码我们来认识一下这三个定义：
-
-- 零切片(`make([]int, 3)`): 元素值为零的切片，比如 []int 中的元素全是 0，[]*int 中的元素全是 nil。
-- 空切片(`[]int{}`, ` make([]int, 0)`): 长度、容量均为零，但是 array 被分配到一个特殊地址 `zerobase` 的切片。
-- nil 切片(`[]int`, `*new([]int)`): 长度、容量甚至 array 地址都是零的切片。
-
-> 注意，上面几种方式创建出来的切片本身地址并非 nil，所以谈及空或者 nil 的问题并不是说这个变量本身的地址，而是对象中 array 的地址。
 
 ## growslice
 
