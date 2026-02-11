@@ -1,4 +1,7 @@
 golang
+slice
+go1.21
+source-reading
 sync
 goroutine
 panic
