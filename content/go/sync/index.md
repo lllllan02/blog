@@ -2,7 +2,7 @@
 title: Go sync 问题合集
 aliases: e10dd6db-61a0-4216-8ca5-ec552d216537
 date: 2026-02-02 16:42:02
-order: 2
+order:
 tags:
   - golang
   - sync
