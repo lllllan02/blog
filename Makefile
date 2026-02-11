@@ -7,16 +7,10 @@ pangu:
 	npm run pangu
 
 doc:
-	@read -p "Enter file name (without .md): " name; \
-	$(MAKE) create-file filename="content/$$name.md" title="$$name"
+	@./clitool doc
 
 dir:
-	@read -p "Enter directory name: " dirname; \
-	mkdir -p "content/$$dirname"; \
-	$(MAKE) create-file filename="content/$$dirname/index.md" title="$$dirname"
+	@./clitool dir
 
 create-file:
-	@date=$$(date "+%Y-%m-%d %H:%M:%S"); \
-	alias=$$(uuidgen | tr '[:upper:]' '[:lower:]'); \
-	printf -- "---\ntitle: %s\naliases: %s\ndate: %s\ncard: true\norder:\ntags:\n---\n" "$(title)" "$$alias" "$$date" > $(filename); \
-	echo "Created $(filename)"
+	@./clitool create-file "$(filename)" "$(title)"
