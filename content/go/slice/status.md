@@ -2,7 +2,7 @@
 title: 零切片｜空切片｜nil 切片
 aliases: 87762e95-d4ca-4a3a-b0f2-07f81fc4b6fb
 date: 2026-02-11 10:08:15
-card: false
+card: true
 order: 2
 tags:
 ---

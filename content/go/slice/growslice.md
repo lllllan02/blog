@@ -2,7 +2,7 @@
 title: Slice 扩容机制
 aliases: 8c6749b6-458a-4aed-9ac1-bf582271a7fd
 date: 2026-02-11 14:26:57
-card: false
+card: true
 order: 4
 tags:
   - golang

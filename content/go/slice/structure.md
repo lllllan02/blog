@@ -2,7 +2,7 @@
 title: Slice 底层结构
 aliases: 2d6c3a7f-f32c-4dcd-9491-374a0bc6359e
 date: 2026-02-11 14:02:28
-card: false
+card: true
 order: 1
 tags:
 ---
