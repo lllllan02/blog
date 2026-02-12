@@ -14,7 +14,7 @@ tags:
 以下是精选的高质量大学计算机必修课及 Golang 后端开发专项课程资源，适合从 CS50 进阶到专业后端开发。
 
 **阶段一：工具与基础 (磨刀不误砍柴工)**
-- [ ] [MIT: 计算机教育中缺失的一课 (The Missing Semester)](https://missing-semester-cn.github.io/)
+- [ ] [[0b41670f-4682-4fad-b279-562f204b0093|MIT: 计算机教育中缺失的一课 (The Missing Semester)]]
 - [ ] [MIT 6.006: 算法导论 (Introduction to Algorithms)](https://www.youtube.com/playlist?list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb)
 
 **阶段二：计算机系统核心 (后端内功)**
