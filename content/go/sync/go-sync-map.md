@@ -2,6 +2,7 @@
 title: Go sync.Map：场景与底层机制深度解析
 aliases: 7d3e5a1b-4f9c-4a3d-9e2c-8b1a2f3d4e5f
 date: 2026-02-08 14:30:00
+order: 5
 tags:
   - golang
   - sync
