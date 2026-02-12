@@ -23,6 +23,9 @@ export type FontSpecification =
       includeItalic?: boolean
     }
 
+/** 顶部阅读进度条配色预设：cyan | purple | warm | theme */
+export type ProgressBarPreset = "cyan" | "purple" | "warm" | "theme"
+
 export interface Theme {
   typography: {
     title?: FontSpecification
@@ -33,6 +36,8 @@ export interface Theme {
   cdnCaching: boolean
   colors: Colors
   fontOrigin: "googleFonts" | "local"
+  /** 顶部阅读进度条配色预设，默认 cyan */
+  progressBarPreset?: ProgressBarPreset
 }
 
 export type ThemeKey = keyof Colors
@@ -140,7 +145,52 @@ export async function processGoogleFonts(
   return { processedStylesheet, fontFiles }
 }
 
+// 渐变结构：深色起点 → 柔和过渡 → 对比色收尾（增强层次感）
+const PROGRESS_BAR_PRESETS: Record<
+  ProgressBarPreset,
+  { light: [string, string, string]; dark: [string, string, string] }
+> = {
+  cyan: {
+    // 深青 → 翠青 → 天蓝（色相由青转蓝，更鲜明）
+    light: ["#0f766e", "#14b8a6", "#0ea5e9"],
+    dark: ["#0d9488", "#2dd4bf", "#38bdf8"],
+  },
+  purple: {
+    // 靛蓝 → 薰衣草 → 粉紫（保持原有最佳效果）
+    light: ["#6366f1", "#a78bfa", "#ec4899"],
+    dark: ["#818cf8", "#c4b5fd", "#f472b6"],
+  },
+  warm: {
+    // 红 → 橙 → 金（暖色全光谱，色相跨度更大）
+    light: ["#b91c1c", "#ea580c", "#eab308"],
+    dark: ["#dc2626", "#f97316", "#fde047"],
+  },
+  theme: {
+    // 主题色系，用 color-mix 丰富中间过渡
+    light: [
+      "var(--secondary)",
+      "color-mix(in srgb, var(--tertiary) 55%, var(--link-color))",
+      "var(--link-color)",
+    ],
+    dark: [
+      "var(--secondary)",
+      "color-mix(in srgb, var(--tertiary) 55%, var(--link-color))",
+      "var(--link-color)",
+    ],
+  },
+}
+
+function getProgressBarVars(theme: Theme) {
+  const preset = theme.progressBarPreset ?? "cyan"
+  const { light, dark } = PROGRESS_BAR_PRESETS[preset]
+  return {
+    light: `--progress-bar-start: ${light[0]}; --progress-bar-mid: ${light[1]}; --progress-bar-end: ${light[2]};`,
+    dark: `--progress-bar-start: ${dark[0]}; --progress-bar-mid: ${dark[1]}; --progress-bar-end: ${dark[2]};`,
+  }
+}
+
 export function joinStyles(theme: Theme, ...stylesheet: string[]) {
+  const progressBar = getProgressBarVars(theme)
   return `
 ${stylesheet.join("\n\n")}
 
@@ -154,6 +204,7 @@ ${stylesheet.join("\n\n")}
   --tertiary: ${theme.colors.lightMode.tertiary};
   --highlight: ${theme.colors.lightMode.highlight};
   --textHighlight: ${theme.colors.lightMode.textHighlight};
+  ${progressBar.light}
 
   --titleFont: "${getFontSpecificationName(theme.typography.title || theme.typography.header)}", ${DEFAULT_SANS_SERIF};
   --headerFont: "${getFontSpecificationName(theme.typography.header)}", ${DEFAULT_SANS_SERIF};
@@ -171,6 +222,7 @@ ${stylesheet.join("\n\n")}
   --tertiary: ${theme.colors.darkMode.tertiary};
   --highlight: ${theme.colors.darkMode.highlight};
   --textHighlight: ${theme.colors.darkMode.textHighlight};
+  ${progressBar.dark}
 }
 `
 }

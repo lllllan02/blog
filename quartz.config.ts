@@ -22,6 +22,8 @@ const config: QuartzConfig = {
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
+      // 顶部阅读进度条配色：cyan | purple | warm | theme
+      progressBarPreset: "cyan",
       typography: {
         header: "LXGW WenKai TC",
         body: "LXGW WenKai TC",
