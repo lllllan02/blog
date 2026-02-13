@@ -21,7 +21,7 @@ tags:
 
 **阶段二：计算机系统核心 (后端内功)**
 
-- 操作系统 [《Operating Systems: Three Easy Pieces》中文](https://pages.cs.wisc.edu/~remzi/OSTEP/Chinese/)
+- 操作系统 [[8a09af91-87e4-45e5-85dc-dbdf662e5319|《Operating Systems: Three Easy Pieces》]]
   - [ ] 第 2 章：OS 是做什么的
   - [ ] 第 4-5 章：进程与线程
   - [ ] 第 13-14 章：虚拟内存

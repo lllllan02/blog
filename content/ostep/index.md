@@ -1,0 +1,12 @@
+---
+title: "Operating Systems: Three Easy Pieces"
+aliases: 8a09af91-87e4-45e5-85dc-dbdf662e5319
+date: 2026-02-13 10:00:31
+card: false
+order:
+tags:
+---
+
+> [《Operating Systems: Three Easy Pieces》中文](https://pages.cs.wisc.edu/~remzi/OSTEP/Chinese/)
+
+- [x] [[685e3429-cc4d-413e-ab69-7c7379a87d3d|第 2 章 操作系统介绍]] (2026-02-13)
