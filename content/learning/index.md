@@ -3,7 +3,7 @@ title: 学习资源
 aliases: c117dcd7-d938-4753-aef6-4e5e8c379b42
 date: 2026-02-11 19:13:59
 card: false
-order:
+order: 2
 tags:
   - learning
   - golang

@@ -1,0 +1,22 @@
+---
+title: "Go: 2010 年 3 月最新资讯"
+aliases: 80e78d18-bc80-44cd-9e49-d5e1c14c9ff7
+date: 2026-02-13 20:26:42
+card: false
+order:
+tags:
+---
+
+> [Go: What's New in March 2010](https://go.dev/blog/hello-world)
+
+这是 Go 官方的第一篇博客，其中的内容几乎没什么好说的，很多链接已经失效，很多内容也已经过时。但是既然是对 Go 官方博客的一个追踪，就让我们做的有始有终吧，让我们一起看看 Go 的发展历程，了解更多的更新动态。
+
+> We have made syntax changes to make the language more concise, regular, and flexible. Semicolons have been almost entirely removed from the language. The …T syntax makes it simpler to handle an arbitrary number of typed function parameters. The syntax x[lo:] is now shorthand for x[lo:len(x)]. Go also now natively supports complex numbers. See the release notes for more.
+
+语法更加简洁、规范和灵活。Go 语言中分号几乎已经被移除了，`...T` 语法使得处理任意数量的类型化函数参数变得更加简单。`x[lo:]` 现在等同于 `x[lo:len(x)]`。Go 现在也原生支持复数。
+
+> Godoc now provides better support for third-party libraries, and a new tool - goinstall - has been released to make it easy to install them. Additionally, we’ve started working on a package tracking system to make it easier to find what you need. You can view the beginnings of this on the Packages page.
+
+[Godoc](https://pkg.go.dev/golang.org/x/tools/cmd/godoc) 现在对第三方库提供了更好的支持，并且发布了一个名为 goinstall 的新工具，方便用户安装这些库。此外，我们已经开始开发一个软件包跟踪系统。
+
+这几乎就是第一篇博客在目前仍然具有价值的内容了，我们可以窥探最初期的 Go 语言的发展历程。

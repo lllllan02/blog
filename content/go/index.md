@@ -1,8 +1,8 @@
 ---
-title: Go 源码阅读计划
+title: Go
 aliases: 3d8e9c2a-7b1a-4f5d-9e2c-8b1a2f3d4e5f
 date: 2026-02-08 11:00:00
-order: 3
+order: 2
 tags:
   - golang
   - source-reading
