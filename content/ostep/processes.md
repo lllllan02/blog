@@ -1,0 +1,170 @@
+---
+title: "第 4 章 抽象：进程"
+aliases: d2b0125e-4057-4d22-80aa-b3400c266014
+date: 2026-02-13 15:41:43
+card: false
+order: 4
+tags:
+---
+
+> [第 4 章 抽象：进程](https://pages.cs.wisc.edu/~remzi/OSTEP/Chinese/04.pdf)
+
+::: [!info] 非正式定义：进程就是运行中的程序
+:::
+
+程序是磁盘上的静态指令与数据，本身无生命周期；操作系统将其加载运行后，才成为进程。人们希望同时运行多个程序（浏览器、邮件、游戏等），系统常有上百个进程并发，因此核心挑战是：
+
+::: [!question] 关键问题：如何提供有许多 CPU 的假象？
+:::
+
+**CPU 虚拟化**：通过让进程轮流占用时间片并切换，操作系统制造出「多虚拟 CPU」的假象，即==时分共享（time sharing）==。代价是每个进程变慢，因为 CPU 被共享。
+
+实现虚拟化需要两层能力：
+
+- **机制（mechanism）**：一些低级方法或协议，实现了所需的功能。
+
+    如上下文切换（context switch）：停止当前程序、在 CPU 上启动另一程序。所有现代 OS 都采用分时机制。
+
+- **策略（policy）**：操作系统内做出某种决定的算法。
+
+    如调度策略（scheduling policy）：在多个就绪进程中决定运行哪一个，可依据历史信息、工作负载类型、性能目标（交互性 vs 吞吐量）等。
+
+::: [!tip] 时分共享 vs 空分共享
+- 时分共享：资源按时间轮流分配（如 CPU、网络）。
+- 空分共享：资源按空间划分（如磁盘块分配给文件后，删除前不可复用）。
+:::
+
+::: [!tip] 策略 vs 机制
+- 机制回答「如何」（how），如：如何执行上下文切换。
+- 策略回答「哪个」（which），如：应运行哪个进程。
+
+“如何（how）”“哪个（which）”分离二者便于改策略而不动机制，体现模块化设计原则。
+:::
+
+## 抽象：进程
+
+进程（process）是运行中程序的抽象，其本质由==机器状态（machine state）==概括——程序运行时可读/写的部分。
+
+机器状态包括：
+
+- **内存**：指令与数据所在处，进程可访问的内存称为地址空间（address space）。
+- **寄存器**：指令直接读写，其中关键的有：程序计数器（PC/IP）（当前执行指令）、栈指针/帧指针（函数参数栈、局部变量、返回地址）。
+
+## 进程 API
+
+现代 OS 均提供进程 API，具体实现留待第 5 章。接口通常包含：
+
+- **创建（create）**：shell 键入命令或双击图标时，调用 OS 创建新进程并运行指定程序
+- **销毁（destroy）**：进程可自行退出，也可通过接口强制终止失控进程
+- **等待（wait）**：等待某进程结束
+- **其他控制**：如暂停（pause）、恢复（resume）
+- **状态（status）**：查询进程运行时长、当前状态等
+
+## 进程创建：更多细节
+
+程序转化为进程的步骤：
+
+1. **加载（load）**：从磁盘将代码和静态数据读入进程地址空间。早期 OS 急于（eagerly）全量加载；现代 OS 惰性（lazily）按需加载，分页/交换机制留待内存虚拟化章节。
+2. **分配栈**：为==运行时栈（stack）==分配内存，存放局部变量、函数参数、返回地址；用 argc/argv 初始化 main()。
+3. **分配堆**：为==堆（heap）==分配内存，供 malloc()/free() 动态分配；初始较小，随 malloc 调用由 OS 扩展。
+4. **I/O 初始化**：如 UNIX 默认打开 3 个==文件描述符==（stdin/stdout/stderr）。
+5. **启动**：跳转到 main()，将 CPU 控制权交给新进程，程序开始执行。
+
+![[1770971127.excalidraw.png|400]]
+
+## 进程状态
+
+进程在任一时刻处于以下 3 种状态之一：
+
+- **运行（running）**：正在 CPU 上执行指令
+- **就绪（ready）**：已准备好运行，但 OS 暂未调度
+- **阻塞（blocked）**：等待某事件（如 I/O 完成）才可继续，典型如发起磁盘 I/O 后被阻塞
+
+状态转换：就绪→运行为调度（scheduled），运行→就绪为取消调度（descheduled）。阻塞后 OS 保持该状态直至事件发生（如 I/O 完成），再转入就绪。
+
+![[1770971983.excalidraw.png|400]]
+
+:::tabgroup
+=== 共用 CPU
+
+两进程共用 CPU 时，状态如表 4.1 所示。
+
+| 时间 | Process0 | 注 | Process1 | 注 |
+| --- | --- |--- | --- | --- |
+| 1 | 运行 | | 就绪 | |
+| 2 | 运行 | | 就绪 | |
+| 3 | 运行 | | 就绪 | |
+| 4 | 运行 | Process0 现在完成 | 就绪 | |
+| 5 | — | | 运行 | |
+| 6 | — | | 运行 | |
+| 7 | — | | 运行 | |
+| 8 | — | | 运行 | Process1 现在完成 |
+
+=== 发起 I/O 阻塞
+
+若 Process0 运行中发起 I/O 请求，则被阻塞，Process1 得以运行。表 4.2 展示该场景。
+
+| 时间 | Process0 | 注 | Process1 | 注 |
+| --- | --- |--- | --- | --- |
+| 1 | 运行 | | 就绪 | |
+| 2 | 运行 | | 就绪 | |
+| 3 | 运行 | Process0 发起 I/O | 就绪 | |
+| 4 | 阻塞 | Process0 被阻塞 | 运行 | 所以 Process1 运行 |
+| 5 | 阻塞 | | 运行 | |
+| 6 | 阻塞 | I/O 完成 | 运行 | |
+| 7 | 就绪 | | 运行 | |
+| 8 | 就绪 | | 运行 | Process1 现在完成 |
+| 9 | 运行 | | — | |
+| 10 | 运行 | Process0 现在完成 | — | |
+
+流程简述：Process0 发起 I/O 后阻塞，OS 调度 Process1 运行；I/O 完成后 Process0 回到就绪，Process1 结束后 Process0 再运行并完成。
+
+OS 需做多项决策：在 Process0 发起 I/O 时运行 Process1（提高 CPU 利用率）；I/O 完成时是否立即切回 Process0。此类决策由调度程序完成，后续章节详述。
+:::
+
+## 数据结构
+
+OS 用数据结构跟踪进程：进程列表（process list）记录就绪/运行/阻塞进程，I/O 完成时能唤醒对应进程。图 4.3 展示 xv6 中每进程需跟踪的信息，Linux/macOS/Windows 有类似结构。
+
+**寄存器上下文**：进程停止时，寄存器保存到 `context`；恢复时写回物理寄存器即可继续运行，即上下文切换（context switch），后续详述。
+
+```c fold="xv6 的 proc 结构"
+// the registers xv6 will save and restore to stop and subsequently restart a process 
+struct context { 
+    int eip; 
+    int esp; 
+    int ebx; 
+    int ecx; 
+    int edx; 
+    int esi; 
+    int edi; 
+    int ebp; 
+}; 
+
+// the different states a process can be in 
+enum proc_state { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE }; 
+
+// the information xv6 tracks about each process including its register context and state 
+struct proc { 
+    char *mem; // Start of process memory 
+    uint sz; // Size of process memory 
+    char *kstack; // Bottom of kernel stack for this process 
+    enum proc_state state; // Process state 
+    int pid; // Process ID 
+    struct proc *parent; // Parent process 
+    void *chan; // If non-zero, sleeping on chan 
+    int killed; // If non-zero, have been killed 
+    struct file *ofile[NOFILE]; // Open files
+    struct inode *cwd; // Current directory 
+    struct context context; // Switch here to run process 
+    struct trapframe *tf; // Trap frame for the current interrupt 
+}; 
+```
+
+xv6 的 `proc_state` 除运行/就绪/阻塞外，还有：**初始状态**（如 EMBRYO，创建时）、**僵尸状态**（ZOMBIE，已退出未清理）。僵尸态允许父进程通过 wait() 获取返回码（0 表示成功），并通知 OS 清理子进程数据结构。
+
+::: [!tip] 进程列表与 PCB
+进程列表（process list）跟踪系统中所有进程。
+
+存储单进程信息的结构常称进程控制块（PCB），即 `proc` 这类 C 结构。
+:::

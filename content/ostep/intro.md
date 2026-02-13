@@ -3,7 +3,7 @@ title: 第 2 章 操作系统介绍
 aliases: 685e3429-cc4d-413e-ab69-7c7379a87d3d
 date: 2026-02-13 10:08:40
 card: false
-order:
+order: 2
 tags:
 ---
 

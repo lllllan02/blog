@@ -37,7 +37,7 @@ type IntegerType int
 func Sizeof(x ArbitraryType) uintptr
 ```
 
-Sizeof 接受任意类型的表达式 x，返回若声明 var v = x 则变量 v的字节大小。
+Sizeof 接受任意类型的表达式 x，返回若声明 var v = x 则变量 v 的字节大小。
 
 <u>该大小不包含 x 可能引用的任何内存</u>。例如若 x 是 slice，Sizeof 返回的是 slice 描述符的大小，而非 slice 所引用内存的大小。对结构体而言，大小包含由字段对齐引入的填充。
 
@@ -137,9 +137,9 @@ offset of string: 72
 func Alignof(x ArbitraryType) uintptr
 ```
 
-Alignof 接受任意类型的表达式 x，返回若声明 var v = x 则变量 v所需的对齐值。
+Alignof 接受任意类型的表达式 x，返回若声明 var v = x 则变量 v 所需的对齐值。
 
-它是满足v 的地址恒为 0 mod m的最大值 m。与 `reflect.TypeOf(x).Align()` 的返回值相同。
+它是满足 v 的地址恒为 0 mod m 的最大值 m。与 `reflect.TypeOf(x).Align()` 的返回值相同。
 
 特殊地，若变量 s 为结构体类型且 f 为该结构体内的字段，则 Alignof(s.f) 返回该类型在结构体内作为字段时所需的对齐，与 `reflect.TypeOf(s.f).FieldAlign()` 的返回值相同。
 
@@ -528,7 +528,7 @@ p := (*int)(unsafe.Pointer(u))
 
 ### 6) 将 reflect.SliceHeader 或 reflect.StringHeader 的 Data 字段与 Pointer 相互转换
 
-与上一种情况类似，reflect 的 SliceHeader 和 StringHeader 将 Data 声明为 uintptr，是为了防止调用方在未先导入 "unsafe" 的情况下将结果改为任意类型。但这意味着SliceHeader 和 StringHeader 仅在解释实际 slice 或 string 值的内容时有效。
+与上一种情况类似，reflect 的 SliceHeader 和 StringHeader 将 Data 声明为 uintptr，是为了防止调用方在未先导入 "unsafe" 的情况下将结果改为任意类型。但这意味着 SliceHeader 和 StringHeader 仅在解释实际 slice 或 string 值的内容时有效。
 
 ```go 
 var s string
@@ -539,7 +539,7 @@ hdr.Len = n
 
 在此用法中，hdr.Data 实际上是引用 string 头中底层指针的另一种方式，而非 uintptr 变量本身。
 
-一般而言，reflect.SliceHeader 和 reflect.StringHeader 应仅作为 *reflect.SliceHeader和 *reflect.StringHeader 使用，且指向实际的 slice 或 string，切勿作为普通结构体使用。程序不应声明或分配这些结构体类型的变量。
+一般而言，reflect.SliceHeader 和 reflect.StringHeader 应仅作为 *reflect.SliceHeader 和 *reflect.StringHeader 使用，且指向实际的 slice 或 string，切勿作为普通结构体使用。程序不应声明或分配这些结构体类型的变量。
 
 ```go
 // 无效：直接声明的 header 不会把 Data 当作引用持有。

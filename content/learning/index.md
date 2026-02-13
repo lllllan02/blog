@@ -11,7 +11,7 @@ tags:
   - backend
 ---
 
-> [CS自学指南](https://csdiy.wiki/)
+> [CS 自学指南](https://csdiy.wiki/)
 
 以下是精选的高质量大学计算机必修课及 Golang 后端开发专项课程资源，适合从 CS50 进阶到专业后端开发。
 
