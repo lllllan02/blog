@@ -103,17 +103,14 @@
 
 ## 9. 新建 Markdown 文档的写作规范（本项目约束）
 
-当本技能要求“新建一篇文档来记录”时：
+当本技能要求“新建一篇文档来记录”时，必须严格遵循本项目的统一写作规范：
 
-- **写作规范来源**：遵循本项目的 `writing-style` Skill（`.cursor/skills/writing-style/`）。
-- **文章/笔记类（常见：`content/` 下）**：必须使用文章型 frontmatter，并满足：
-  - `title`：简洁直观
-  - `aliases`：UUID v4（小写、带连字符），全仓库唯一
-  - `date`：`YYYY-MM-DD HH:mm:ss`
-  - `tags`：优先来自 `.cursor/data/tags.txt`
-  - 其余字段与排版要求以 `writing-style/reference.md` 为准
-- **内部/外部链接**：内部 `[[aliases|title]]`，外部 `[title](url)`。
-- **排版与增强**：中英文空格、空行、代码块语言标签、长代码折叠、必要时使用 Callout/TabGroup（均以 `writing-style` 为准）。
+👉 **[.cursor/skills/writing-style/SKILL.md](../writing-style/SKILL.md)**
+
+关键要点速查：
+- **Frontmatter**：必须包含 `title`, `aliases` (UUID v4), `date`, `tags`, `card`, `order` 等字段。
+- **链接**：内部使用 `[[aliases|title]]`，外部使用 `[title](url)`。
+- **排版**：中英文空格、空行、代码块语言标签、长代码折叠 (>10行)、Callout 类型等均以 `writing-style` 为准。
 
 ## 10. 善用原文资源（图片 / 表格 / 文件 / 示例）
 
