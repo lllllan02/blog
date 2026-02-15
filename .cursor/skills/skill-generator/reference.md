@@ -37,3 +37,15 @@ skill-name/
 *   **项目技能**：`.cursor/skills/` (项目成员共享)。
 
 > **注意**：不要在 `~/.cursor/skills-cursor/` 中创建技能，那是系统保留目录。
+
+## 5. 文档生成类 Skill 特别规范
+
+如果你的 Skill 涉及生成 Markdown 文档（尤其是 `content/` 下的文章或笔记），**严禁重新定义文档格式**。
+
+必须在 `SKILL.md` 或 `reference.md` 中显式引用本项目的统一写作规范：
+
+> **Format Compliance**:
+> Generated documents must strictly follow the project's writing style guide:
+> 👉 **[.cursor/skills/writing-style/SKILL.md](../writing-style/SKILL.md)**
+
+这确保了所有生成的文档在 Frontmatter、标题结构、Callout 样式和代码折叠等方面保持一致。
