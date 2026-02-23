@@ -45,9 +45,9 @@ title: 欢迎来到我的知识库
 
 </div>
 
-## 坚持做题
+## LeetCode 动态
 
-![[leetcode-stats.svg]]
+![[leetcode-profile.png]]
 
 ## 推荐阅读
 
