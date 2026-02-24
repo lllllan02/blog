@@ -1,6 +1,6 @@
 ---
 title: ${Chinese Name} (${English Name})
-aliases: []
+aliases: [${UUID}]
 tags: [wiki, ${topic}]
 date: ${date}
 card: true

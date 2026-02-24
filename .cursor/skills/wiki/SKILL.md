@@ -32,7 +32,7 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
 ### 3. Format Output
 -   读取并使用 `assets/template.md` 作为文档模板。
 -   遵循 `writing-style` 技能的规范：
-    -   **Frontmatter**: 包含 `title` (中文名称 (English Name)), `aliases`, `tags`, `date`, `card: true`。
+    -   **Frontmatter**: 包含 `title` (中文名称 (English Name)), `aliases` (必须包含一个生成的 UUID 别名), `tags`, `date`, `card: true`。
     -   **简洁性**: 核心内容（不含代码）建议控制在 150 字以内。
     -   **视觉重心**: 确保用户打开文档的第一眼看到的是加粗的定义。
     -   **标题**: **禁止使用一级标题 (H1)**，正文从 H2 开始。
