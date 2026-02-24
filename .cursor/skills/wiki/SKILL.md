@@ -1,9 +1,9 @@
 ---
-name: concept-explainer
-description: 快速生成技术概念或模糊术语的简短介绍文档。当用户需要了解某个概念、创建知识库条目或撰写概念解释时使用。支持通过 "@concept-explainer [概念]" 快速触发并自动创建文档。
+name: wiki
+description: 快速生成技术概念或模糊术语的简短介绍文档。当用户需要了解某个概念、创建知识库条目或撰写概念解释时使用。支持通过 "@wiki [概念]" 快速触发并自动创建文档。
 ---
 
-# Concept Explainer
+# Wiki
 
 ## Overview
 
@@ -38,13 +38,13 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
     -   **标题**: **禁止使用一级标题 (H1)**，正文从 H2 开始。
     -   **引用**: 必须包含 Wiki 或专业介绍链接。
 -   **Write File**: 将生成的 Markdown 内容写入 `content/wiki/` 目录下。
-    -   **Filename**: 必须使用全小写英文，单词间用连字符分隔（kebab-case），例如 `closure.md` 或 `binary-search-tree.md`。
+-   **Filename**: 必须使用全小写英文，单词间用连字符分隔（kebab-case），例如 `closure.md` 或 `binary-search-tree.md`。
 
 ### 4. Self-Review (Quality Check)
 -   在输出最终文档前，进行一次自我审查（借鉴 `doc-coauthoring`）：
     -   **Perspective**: 我是否解释了 *为什么* 这个概念存在，而不仅仅是 *什么*？
     -   **Clarity**: 定义是否对初学者足够清晰？
-    -   **Completeness**: 是否遗漏了主要的缺点或替代方案？
+    -   **Completeness**: 是否遗漏了主要的缺点 or 替代方案？
     -   **Sourcing**: 链接是否权威？是否避免了 SEO 垃圾内容？
     -   **Conciseness**: 是否做到了“最必要、最简短”？
 
@@ -57,7 +57,7 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
 
 ## Example Usage
 
-**User**: "@concept-explainer 闭包"
+**User**: "@wiki 闭包"
 
 **Agent Action**:
 1.  Search "Closure programming definition MDN wikipedia".
