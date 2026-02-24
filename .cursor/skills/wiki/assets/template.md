@@ -6,24 +6,14 @@ date: ${date}
 card: true
 ---
 
-## 定义 (Definition)
+## 定义
 
-> ${One-sentence definition}
+> **${One-sentence definition}**
 
-${Brief explanation of what it is, origin, or core purpose.}
+${Core intuition: Use an analogy or explain the "Why" in 1-2 sentences.}
 
-## 核心特性 (Key Features)
+${Optional: Only for complex concepts, use a simple list for 2-3 key points.}
 
-- **${Feature 1}**: ${Description}
-- **${Feature 2}**: ${Description}
-- **${Feature 3}**: ${Description}
+## 参考
 
-## 应用场景 (Use Cases)
-
-- ${Scenario 1}
-- ${Scenario 2}
-
-## 参考资料 (References)
-
-- [${Source Name}](${URL})
 - [${Source Name}](${URL})

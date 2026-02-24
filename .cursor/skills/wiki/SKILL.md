@@ -24,29 +24,25 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
 -   **Deep Dive (Optional)**: 如果搜索结果摘要不足以提供清晰的定义或特性，请使用 `WebFetch` 工具读取完整页面内容（类似于 `baoyu-url-to-markdown` 的功能），以确保信息的准确性和完整性。
 
 ### 2. Draft Content
--   **定义 (Definition)**: 提炼出一句最准确的定义。
--   **特性 (Features)**: 总结 3-5 个核心特性或关键点。
--   **场景 (Use Cases)**: 列举 1-3 个典型应用场景。
--   **链接 (References)**: 收集 1-3 个高质量的参考链接。
+-   **核心定义 (Core Definition)**: 提炼出一句最准确、最本质的定义。
+-   **核心直觉 (Core Intuition)**: 用通俗的语言或类比解释它“解决了什么问题”或“本质是什么”。
+-   **按需补充 (Optional Context)**: [关键] 仅当概念较复杂（如 OAuth2, B+ Tree）时，才以极简列表形式补充 2-3 个核心要点。对于原子概念（如指令、闭包），**严禁凑数**，直接跳过此项。
+-   **链接 (Reference)**: 仅保留 1 个最权威的参考链接。
 
 ### 3. Format Output
 -   读取并使用 `assets/template.md` 作为文档模板。
 -   遵循 `writing-style` 技能的规范：
     -   **Frontmatter**: 包含 `title` (中文名称 (English Name)), `aliases`, `tags`, `date`, `card: true`。
-    -   **排版**: 中英文之间加空格，使用标准 Markdown 列表。
-    -   **简洁性**: 正文内容控制在 300 字以内（不含代码示例）。
+    -   **简洁性**: 核心内容（不含代码）建议控制在 150 字以内。
+    -   **视觉重心**: 确保用户打开文档的第一眼看到的是加粗的定义。
     -   **标题**: **禁止使用一级标题 (H1)**，正文从 H2 开始。
-    -   **引用**: 必须包含 Wiki 或专业介绍链接。
 -   **Write File**: 将生成的 Markdown 内容写入 `content/wiki/` 目录下。
--   **Filename**: 必须使用全小写英文，单词间用连字符分隔（kebab-case），例如 `closure.md` 或 `binary-search-tree.md`。
+-   **Filename**: 必须使用全小写英文，单词间用连字符分隔（kebab-case）。
 
 ### 4. Self-Review (Quality Check)
--   在输出最终文档前，进行一次自我审查（借鉴 `doc-coauthoring`）：
-    -   **Perspective**: 我是否解释了 *为什么* 这个概念存在，而不仅仅是 *什么*？
-    -   **Clarity**: 定义是否对初学者足够清晰？
-    -   **Completeness**: 是否遗漏了主要的缺点 or 替代方案？
-    -   **Sourcing**: 链接是否权威？是否避免了 SEO 垃圾内容？
-    -   **Conciseness**: 是否做到了“最必要、最简短”？
+-   **The "One-Glance" Test**: 用户能否在 3 秒内看懂这个概念？
+-   **No Fluff**: 是否删除了所有不必要的“特性”、“场景”等模板化废话？
+-   **Intuition**: 解释是否提供了直觉上的理解，而非仅仅是术语堆砌？
 
 ## Guidelines
 
