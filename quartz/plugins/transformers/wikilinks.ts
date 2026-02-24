@@ -1,5 +1,5 @@
 import { QuartzTransformerPlugin } from "../types"
-import { resolveRelative, FullSlug } from "../../util/path"
+import { resolveRelative, FullSlug, simplifySlug, SimpleSlug } from "../../util/path"
 import { QuartzPluginData } from "../vfile"
 import fs from "fs"
 import path from "path"
@@ -74,6 +74,9 @@ export const WikiLinks: QuartzTransformerPlugin<Partial<Options>> = (userOpts) =
             const escapedKeywords = keywordsToSlugs.map(k => k.keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
             const regex = new RegExp(`(${escapedKeywords.join("|")})`, "g")
 
+            const outgoing: Set<SimpleSlug> = new Set(file.data.links ?? [])
+            const wikiLinkCounts: Map<FullSlug, number> = new Map()
+
             function processNode(node: any) {
               if (!node || !node.children) return
               if (["a", "pre", "code", "kbd", "script", "style"].includes(node.tagName)) return
@@ -118,6 +121,10 @@ export const WikiLinks: QuartzTransformerPlugin<Partial<Options>> = (userOpts) =
                     newChildren.push({ type: "text", value: text.slice(lastIndex, matchIndex) })
                   }
 
+                  const count = (wikiLinkCounts.get(kwInfo.slug) ?? 0) + 1
+                  wikiLinkCounts.set(kwInfo.slug, count)
+                  const id = `wikilink-${kwInfo.slug.replace(/\//g, "-")}-${count}`
+
                   newChildren.push({
                     type: "element",
                     tagName: "a",
@@ -125,9 +132,12 @@ export const WikiLinks: QuartzTransformerPlugin<Partial<Options>> = (userOpts) =
                       href: resolveRelative(currentSlug, kwInfo.slug),
                       className: ["internal", "wiki-link"],
                       "data-slug": kwInfo.slug,
+                      id: id,
                     },
                     children: [{ type: "text", value: matchedText }]
                   })
+
+                  outgoing.add(simplifySlug(kwInfo.slug))
 
                   lastIndex = matchIndex + matchedText.length
                 }
@@ -144,6 +154,7 @@ export const WikiLinks: QuartzTransformerPlugin<Partial<Options>> = (userOpts) =
             }
 
             processNode(tree)
+            file.data.links = [...outgoing]
           }
         },
       ]

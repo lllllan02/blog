@@ -1,5 +1,6 @@
 ---
 title: 虚拟机 (Virtual Machine)
+wiki: 虚拟机
 aliases: [a61c6636-1868-4358-bb2e-ccdd349c0354]
 tags: [wiki, virtualization, computing]
 date: 2026-02-24
