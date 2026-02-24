@@ -15,7 +15,7 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: clitool [doc|dir|create-file]")
+		fmt.Println("Usage: clitool [card|doc|dir|create-file]")
 		return
 	}
 
@@ -26,8 +26,12 @@ func main() {
 		if len(os.Args) < 4 {
 			log.Fatal("Usage: clitool create-file [filename] [title]")
 		}
-		createFile(os.Args[2], os.Args[3], true) // 默认 card: true
+		createFile(os.Args[2], os.Args[3], false)
 		return
+	}
+
+	if mode != "card" && mode != "doc" && mode != "dir" {
+		log.Fatal("Usage: clitool [card|doc|dir|create-file]")
 	}
 
 	// 交互式逐级选择目录
@@ -75,7 +79,7 @@ func main() {
 
 	// 输入名称
 	var label string
-	if mode == "doc" {
+	if mode == "card" || mode == "doc" {
 		label = "Enter File Name (without .md)"
 	} else {
 		label = "Enter New Directory Name"
@@ -97,22 +101,13 @@ func main() {
 		return
 	}
 
-	// 选择是否开启 Card 模式
-	cardPrompt := promptui.Select{
-		Label: "Enable Card Mode?",
-		Items: []string{"Yes", "No"},
-	}
-	_, cardResult, err := cardPrompt.Run()
-	if err != nil {
-		fmt.Println("Cancelled")
-		return
-	}
-	isCard := cardResult == "Yes"
+	// 只有 card 命令将 card 设为 true，doc 和 dir 均为 false
+	isCard := mode == "card"
 
 	var targetPath string
-	if mode == "doc" {
+	if mode == "card" || mode == "doc" {
 		targetPath = filepath.Join(selectedPath, name+".md")
-	} else if mode == "dir" {
+	} else {
 		newDirPath := filepath.Join(selectedPath, name)
 		err := os.MkdirAll(newDirPath, 0755)
 		if err != nil {

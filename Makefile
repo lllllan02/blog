@@ -1,4 +1,4 @@
-.PHONY: dev doc dir pangu
+.PHONY: dev doc dir card create-file pangu build
 dev:
 	-lsof -ti:3001 | xargs kill -9 2>/dev/null || true
 	npx quartz build --serve
@@ -11,6 +11,9 @@ doc:
 
 dir:
 	@./clitool dir
+
+card:
+	@./clitool card
 
 create-file:
 	@./clitool create-file "$(filename)" "$(title)"
