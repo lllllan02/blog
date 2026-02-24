@@ -1,6 +1,6 @@
 ---
 title: 寄存器 (Processor Register)
-wiki: 寄存器
+wiki: ["寄存器"]
 aliases: [FF1FE218-D917-4F68-9869-7D1F10FA70BF]
 tags: [wiki, Hardware]
 date: 2026-02-24

@@ -1,6 +1,6 @@
 ---
 title: 上下文切换 (Context Switch)
-wiki: 上下文切换
+wiki: ["上下文切换"]
 aliases: [C235B3A0-1588-41C2-A319-4183ACD753DB]
 tags: [wiki, OS]
 date: 2026-02-24

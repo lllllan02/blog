@@ -1,6 +1,6 @@
 ---
 title: 程序计数器 (Program Counter)
-wiki: 程序计数器
+wiki: ["程序计数器", "PC"]
 aliases: D27589BD-8A93-45EB-9CC0-48F1849A9CA3
 date: 2026-02-24 16:50:00
 card: true
