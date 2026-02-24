@@ -32,13 +32,13 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
 ### 3. Format Output
 -   读取并使用 `assets/template.md` 作为文档模板。
 -   遵循 `writing-style` 技能的规范：
-    -   **Frontmatter**: 包含 `aliases`, `tags`, `date`, `card: true`。
+    -   **Frontmatter**: 包含 `title` (中文名称 (English Name)), `aliases`, `tags`, `date`, `card: true`。
     -   **排版**: 中英文之间加空格，使用标准 Markdown 列表。
     -   **简洁性**: 正文内容控制在 300 字以内（不含代码示例）。
+    -   **标题**: **禁止使用一级标题 (H1)**，正文从 H2 开始。
     -   **引用**: 必须包含 Wiki 或专业介绍链接。
 -   **Write File**: 将生成的 Markdown 内容写入 `content/wiki/` 目录下。
     -   **Filename**: 必须使用全小写英文，单词间用连字符分隔（kebab-case），例如 `closure.md` 或 `binary-search-tree.md`。
-    -   **Title (H1)**: 使用“中文名称 (English Name)”格式，例如 `# 闭包 (Closure)`。
 
 ### 4. Self-Review (Quality Check)
 -   在输出最终文档前，进行一次自我审查（借鉴 `doc-coauthoring`）：

@@ -23,12 +23,13 @@ description: 规范本项目 Markdown 文档的写作风格、元数据（UUID �
 
 ### 2. 初始化元数据 (Metadata)
 -   为新文章生成唯一的 UUID (`aliases`)。
+-   **Title**: 在 Frontmatter 中添加 `title` 字段，格式为“中文名称 (English Name)”。
 -   从标签库 (`.cursor/data/tags.txt`) 中选择合适的标签。
 -   使用当前时间填充 `date`。
 -   详见 [rules.md](references/rules.md#2-metadata-standards)。
 
 ### 3. 构建结构 (Structure)
--   仅使用 H2-H4 标题（H1 留给文件名/Title）。
+-   **禁止使用一级标题 (H1)**：正文最高级别标题应为 H2。
 -   优先使用无序/有序列表承载信息。
 -   使用 Callout 区分重点、补充和扩展内容。
 -   详见 [rules.md](references/rules.md#1-structure-and-style)。

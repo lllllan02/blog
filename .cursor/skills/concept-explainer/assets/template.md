@@ -1,11 +1,10 @@
 ---
+title: ${Chinese Name} (${English Name})
 aliases: []
-tags: [concept, ${topic}]
+tags: [wiki, ${topic}]
 date: ${date}
 card: true
 ---
-
-# ${Chinese Name} (${English Name})
 
 ## 定义 (Definition)
 
