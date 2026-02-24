@@ -62,6 +62,17 @@ export interface Translation {
     contentMeta: {
       readingTime: (variables: { minutes: number }) => string
     }
+    explorer: {
+      title: string
+    }
+    backlinks: {
+      title: string
+      noBacklinksFound: string
+    }
+    pageNavigation: {
+      prev: string
+      next: string
+    }
   }
   pages: {
     rss: {
