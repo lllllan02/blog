@@ -1,5 +1,6 @@
 ---
 title: ${Chinese Name} (${English Name})
+wiki: ["${Chinese Name}"]
 aliases: <UUIDv4: 生成唯一的 UUID>
 date: <Date: YYYY-MM-DD HH:mm:ss>
 card: true

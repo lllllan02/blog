@@ -256,3 +256,19 @@ body[data-slug="index"] {
     text-overflow: ellipsis;
   }
 }
+
+.wiki-link {
+  text-decoration: none !important;
+  color: var(--secondary) !important;
+  border-bottom: 1.5px dashed var(--secondary) !important;
+  transition: all 0.2s ease;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+    color: var(--tertiary) !important;
+    border-bottom-color: var(--tertiary) !important;
+    border-bottom-style: solid !important;
+    background-color: var(--highlight);
+  }
+}

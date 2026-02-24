@@ -79,6 +79,7 @@ const config: QuartzConfig = {
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest", openLinksInNewTab: true }),
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
+      Plugin.WikiLinks({ wikiDir: "wiki" }),
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [
