@@ -3,55 +3,48 @@ name: writing-style
 description: 规范本项目 Markdown 文档的写作风格、元数据（UUID 别名/标签/日期）与排版。当需要新建或改写项目文档（尤其是 content 下的文章）时使用。
 ---
 
-# Writing Style
+# Writing Style Guide
 
-## 适用范围与优先级
+本技能用于指导 AI Agent 在本项目中生成、修改或优化 Markdown 文档，确保文档风格统一、结构清晰且符合工程规范。
 
-- **适用范围**：本项目内的 Markdown 文档（尤其是 `content/` 下的文章类内容）。
-- **不适用/例外**：
-  - **Agent Skills**（如 `.cursor/skills/**/SKILL.md`）：只遵循 Agent Skills 的 `name/description` 元数据格式，不强制使用本文的文章型 frontmatter 字段（`title/aliases/date/tags/...`）。
-  - **代码文件**：以代码规范与可读性为先，本规范仅影响代码注释与 README/说明文档的写作。
-- **冲突处理**：若用户对单篇文档提出更具体的格式/字段要求，以用户要求为最高优先级；否则以本规范为准。
+## 核心原则 (Core Principles)
 
-## 工作流（生成/改写 Markdown 时照做）
+1.  **简洁至上 (Concise is Key)**：优先使用列表和短句，避免冗长段落。
+2.  **渐进式披露 (Progressive Disclosure)**：核心结论先行，扩展细节折叠。
+3.  **工程化规范 (Engineering Standards)**：严格遵守元数据、链接和代码块格式。
 
-1. **确认文档类型**
-   - **文章/笔记类（常见于 `content/`）**：必须包含“文章型 frontmatter”。
-   - **仓库说明类（如 `README.md`）**：可不使用文章型 frontmatter，但仍需遵循排版与链接规范。
+## 工作流 (Workflow)
 
-2. **初始化元数据（仅文章/笔记类强制）**
-   - **Frontmatter 字段**：必须包含并遵循 `reference.md` 中“标题与元数据规范”的权威字段清单与约束。
-   - **实现建议**：生成 `aliases` 时使用 UUID v4（小写、带连字符），并确保全仓库唯一。
+当执行文档生成或改写任务时，请遵循以下步骤：
 
-3. **组织结构（优先列表化，避免长段落）**
-   - 仅使用 2-4 级标题拆分主题（禁用 H1/H5/H6）。
-   - 主题内优先用无序/有序列表承载信息点。
+### 1. 确认文档类型
+-   **文章/笔记类 (Content)**：通常位于 `content/` 目录下。**必须**包含完整的文章型 Frontmatter。
+-   **仓库说明类 (Repo Docs)**：如 `README.md`。可简化 Frontmatter，但仍需遵循排版规范。
 
-4. **渐进式披露（可选策略：用 Callout 强化重点/收纳扩展）**
-   - **适用场景**：重点结论、补充说明、注意事项、踩坑提示等，都可以尝试用 Callout 做“视觉强化”。
-   - **默认折叠**：当内容过长、偏扩展、偏背景资料时，优先使用可折叠 Callout（如 `::: [!abstract]- 标题`）收纳，避免正文被打断。
-   - **类型不设限**：不限于 `[!abstract]` / `[!tip]`，常用约定见 `reference.md`。
-   - **原子化**：一个 Callout 只讲一个知识点，不要把多个点堆在一个 Callout 里。
+### 2. 初始化元数据 (Metadata)
+-   为新文章生成唯一的 UUID (`aliases`)。
+-   从标签库 (`.cursor/data/tags.txt`) 中选择合适的标签。
+-   使用当前时间填充 `date`。
+-   详见 [rules.md](references/rules.md#2-metadata-standards)。
 
-5. **输出前自检**（见“自检清单”）
+### 3. 构建结构 (Structure)
+-   仅使用 H2-H4 标题（H1 留给文件名/Title）。
+-   优先使用无序/有序列表承载信息。
+-   使用 Callout 区分重点、补充和扩展内容。
+-   详见 [rules.md](references/rules.md#1-structure-and-style)。
 
-## 自检清单（提交/输出前必过）
+### 4. 内容编写与格式化 (Drafting & Formatting)
+-   **中英文空格**：汉字与英文/数字之间必须保留空格。
+-   **代码规范**：指定语言标签，长代码折叠，多语言对比使用 TabGroup。
+-   **引用规范**：内部链接使用 `[[uuid|title]]` 格式。
+-   可直接复制 [templates.md](references/templates.md) 中的模板。
 
-- **标题**：仅使用 2-4 级标题；所有标题无 Emoji，且不使用 `` 代码块。
-- **结构**：尽量列表化；重点/补充可用 Callout 强化；扩展/过长内容默认折叠；单个 Callout 只讲一个点。
-- **元数据（文章/笔记类）**：字段齐全；`date` 为 `YYYY-MM-DD HH:mm:ss`；`aliases` 为唯一 UUID。
-- **链接**：内部链接用 `[[aliases|title]]`（其中 `aliases` 为 UUID）；外链用 `[title](url)`。
-- **标签**：优先来自 `.cursor/data/tags.txt`；新增标签已先更新库文件。
-- **排版**：中英文间有空格；标题/段落间有空行；不要使用 `---` 分隔符（二级标题自带分隔符）；代码块带语言标签；长代码已折叠；多维内容已用 TabGroup。
+### 5. 质量自检 (Quality Check)
+-   在输出最终结果前，对照 [checklist.md](references/checklist.md) 进行自我审查。
+-   确保无 Linting 错误（如标题层级跳跃、行尾空格等）。
 
-## Additional Resources
+## 参考资料 (References)
 
-- 详细规则与边界情况见 [reference.md](reference.md)。
-- 可复制的模板/片段见 [examples.md](examples.md)。
-
-## 开发者指令（对 Agent 的硬性要求）
-
-当执行文档生成任务时：
-1. **初始化元数据**：生成 UUID，并从标签库匹配标签。
-2. **内容审核**：根据“文档简洁原则”过滤无关信息。
-3. **格式自检**：检查标题是否有 Emoji，中英文是否有空格，空行是否充足。
+-   **[rules.md](references/rules.md)**: 详细的写作规范、元数据定义和格式要求。
+-   **[templates.md](references/templates.md)**: 可直接使用的 Frontmatter、Callout 和代码块模板。
+-   **[checklist.md](references/checklist.md)**: 发布前的质量检查清单。
