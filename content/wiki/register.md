@@ -21,10 +21,6 @@ card: true
     - **指令寄存器 (IR)**：存放当前正在执行的指令。
 - **作用**：减少 CPU 访问内存（相对极慢）的次数，是指令集架构（ISA）的核心组成部分。
 
-## 相关概念
-
-- [[program-counter|程序计数器 (Program Counter)]]：寄存器的一种，专门负责寻址指令。
-
 ## 参考
 
 - [Processor register - Wikipedia](https://en.wikipedia.org/wiki/Processor_register)
