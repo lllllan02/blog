@@ -31,7 +31,7 @@
 | `title` | 是 | 页面标题，简洁直观。概念类可用“中文 英文”格式。 | `协程栈 Goroutine Stack` |
 | `aliases` | 是 | **全库唯一**的 UUID v4（小写，带连字符）。用于稳定引用。 | `a1b2c3d4-e5f6-...` |
 | `date` | 是 | 创建时间，格式 `YYYY-MM-DD HH:mm:ss`。 | `2023-10-27 10:00:00` |
-| `tags` | 否 | 标签列表。优先从 `.cursor/data/tags.txt` 选取。 | `[go, concurrency]` |
+| `tags` | 否 | 标签列表。 | `[go, concurrency]` |
 | `order` | 否 | 排序权重（数字越小越靠前）。 | `1` |
 | `card` | 否 | 是否为 Flashcard 知识点（布尔值）。 | `true` |
 

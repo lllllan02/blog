@@ -12,8 +12,7 @@ date: <Date: YYYY-MM-DD HH:mm:ss>
 order: <Order: 默认留空或根据目录文件数+1>
 card: <Bool: 是否适合作为 Flashcard 复习>
 tags:
-  - <Tag1: 优先参考 .cursor/data/tags.txt>
-  - <Tag2>
+  - <Tags>
 ---
 ```
 
