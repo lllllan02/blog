@@ -1,7 +1,6 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import { FullSlug, SimpleSlug, resolveRelative, pathToRoot, joinSegments } from "../util/path"
+import { FullSlug, resolveRelative, joinSegments } from "../util/path"
 import { QuartzPluginData } from "../plugins/vfile"
-import { byDateAndAlphabetical } from "./PageList"
 import { i18n } from "../i18n"
 import { classNames } from "../util/lang"
 
@@ -36,15 +35,6 @@ export default ((userOpts?: Partial<Options>) => {
     const currentSlug = fileData.slug!
     const currentDir = currentSlug.split("/").slice(0, -1).join("/")
 
-    const list = allFiles
-      .filter((f) => {
-        const dir = f.slug!.split("/").slice(0, -1).join("/")
-        return dir === currentDir && f.slug !== currentSlug && f.slug !== joinSegments(currentDir, "index") as FullSlug
-      })
-      .sort(opts.sort)
-
-    const currentIndex = list.findIndex((f) => f.slug === currentSlug)
-    // Since we filtered out currentSlug, we need to find where it would be
     const allInDir = allFiles
       .filter((f) => {
         const dir = f.slug!.split("/").slice(0, -1).join("/")
