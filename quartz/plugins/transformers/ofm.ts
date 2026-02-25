@@ -191,6 +191,18 @@ export const ObsidianFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options>>
         // replace all other wikilinks
         src = src.replace(wikilinkRegex, (value, ...capture) => {
           const [rawFp, rawHeader, rawAlias]: (string | undefined)[] = capture
+          const offset = capture[capture.length - 2] as number
+          const fullSrc = capture[capture.length - 1] as string
+
+          // Check if we are in a code block title
+          // Find the start of the line
+          const lineStart = fullSrc.lastIndexOf('\n', offset - 1) + 1
+          const lineEnd = fullSrc.indexOf('\n', offset)
+          const line = fullSrc.slice(lineStart, lineEnd === -1 ? undefined : lineEnd)
+
+          if (line.trim().startsWith('```') || line.trim().startsWith('~~~')) {
+            return value
+          }
 
           const [fp, anchor] = splitAnchor(`${rawFp ?? ""}${rawHeader ?? ""}`)
           const blockRef = Boolean(rawHeader?.startsWith("#^")) ? "^" : ""

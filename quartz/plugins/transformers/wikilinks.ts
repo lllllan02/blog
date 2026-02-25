@@ -1,6 +1,5 @@
 import { QuartzTransformerPlugin } from "../types"
 import { resolveRelative, FullSlug, simplifySlug, SimpleSlug } from "../../util/path"
-import { QuartzPluginData } from "../vfile"
 import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
@@ -80,6 +79,10 @@ export const WikiLinks: QuartzTransformerPlugin<Partial<Options>> = (userOpts) =
             function processNode(node: any) {
               if (!node || !node.children) return
               if (["a", "pre", "code", "kbd", "script", "style"].includes(node.tagName)) return
+              
+              // Skip code block titles
+              if (node.properties?.className?.includes("code-fold-title")) return
+              if (node.properties && "data-rehype-pretty-code-title" in node.properties) return
 
               for (let i = 0; i < node.children.length; i++) {
                 const child = node.children[i]
