@@ -1,11 +1,15 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
-import * as Component from "./quartz/components"
+import * as Component from "./quartz/components" 
 
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
   afterBody: [
+    Component.ConditionalRender({
+      component: Component.WikiCloud(),
+      condition: (page) => page.fileData.slug === "wiki-cloud" || page.fileData.slug === "wiki/index",
+    }),
     Component.ConditionalRender({
       component: Component.PageNavigation(),
       condition: (page) => page.fileData.slug !== "index",
@@ -47,7 +51,9 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      filterFn: (node) => node.slugSegment !== "wiki" && node.slugSegment !== "tags",
+    }),
   ],
   right: [
     // Component.Graph(),

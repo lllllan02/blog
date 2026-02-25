@@ -27,6 +27,8 @@ import PageNavigation from "./PageNavigation"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 
+import WikiCloud from "./WikiCloud"
+
 export {
   ArticleTitle,
   Content,
@@ -56,4 +58,5 @@ export {
   PageNavigation,
   Flex,
   ConditionalRender,
+  WikiCloud,
 }
