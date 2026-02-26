@@ -14,7 +14,7 @@ tags:
 1. [[44A2277A-FBC8-4EA7-A58E-B6C120FEBDE4|Golang 初始栈为什么只有 2KB]] 与 [[32BB6D3A-DF95-4C92-BA9C-22EBA5BF940F|线程栈为什么通常是 MB 级别]]？
 2. [[f8db303e-ccba-4463-a400-401c33296dd1|sync.Mutex 的实现原理（1.18 前后版本差异 / 饥饿模式）]]
 	- https://victoriametrics.com/blog/go-sync-mutex/
-3. Golang 中 for range 遍历 slice/map 时，变量的内存地址是否变化?为什么会出现“遍历赋值后值不对”的问题?
+3. [[17785045-1552-40A9-BEAE-EF127DB91FA0|Golang 中 for range 遍历 slice/map 时，变量的内存地址是否变化?为什么会出现“遍历赋值后值不对”的问题?]]
 4. Golang 的 interface{}空接口的底层实现?为什么空接口可以接收任意类型?类型断言的两种方式及区别?
 5. 分布式 ID 生成方案?
 6. 高并发场景下，如何保证接口的幂等性?
