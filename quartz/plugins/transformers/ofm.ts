@@ -7,6 +7,7 @@ import {
   DefinitionContent,
   Paragraph,
   Code,
+  Heading,
 } from "mdast"
 import { Element, Literal, Root as HtmlRoot } from "hast"
 import { ReplaceFunction, findAndReplace as mdastFindReplace } from "mdast-util-find-and-replace"
@@ -401,6 +402,23 @@ export const ObsidianFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options>>
               }
             })
           }
+          // Strip wikilinks from headings and code block titles
+          visit(tree, "heading", (node: Heading) => {
+            visit(node, "text", (textNode) => {
+              textNode.value = textNode.value.replace(wikilinkRegex, (_match, fp, header, alias) => {
+                return (alias ?? "").replace(/^\\?\|/, "") || fp || header || ""
+              })
+            })
+          })
+
+          visit(tree, "code", (node: Code) => {
+            if (node.meta) {
+              node.meta = node.meta.replace(wikilinkRegex, (_match, fp, header, alias) => {
+                return (alias ?? "").replace(/^\\?\|/, "") || fp || header || ""
+              })
+            }
+          })
+
           mdastFindReplace(tree, replacements)
         }
       })

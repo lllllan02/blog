@@ -78,7 +78,7 @@ export const WikiLinks: QuartzTransformerPlugin<Partial<Options>> = (userOpts) =
 
             function processNode(node: any) {
               if (!node || !node.children) return
-              if (["a", "pre", "code", "kbd", "script", "style"].includes(node.tagName)) return
+              if (["a", "pre", "code", "kbd", "script", "style", "h1", "h2", "h3", "h4", "h5", "h6"].includes(node.tagName)) return
               
               // Skip code block titles
               if (node.properties?.className?.includes("code-fold-title")) return

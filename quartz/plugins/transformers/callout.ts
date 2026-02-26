@@ -92,9 +92,8 @@ export const Callout: QuartzTransformerPlugin<Partial<Options>> = (userOpts) => 
             .replace(
               wikilinkRegex,
               (_match: string, fp: string | undefined, header: string | undefined, alias: string | undefined) => {
-                const dest = `${fp ?? ""}${header ?? ""}`
                 const display = (alias ?? "").replace(/^\\?\|/, "") || fp || header || ""
-                return `<a href="${dest}">${applyPangu(display)}</a>`
+                return applyPangu(display)
               },
             )
             .replace(mdLinkRegex, (_match: string, display: string, dest: string) => {
