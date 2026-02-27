@@ -1,0 +1,44 @@
+.left-sidebar-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  .lsh-title {
+    text-align: left;
+    
+    h2 {
+      margin: 0;
+      font-size: 1.75rem;
+      line-height: 1.2;
+    }
+  }
+
+  .lsh-search-tools {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    width: 100%;
+
+    .lsh-search {
+      flex-grow: 1;
+      
+      /* Ensure search input takes full width of container */
+      .search {
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+
+    .lsh-tools {
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0;
+      align-items: center;
+    }
+  }
+
+  .lsh-domain {
+    width: 100%;
+  }
+}

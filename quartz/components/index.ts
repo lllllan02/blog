@@ -28,6 +28,8 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 
 import WikiCloud from "./WikiCloud"
+import DomainHeader from "./DomainHeader"
+import LeftSidebarHeader from "./LeftSidebarHeader"
 
 export {
   ArticleTitle,
@@ -59,4 +61,6 @@ export {
   Flex,
   ConditionalRender,
   WikiCloud,
+  DomainHeader,
+  LeftSidebarHeader,
 }

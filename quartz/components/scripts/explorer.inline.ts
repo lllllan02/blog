@@ -12,6 +12,7 @@ interface ParsedOptions {
   filterFn: (node: FileTrieNode) => boolean
   mapFn: (node: FileTrieNode) => void
   order: "sort" | "filter" | "map"[]
+  scopeToCurrentDomain?: boolean
 }
 
 type FolderState = {
@@ -167,6 +168,7 @@ async function setupExplorer(currentSlug: FullSlug) {
       sortFn: new Function("return " + (dataFns.sortFn || "undefined"))(),
       filterFn: new Function("return " + (dataFns.filterFn || "undefined"))(),
       mapFn: new Function("return " + (dataFns.mapFn || "undefined"))(),
+      scopeToCurrentDomain: explorer.dataset.scopetodomain === "true",
     }
 
     // Get folder state from local storage
@@ -179,6 +181,20 @@ async function setupExplorer(currentSlug: FullSlug) {
     const data = await fetchData
     const entries = [...Object.entries(data)] as [FullSlug, ContentDetails][]
     const trie = FileTrieNode.fromEntries(entries)
+
+    if (opts.scopeToCurrentDomain) {
+      const parts = currentSlug.split("/")
+      const currentDomain = parts[0] === "" ? parts[1] : parts[0]
+      
+      if (currentDomain && currentDomain !== "index" && currentDomain !== "tags" && currentDomain !== "wiki") {
+        const domainNode = trie.children.find((child) => child.slugSegment === currentDomain)
+        if (domainNode) {
+          trie.children = domainNode.children
+        } else {
+          trie.children = []
+        }
+      }
+    }
 
     // Apply functions in order
     for (const fn of opts.order) {
