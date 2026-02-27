@@ -3,7 +3,7 @@ title: The Go Blog
 aliases: 39460182-683f-49a5-a917-17a000066b2d
 date: 2026-02-13 20:21:00
 card: false
-order:
+order: 1
 tags:
 ---
 
