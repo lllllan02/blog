@@ -22,10 +22,12 @@ description: 规范本项目 Markdown 文档的写作风格、元数据（UUID �
 -   **仓库说明类 (Repo Docs)**：如 `README.md`。可简化 Frontmatter，但仍需遵循排版规范。
 
 ### 2. 初始化元数据 (Metadata)
--   为新文章生成唯一的 UUID (`aliases`)。
+-   **优先使用工具**: 如果可能，使用 `./clitool create-file "path/to/file.md" "Title"` 创建文件，以自动生成准确的 `date` 和 `aliases` (UUID)。
+-   **手动创建时**:
+    -   为新文章生成唯一的 UUID (`aliases`)。
+    -   使用当前时间（精确到秒）替换模板中的 `<Date...>` 占位符或填充 `date` 字段。
 -   **Title**: 在 Frontmatter 中添加 `title` 字段，格式为“中文名称 (English Name)”。
 -   从标签库 (`.cursor/data/tags.txt`) 中选择合适的标签。
--   使用当前时间填充 `date`。
 -   详见 [rules.md](references/rules.md#2-metadata-standards)。
 
 ### 3. 构建结构 (Structure)

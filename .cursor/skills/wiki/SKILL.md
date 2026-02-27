@@ -30,13 +30,13 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
 -   **链接 (Reference)**: 仅保留 1 个最权威的参考链接。
 
 ### 3. Format Output
--   读取并使用 `assets/template.md` 作为文档模板。
+-   **Create File**: 优先使用 `./clitool create-file "content/wiki/filename.md" "Title"` 命令创建文件，以自动生成准确的 `date` 和 `aliases` (UUID)。
+-   **Update Content**: 读取生成的文件，保留 `date` 和 `aliases`，并根据 `assets/template.md` 模板重写文件内容。
 -   遵循 `writing-style` 技能的规范：
-    -   **Frontmatter**: 包含 `title` (中文名称 (English Name)), `wiki` (包含中文名称、英文缩写或核心术语的数组), `aliases` (必须包含一个生成的 UUID 别名), `tags`, `date`, `card: true`。
+    -   **Frontmatter**: 补充 `wiki` (包含中文名称、英文缩写或核心术语的数组), `tags`, `card: true` 等字段。
     -   **简洁性**: 核心内容（不含代码）建议控制在 150 字以内。
     -   **视觉重心**: 确保用户打开文档的第一眼看到的是加粗的定义。
     -   **标题**: **禁止使用一级标题 (H1)**，正文从 H2 开始。
--   **Write File**: 将生成的 Markdown 内容写入 `content/wiki/` 目录下。
 -   **Filename**: 必须使用全小写英文，单词间用连字符分隔（kebab-case）。
 
 ### 4. Self-Review (Quality Check)
@@ -58,5 +58,6 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
 **Agent Action**:
 1.  Search "Closure programming definition MDN wikipedia".
 2.  Extract: "A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment)."
-3.  Fill `assets/template.md`.
-4.  **Write File**: Create `content/wiki/closure.md` with the generated content.
+3.  **Create File**: Run `./clitool create-file content/wiki/closure.md "Closure"`.
+4.  **Read File**: Read `content/wiki/closure.md` to get the generated `date` and `aliases`.
+5.  **Update Content**: Rewrite `content/wiki/closure.md` with the full wiki content and metadata (adding `wiki`, `tags`, `card: true`).
