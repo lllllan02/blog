@@ -40,6 +40,9 @@ jobs:
           fi
           git commit -m "chore: update leetcode profile image"
           
+          # Discard any other changes (like package-lock.json from npm install) to ensure clean working directory for rebase
+          git checkout .
+
           # Retry logic for git push
           n=0
           until [ "$n" -ge 5 ]
