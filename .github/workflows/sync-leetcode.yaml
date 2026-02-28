@@ -40,8 +40,9 @@ jobs:
           fi
           git commit -m "chore: update leetcode profile image"
           
-          # Discard any other changes (like package-lock.json from npm install) to ensure clean working directory for rebase
-          git checkout .
+          # Force clean the working directory to discard any unstaged changes (like package-lock.json)
+          # This fixes "cannot pull with rebase: You have unstaged changes" error
+          git reset --hard
 
           # Retry logic for git push
           n=0
