@@ -40,35 +40,14 @@ tags:
     - [ ] [单链表（视频）](https://www.coursera.org/lecture/data-structures/singly-linked-lists-kHhgK)
     - [ ] [CS 61B - 链表 1（视频）](https://archive.org/details/ucberkeley_webcast_htzJdKoEmO0)
     - [ ] [CS 61B - 链表 2（视频）](https://archive.org/details/ucberkeley_webcast_-c4I3gFYe3w)
-    - [ ] [[复习] 4 分钟了解链表（视频）](https://youtu.be/F8AbOfQwl1c)
-- [ ] [C 代码（视频）](https://www.youtube.com/watch?v=QN6FPiD0Gzo)
-        - 不是整个视频，只是关于 Node 结构和内存分配的部分。
+    - [x] [[复习] 4 分钟了解链表（视频）](https://youtu.be/F8AbOfQwl1c) (2026-02-28)
+- [x] [C 代码（视频）](https://www.youtube.com/watch?v=QN6FPiD0Gzo) 不是整个视频，只是关于 Node 结构和内存分配的部分。(2026-02-28)
 - [ ] 链表 vs 数组：
     - [核心链表与数组（视频）](https://www.coursera.org/lecture/data-structures-optimizing-performance/core-linked-lists-vs-arrays-rjBs9)
     - [在现实世界中，链表与数组的比较（视频）](https://www.coursera.org/lecture/data-structures-optimizing-performance/in-the-real-world-lists-vs-arrays-QUaUd)
-- [ ] [为什么你需要避免使用链表（视频）](https://www.youtube.com/watch?v=YQs6IC-vgmo)
-- [ ] 的确：你需要关于“指向指针的指针”的相关知识：（因为当你传递一个指针到一个函数时，
-  该函数可能会改变指针所指向的地址）该页只是为了让你了解“指向指针的指针”这一概念。
-  但我并不推荐这种链式遍历的风格。因为，这种风格的代码，其可读性和可维护性太低。
-    - [指向指针的指针](https://www.eskimo.com/~scs/cclass/int/sx8.html)
-- [ ] 实现（我实现了使用尾指针以及没有使用尾指针这两种情况）：
-    - [ ] size() —— 返回链表中数据元素的个数
-    - [ ] empty() —— 若链表为空则返回一个布尔值 true
-    - [ ] value_at(index) —— 返回第 n 个元素的值（从 0 开始计算）
-    - [ ] push_front(value) —— 添加元素到链表的首部
-    - [ ] pop_front() —— 删除首部元素并返回其值
-    - [ ] push_back(value) —— 添加元素到链表的尾部
-    - [ ] pop_back() —— 删除尾部元素并返回其值
-    - [ ] front() —— 返回首部元素的值
-    - [ ] back() —— 返回尾部元素的值
-    - [ ] insert(index, value) —— 插入值到指定的索引，并把当前索引的元素指向到新的元素
-    - [ ] erase(index) —— 删除指定索引的节点
-    - [ ] value_n_from_end(n) —— 返回倒数第 n 个节点的值
-    - [ ] reverse() —— 逆序链表
-    - [ ] remove_value(value) —— 删除链表中指定值的第一个元素
-- [ ] 双向链表
-    - [介绍（视频）](https://www.coursera.org/learn/data-structures/lecture/jpGKD/doubly-linked-lists)
-    - 并不需要实现
+- [x] [指向指针的指针](https://www.eskimo.com/~scs/cclass/int/sx8.html) 的确：你需要关于“指向指针的指针”的相关知识：（因为当你传递一个指针到一个函数时，该函数可能会改变指针所指向的地址）该页只是为了让你了解“指向指针的指针”这一概念。但我并不推荐这种链式遍历的风格。因为，这种风格的代码，其可读性和可维护性太低。(2026-02-28)
+- [x] [[d0dc9d2b-70ba-4578-8a5b-08a4b8970587|实现单向链表]] (2026-02-28)
+- [ ] [双向链表介绍（视频）](https://www.coursera.org/learn/data-structures/lecture/jpGKD/doubly-linked-lists) 并不需要实现。
 
 ### 堆栈（Stack）
 - [ ] [堆栈（视频）](https://www.coursera.org/learn/data-structures/lecture/UdKzQ/stacks)
