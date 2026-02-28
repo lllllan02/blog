@@ -39,4 +39,13 @@ jobs:
             exit 0
           fi
           git commit -m "chore: update leetcode profile image"
-          git push
+          
+          # Retry logic for git push
+          n=0
+          until [ "$n" -ge 5 ]
+          do
+             git pull --rebase && git push && break
+             n=$((n+1))
+             echo "Push failed, retrying in 15 seconds..."
+             sleep 15
+          done
