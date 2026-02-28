@@ -12,42 +12,40 @@ tags:
 
 ## 算法复杂度 / Big-O
 
-- [x] [哈佛大学 CS50 - 渐进符号（视频）](https://www.youtube.com/watch?v=iOq5kSKqeR4) (2026-01-28)
-- [x] [大 O 符号（通用快速教程）（视频）](https://www.youtube.com/watch?v=V6mKVRU1evU) (2026-01-28)
-- [ ] [大 O 符号（以及Ω和Θ）- 最佳数学解释（视频）](https://www.youtube.com/watch?v=ei-A_wy5Yxw&index=2&list=PL1BaGV1cIH4UhkL8a9bJGG356covJ76qN)
-- [ ] [Skiena（视频）](https://www.youtube.com/watch?v=z1mkCe3kVUA)
-- [ ] [加州大学伯克利分校关于大 O 符号（视频）](https://archive.org/details/ucberkeley_webcast_VIS4YDpuP98)
-- [x] [摊还分析（视频）](https://www.youtube.com/watch?v=B3SpQZaAZP4&index=10&list=PL1BaGV1cIH4UhkL8a9bJGG356covJ76qN) (2026-01-29)
-- [ ] [TopCoder 计算复杂性：第 1 部分](https://www.topcoder.com/thrive/articles/Computational%20Complexity%20part%20one) + [第 2 部分](https://www.topcoder.com/thrive/articles/Computational%20Complexity%20part%20two)（包括递归关系和主定理）
-- [ ] [速查表](http://bigocheatsheet.com/)
-- [x] [[回顾] 在 18 分钟内分析算法（播放列表）（视频）](https://www.youtube.com/playlist?list=PL9xmBV_5YoZMxejjIyFHWa-4nKg6sdoIv) (2026-01-29)
+- [x] [Harvard CS50 - 渐进符号（视频）](https://www.youtube.com/watch?v=iOq5kSKqeR4) (2026-01-28)
+- [x] [Derek Banas - 大 O 符号（视频）](https://www.youtube.com/watch?v=V6mKVRU1evU) (2026-01-28)
+- [ ] [MIT 6.046J - 大 O 符号（以及Ω和Θ）（视频）](https://www.youtube.com/watch?v=ei-A_wy5Yxw&index=2&list=PL1BaGV1cIH4UhkL8a9bJGG356covJ76qN)
+- [ ] [Steven Skiena - 算法分析（视频）](https://www.youtube.com/watch?v=z1mkCe3kVUA)
+- [ ] [UC Berkeley CS61B - 大 O 符号（视频）](https://archive.org/details/ucberkeley_webcast_VIS4YDpuP98)
+- [x] [MIT 6.046J - 摊还分析（视频）](https://www.youtube.com/watch?v=B3SpQZaAZP4&index=10&list=PL1BaGV1cIH4UhkL8a9bJGG356covJ76qN) (2026-01-29)
+- [ ] [TopCoder - 计算复杂性：第 1 部分](https://www.topcoder.com/thrive/articles/Computational%20Complexity%20part%20one) + [第 2 部分](https://www.topcoder.com/thrive/articles/Computational%20Complexity%20part%20two)（包括递归关系和主定理）
+- [x] [Michael Sambol - 18 分钟分析算法（视频）](https://www.youtube.com/playlist?list=PL9xmBV_5YoZMxejjIyFHWa-4nKg6sdoIv) (2026-01-29)
+- [ ] [Big-O 速查表](http://bigocheatsheet.com/)
 
 ## 数据结构
 
 ### 数组（Arrays）
 
-- [x] [数组 CS50 哈佛大学](https://www.youtube.com/watch?v=tI_tIZFyKBw&t=3009s) (2026-01-29)
-- [ ] [数组（视频）](https://www.coursera.org/lecture/data-structures/arrays-OsBSF)
-- [ ] [加州大学伯克利分校 CS61B - 线性和多维数组（视频）](https://archive.org/details/ucberkeley_webcast_Wp8oiO_CZZE)（从 15 分 32 秒开始）
-- [ ] [动态数组（视频）](https://www.coursera.org/lecture/data-structures/dynamic-arrays-EwbnV)
-- [ ] [嵌套数组（视频）](https://www.youtube.com/watch?v=1jtrQqYpt7g)
+- [x] [Harvard CS50 - 数组（视频）](https://www.youtube.com/watch?v=tI_tIZFyKBw&t=3009s) (2026-01-29)
+- [ ] [UC San Diego - 数组（视频）](https://www.coursera.org/lecture/data-structures/arrays-OsBSF)
+- [ ] [UC San Diego - 动态数组（视频）](https://www.coursera.org/lecture/data-structures/dynamic-arrays-EwbnV)
+- [ ] [UC Berkeley CS61B - 线性和多维数组（视频）](https://archive.org/details/ucberkeley_webcast_Wp8oiO_CZZE)（从 15 分 32 秒开始）
+- [ ] [Python - 嵌套列表（视频）](https://www.youtube.com/watch?v=1jtrQqYpt7g)
 - [x] [[d862f96e-ba2c-43be-a499-b0a716c51f7d|实现一个动态数组（可自动调整大小的可变数组）]] (2026-02-01)
 
 
 ### 链表（Linked Lists）
-- [ ] 介绍：
-    - [x] [链表 CS50 哈佛大学](https://www.youtube.com/watch?v=2T-A_GFuoTo&t=650s) (2026-02-07)
-    - [ ] [单链表（视频）](https://www.coursera.org/lecture/data-structures/singly-linked-lists-kHhgK)
-    - [ ] [CS 61B - 链表 1（视频）](https://archive.org/details/ucberkeley_webcast_htzJdKoEmO0)
-    - [ ] [CS 61B - 链表 2（视频）](https://archive.org/details/ucberkeley_webcast_-c4I3gFYe3w)
-    - [x] [[复习] 4 分钟了解链表（视频）](https://youtu.be/F8AbOfQwl1c) (2026-02-28)
-- [x] [C 代码（视频）](https://www.youtube.com/watch?v=QN6FPiD0Gzo) 不是整个视频，只是关于 Node 结构和内存分配的部分。(2026-02-28)
-- [ ] 链表 vs 数组：
-    - [核心链表与数组（视频）](https://www.coursera.org/lecture/data-structures-optimizing-performance/core-linked-lists-vs-arrays-rjBs9)
-    - [在现实世界中，链表与数组的比较（视频）](https://www.coursera.org/lecture/data-structures-optimizing-performance/in-the-real-world-lists-vs-arrays-QUaUd)
-- [x] [指向指针的指针](https://www.eskimo.com/~scs/cclass/int/sx8.html) 的确：你需要关于“指向指针的指针”的相关知识：（因为当你传递一个指针到一个函数时，该函数可能会改变指针所指向的地址）该页只是为了让你了解“指向指针的指针”这一概念。但我并不推荐这种链式遍历的风格。因为，这种风格的代码，其可读性和可维护性太低。(2026-02-28)
+- [x] [Harvard CS50 - 链表（视频）](https://www.youtube.com/watch?v=2T-A_GFuoTo&t=650s) (2026-02-07)
+- [ ] [UC Berkeley CS61B - 链表 1（视频）](https://archive.org/details/ucberkeley_webcast_htzJdKoEmO0)
+- [ ] [UC Berkeley CS61B - 链表 2（视频）](https://archive.org/details/ucberkeley_webcast_-c4I3gFYe3w)
+- [x] [Michael Sambol - 4 分钟了解链表（视频）](https://youtu.be/F8AbOfQwl1c) (2026-02-28)
+- [x] [MyCodeSchool - 链表 C 语言实现（视频）](https://www.youtube.com/watch?v=QN6FPiD0Gzo) 不是整个视频，只是关于 Node 结构和内存分配的部分。(2026-02-28)
+- [x] [Steve Summit - 指向指针的指针（文章）](https://www.eskimo.com/~scs/cclass/int/sx8.html) 的确：你需要关于“指向指针的指针”的相关知识：（因为当你传递一个指针到一个函数时，该函数可能会改变指针所指向的地址）该页只是为了让你了解“指向指针的指针”这一概念。但我并不推荐这种链式遍历的风格。因为，这种风格的代码，其可读性和可维护性太低。(2026-02-28)
 - [x] [[d0dc9d2b-70ba-4578-8a5b-08a4b8970587|实现单向链表]] (2026-02-28)
-- [ ] [双向链表介绍（视频）](https://www.coursera.org/learn/data-structures/lecture/jpGKD/doubly-linked-lists) 并不需要实现。
+- [ ] [UC San Diego - 单链表（视频）](https://www.coursera.org/lecture/data-structures/singly-linked-lists-kHhgK)
+- [ ] [UC San Diego - 链表 vs 数组：核心差异（视频）](https://www.coursera.org/lecture/data-structures-optimizing-performance/core-linked-lists-vs-arrays-rjBs9)
+- [ ] [UC San Diego - 链表 vs 数组：现实世界应用（视频）](https://www.coursera.org/lecture/data-structures-optimizing-performance/in-the-real-world-lists-vs-arrays-QUaUd)
+- [ ] [UC San Diego - 双向链表介绍（视频）](https://www.coursera.org/learn/data-structures/lecture/jpGKD/doubly-linked-lists) 并不需要实现。
 
 ### 堆栈（Stack）
 - [ ] [堆栈（视频）](https://www.coursera.org/learn/data-structures/lecture/UdKzQ/stacks)
