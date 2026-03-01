@@ -111,242 +111,347 @@ void print_array(Array *arr);
 const char* ERROR_UNABLE_ALLOCATE_MEMORY = "Unable to allocate memory.";
 const char* ERROR_OUT_OF_BOUNDS = "Index out of bounds.";
 
-// ========== tool function ==========
-
-static int determine_capacity(int capacity) {
-    if (capacity < 1) exit(EXIT_FAILURE);
-    int true_capacity = MIN_CAPACITY;
-    while (capacity * GROWTH_FACTOR > true_capacity) {
-        true_capacity *= GROWTH_FACTOR;
-    }
-    return true_capacity;
-}
-
-static void exit_with_error(const char *msg) {
-    printf("%s\n", msg);
-    exit(EXIT_FAILURE);
-}
-
-static void validate_index(Array *arr, int index) {
-    if (index < 0 || index >= arr->size) {
-        exit_with_error(ERROR_OUT_OF_BOUNDS);
-    }
-}
-
-static void resize(Array *arr, int size) {
-    int old_capacity = arr->capacity;
-    int new_capacity = old_capacity;
-
-    if (size > arr->size) {
-        if (arr->size == arr->capacity) {
-            new_capacity = arr->capacity * GROWTH_FACTOR;
-        }
-    } else if (size < arr->size) {
-        if (arr->capacity > MIN_CAPACITY && size < arr->capacity / SHRINK_FACTOR) {
-            new_capacity = arr->capacity / GROWTH_FACTOR;
-        }
-    }
-
-    if (old_capacity != new_capacity) {
-        int *new_data = (int *) realloc(arr->data, sizeof(int) * new_capacity);
-        if (new_data == NULL) {
-            exit_with_error(ERROR_UNABLE_ALLOCATE_MEMORY);
-        }
-        arr->data = new_data;
-        arr->capacity = new_capacity;
-    }
-}
-
 // ========== use function ==========
 
 Array *new_array(int capacity) {
-    Array *arr = malloc(sizeof(Array));
-    if (arr == NULL) exit_with_error(ERROR_UNABLE_ALLOCATE_MEMORY);
-    
-    arr->size = 0;
-    arr->capacity = determine_capacity(capacity);
-    arr->data = (int *) malloc(sizeof(int) * arr->capacity);
-    if (arr->data == NULL) {
-        free(arr);
-        exit_with_error(ERROR_UNABLE_ALLOCATE_MEMORY);
-    }
-    return arr;
+	// 申请地址
+	Array *arr = malloc(sizeof(Array));
+	if (arr == NULL) {
+		exit_with_error(ERROR_UNABLE_ALLOCATE_MEMORY);
+	}
+	
+	// 初始化
+	arr->size = 0;
+	arr->capacity = determine_capacity(capacity);
+	arr->data = (int *) malloc(sizeof(int) * arr->capacity);
+	if (arr->data == NULL) {
+		free(arr);
+		exit_with_error(ERROR_UNABLE_ALLOCATE_MEMORY);
+	}
+
+	return arr;
 }
 
 void destroy_array(Array *arr) {
-    free(arr->data);
-    free(arr);
+	free(arr->data);
+	free(arr);
 }
 
 int size(Array *arr) { return arr->size; }
+
 int capacity(Array *arr) { return arr->capacity; }
+
 bool is_empty(Array *arr) { return arr->size == 0; }
 
 int at(Array *arr, int index) {
-    validate_index(arr, index);
-    return *(arr->data + index);
+	// 检查索引是否合法
+	validate_index(arr, index);
+	return *(arr->data + index);
 }
 
 int find(Array *arr, int value) {
-    for (int i = 0; i < arr->size; i++) {
-        if (*(arr->data + i) == value) return i;
-    }
-    return -1;
+	for (int i = 0; i < arr->size; i++) {
+		if (*(arr->data + i) == value) {
+			return i;
+		}
+	}
+	return -1;
 }
 
 void push(Array *arr, int item) {
-    resize(arr, arr->size + 1);
-    *(arr->data + arr->size) = item;
-    arr->size++;
+	// 检查是否需要扩容
+	resize(arr, arr->size + 1);
+
+	*(arr->data + arr->size) = item;
+	arr->size++;
 }
 
 void insert(Array *arr, int index, int value) {
-    validate_index(arr, index);
-    resize(arr, arr->size + 1);
-    memmove(arr->data + index + 1, arr->data + index, sizeof(int) * (arr->size - index));
-    *(arr->data + index) = value;
-    arr->size++;
+	// 检查索引是否合法
+	validate_index(arr, index);
+
+	// 检查是否需要扩容
+	resize(arr, arr->size + 1);
+
+	// 后续元素向右移动
+	memmove(arr->data + index + 1, arr->data + index, sizeof(int) * (arr->size - index));
+
+	// 插入元素
+	*(arr->data + index) = value;
+	arr->size++;
 }
 
 void prepend(Array *arr, int value) {
-    insert(arr, 0, value);
+	insert(arr, 0, value);
 }
 
 int pop(Array *arr) {
-    if (is_empty(arr)) exit_with_error(ERROR_OUT_OF_BOUNDS);
-    resize(arr, arr->size - 1);
-    arr->size--;
-    return *(arr->data + arr->size);
+	// 检查是否还有元素
+	if (is_empty(arr)) {
+		exit_with_error(ERROR_OUT_OF_BOUNDS);
+	}
+
+	// 检查是否需要缩容
+	resize(arr, arr->size - 1);
+
+	// 缩减 size 并返回最有一个元素
+	arr->size--;
+	return *(arr->data + arr->size);;
 }
 
 void remove_at(Array *arr, int index) {
-    validate_index(arr, index);
-    resize(arr, arr->size - 1);
-    memmove(arr->data + index, arr->data + index + 1, sizeof(int) * (arr->size - index));
-    arr->size--;
+	// 检查所有是否合法
+	validate_index(arr, index);
+
+	// 检查是否需要缩容
+	resize(arr, arr->size - 1);
+
+	// 后续元素向左移动
+	memmove(arr->data + index, arr->data + index + 1, sizeof(int) * (arr->size - index));
+	
+	// 缩减 size
+	arr->size--;
 }
 
 void remove_value(Array *arr, int value) {
-    for (int i = 0; i < arr->size; i++) {
-        if (*(arr->data + i) == value) {
-            remove_at(arr, i);
-            i--;
-        }
-    }
+	for (int i = 0; i < arr->size; i++) {
+		if (*(arr->data + i) == value) {
+			remove_at(arr, i);
+			i--;
+		}
+	}
+}
+
+void print_array(Array *arr) {
+	printf("Size: %d\n", arr->size);
+	printf("Capacity: %d\n", arr->capacity);
+  
+	printf("Items:\n");
+	for (int i = 0; i < arr->size; ++i) {
+		printf("%d: %d\n", i, *(arr->data + i));
+	}
+  
+	printf("---------\n");  
+}
+
+// ========== tool function ==========
+
+static int determine_capacity(int capacity) {
+	// 只接受正整数
+	if (capacity < 1) {
+		exit(EXIT_FAILURE);
+	}
+
+	// 预申请容量为最小初始容量 16
+	int true_capacity = MIN_CAPACITY;
+
+	// 一直扩容到超过申请容量的两倍
+	while (capacity * GROWTH_FACTOR > true_capacity) {
+		true_capacity *= GROWTH_FACTOR;
+	}
+
+	return true_capacity;
+}
+
+static void exit_with_error(const char *msg) {
+	printf("%s\n", msg);
+	exit(EXIT_FAILURE);
+}
+
+static void validate_index(Array *arr, int index) {
+	if (index < 0 || index >= arr->size) {
+		exit_with_error(ERROR_OUT_OF_BOUNDS);
+	}
+}
+
+static void resize(Array *arr, int size) {
+	int old_capacity = arr->capacity;
+	int new_capacity = old_capacity;
+
+	// 检查是否需要调整大小
+	if (size > arr->size) {
+	// 添加元素并且 size == capacity 时进行扩容
+		if (arr->size == arr->capacity) {
+			new_capacity = arr->capacity * GROWTH_FACTOR;
+		}
+	} else if (size < arr->size) {
+	// 删除元素并且 size < capacity / 4 时进行缩容
+		if (arr->capacity > MIN_CAPACITY && size < arr->capacity / SHRINK_FACTOR) {
+			new_capacity = arr->capacity / GROWTH_FACTOR;
+		}
+	}
+
+	// 执行大小调整
+	if (old_capacity != new_capacity) {
+		int *new_data = (int *) realloc(arr->data, sizeof(int) * new_capacity);
+		if (new_data == NULL) {
+			exit_with_error(ERROR_UNABLE_ALLOCATE_MEMORY);
+		}
+
+		arr->data = new_data;
+		arr->capacity = new_capacity;
+	}
 }
 ```
 
 === 测试 (test.c)
-```c
-#include "test.h"
+```c#include "test.h"
 #include "array.c"
 #include "array.h"
 #include <assert.h>
 
 void run_all_tests() {
-    test_size_init();
-    test_append();
-    test_empty();
-    test_resize();
-    test_at();
-    test_insert();
-    test_prepend();
-    test_pop();
-    test_remove();
-    test_find_exists();
-    test_find_not_exists();
+	test_size_init();
+	test_append();
+	test_empty();
+	test_resize();
+	test_at();
+	test_insert();
+	test_prepend();
+	test_pop();
+	test_remove();
+	test_find_exists();
+	test_find_not_exists();
 }
 
 void test_size_init() {
-    Array *arr = new_array(5);
-    assert(size(arr) == 0);
-    destroy_array(arr);
+	Array *arr = new_array(5);
+
+	int initial_size = size(arr);
+	assert(initial_size == 0);
+
+	destroy_array(arr);
 }
 
 void test_append() {
-    Array *arr = new_array(2);
-    push(arr, 2);
-    push(arr, 12);
-    assert(size(arr) == 2);
-    destroy_array(arr);
+	Array *arr = new_array(2);
+	push(arr, 2);
+	push(arr, 12);
+
+	int new_size = size(arr);
+	assert(new_size == 2);
+
+	destroy_array(arr);
 }
 
 void test_resize() {
-    Array *arr = new_array(2);
-    assert(capacity(arr) == MIN_CAPACITY);
-    for (int i = 0; i < 18; ++i) push(arr, i + 1);
-    assert(capacity(arr) == 2 * MIN_CAPACITY);
-    for (int j = 0; j < 15; ++j) pop(arr);
-    assert(capacity(arr) == MIN_CAPACITY);
-    destroy_array(arr);
+	Array *arr = new_array(2);
+
+	int old_capacity = capacity(arr);
+	assert(old_capacity == MIN_CAPACITY);
+
+	// 添加元素到扩容
+	for (int i = 0; i < 18; ++i) {
+		push(arr, i + 1);
+	}
+	assert(capacity(arr) == 2 * MIN_CAPACITY);
+
+	// 删除元素到缩容
+	for (int j = 0; j < 15; ++j) {
+		pop(arr);
+	}
+	assert(capacity(arr) == MIN_CAPACITY);
+
+	destroy_array(arr);
 }
 
 void test_empty() {
-    Array *arr = new_array(2);
-    assert(is_empty(arr));
-    push(arr, 1);
-    assert(!is_empty(arr));
-    destroy_array(arr);
+	Array *arr = new_array(2);
+	assert(is_empty(arr));
+
+	push(arr, 1);
+	assert(!is_empty(arr));
+
+	destroy_array(arr);
 }
 
 void test_at() {
-    Array *arr = new_array(12);
-    for (int i = 0; i < 12; ++i) {
-        push(arr, i + 3);
-        assert(at(arr, i) == i + 3);
-    }
-    destroy_array(arr);
+	Array *arr = new_array(12);
+	
+	for (int i = 0; i < 12; ++i) {
+		push(arr, i + 3);
+		assert(at(arr, i) == i + 3);
+	}
+	destroy_array(arr);
 }
 
 void test_insert() {
-    Array *arr = new_array(5);
-    for (int i = 0; i < 5; ++i) push(arr, i + 5);
-    insert(arr, 2, 47);
-    assert(at(arr, 2) == 47);
-    assert(at(arr, 3) == 7);
-    destroy_array(arr);
+	Array *arr = new_array(5);
+
+	for (int i = 0; i < 5; ++i) {
+		push(arr, i + 5);
+	}
+
+	insert(arr, 2, 47);
+	assert(at(arr, 2) == 47);
+	assert(at(arr, 3) == 7);
+
+	destroy_array(arr);
 }
 
 void test_prepend() {
-    Array *arr = new_array(5);
-    for (int i = 0; i < 3; ++i) push(arr, i + 1);
-    prepend(arr, 15);
-    assert(at(arr, 0) == 15);
-    assert(at(arr, 1) == 1);
-    destroy_array(arr);
+	Array *arr = new_array(5);
+	for (int i = 0; i < 3; ++i) {
+		push(arr, i + 1);
+	}
+
+	prepend(arr, 15);
+	assert(at(arr, 0) == 15);
+	assert(at(arr, 1) == 1);
+
+	destroy_array(arr);
 }
 
 void test_pop() {
-    Array *arr = new_array(5);
-    for (int i = 0; i < 3; ++i) push(arr, i + 1);
-    assert(arr->size == 3);
-    for (int j = 0; j < 3; ++j) pop(arr);
-    assert(is_empty(arr));
-    destroy_array(arr);
+	Array *arr = new_array(5);
+	for (int i = 0; i < 3; ++i) {
+		push(arr, i + 1);
+	}
+	assert(arr->size == 3);
+
+	for (int j = 0; j < 3; ++j) {
+		pop(arr);
+	}
+	assert(is_empty(arr));
+
+	destroy_array(arr);
 }
 
 void test_remove() {
-    Array *arr = new_array(5);
-    push(arr, 12); push(arr, 3); push(arr, 41); push(arr, 12); push(arr, 12);
-    remove_value(arr, 12);
-    assert(size(arr) == 2);
-    destroy_array(arr);
+	Array *arr = new_array(5);
+
+	push(arr, 12);
+	push(arr, 3);
+	push(arr, 41);
+	push(arr, 12);
+	push(arr, 12);
+	remove_value(arr, 12);
+
+	assert(size(arr) == 2);
+	destroy_array(arr);
 }
 
 void test_find_exists() {
-    Array *arr = new_array(5);
-    push(arr, 1); push(arr, 2); push(arr, 3); push(arr, 4); push(arr, 5);
-    assert(find(arr, 1) == 0);
-    assert(find(arr, 4) == 3);
-    assert(find(arr, 5) == 4);
-    destroy_array(arr);
+	Array *arr = new_array(5);
+	push(arr, 1);
+	push(arr, 2);
+	push(arr, 3);
+	push(arr, 4);
+	push(arr, 5);
+	assert(find(arr, 1) == 0);
+	assert(find(arr, 4) == 3);
+	assert(find(arr, 5) == 4);
+	destroy_array(arr);
 }
 
 void test_find_not_exists() {
-    Array *arr = new_array(3);
-    push(arr, 1); push(arr, 2); push(arr, 3);
-    assert(find(arr, 7) == -1);
-    destroy_array(arr);
+	Array *arr = new_array(3);
+	push(arr, 1);
+	push(arr, 2);
+	push(arr, 3);
+
+	assert(find(arr, 7) == -1);
+	destroy_array(arr);
 }
 ```
 :::
