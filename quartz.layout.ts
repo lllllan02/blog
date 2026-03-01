@@ -8,7 +8,7 @@ export const sharedPageComponents: SharedLayout = {
   afterBody: [
     Component.ConditionalRender({
       component: Component.WikiCloud(),
-      condition: (page) => page.fileData.slug === "wiki-cloud" || page.fileData.slug === "wiki/index",
+      condition: (page) => page.fileData.slug === "wiki/index",
     }),
     Component.ConditionalRender({
       component: Component.PageNavigation(),
@@ -42,7 +42,7 @@ export const defaultContentPageLayout: PageLayout = {
     Component.MobileOnly(Component.Spacer()),
     Component.LeftSidebarHeader(),
     Component.Explorer({
-      filterFn: (node) => node.slugSegment !== "wiki" && node.slugSegment !== "tags",
+      filterFn: (node) => node.slugSegment !== "tags",
       scopeToCurrentDomain: true,
     }),
   ],

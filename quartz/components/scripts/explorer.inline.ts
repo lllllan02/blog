@@ -186,7 +186,7 @@ async function setupExplorer(currentSlug: FullSlug) {
       const parts = currentSlug.split("/")
       const currentDomain = parts[0] === "" ? parts[1] : parts[0]
       
-      if (currentDomain && currentDomain !== "index" && currentDomain !== "tags" && currentDomain !== "wiki") {
+      if (currentDomain && currentDomain !== "index" && currentDomain !== "tags") {
         const domainNode = trie.children.find((child) => child.slugSegment === currentDomain)
         if (domainNode) {
           trie.children = domainNode.children

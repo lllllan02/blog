@@ -19,7 +19,7 @@ export default (() => {
       if (!slug || slug === "index") return
 
       const parts = slug.split("/")
-      if (parts.length > 0 && parts[0] !== "index" && parts[0] !== "tags" && parts[0] !== "wiki") {
+      if (parts.length > 0 && parts[0] !== "index" && parts[0] !== "tags") {
         const domainSlug = parts[0]
         
         // 如果路径深度大于1，说明这是一个文件夹
