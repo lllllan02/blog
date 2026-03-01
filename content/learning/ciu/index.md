@@ -48,14 +48,16 @@ tags:
 - [ ] [UC San Diego - 双向链表介绍（视频）](https://www.coursera.org/learn/data-structures/lecture/jpGKD/doubly-linked-lists) 并不需要实现。
 
 ### 堆栈（Stack）
-- [ ] [堆栈（视频）](https://www.coursera.org/learn/data-structures/lecture/UdKzQ/stacks)
-- [ ] [[Review] Stacks in 3 minutes (video)](https://youtu.be/KcT3aVgrrpU)
-- [ ] 可以不实现，因为使用数组来实现是微不足道的事
+
+- [x] [Michael Sambol - Stacks in 3 minutes](https://youtu.be/KcT3aVgrrpU) (2026-03-01)
+- [ ] [UC San Diego - 堆栈](https://www.coursera.org/learn/data-structures/lecture/UdKzQ/stacks)
+
+可以不实现，因为使用数组来实现是微不足道的事
 
 ### 队列（Queue）
-- [ ] [队列（视频）](https://www.coursera.org/learn/data-structures/lecture/EShpq/queue)
-- [ ] [原型队列/先进先出（FIFO）](https://en.wikipedia.org/wiki/Circular_buffer)
-- [ ] [[Review] Queues in 3 minutes (video)](https://youtu.be/D6gu-_tmEpQ)
+- [x] [Michael Sambol - Queues in 3 minutes](https://youtu.be/D6gu-_tmEpQ) (2026-03-01)
+- [ ] [圆形队列](https://en.wikipedia.org/wiki/Circular_buffer)
+- [ ] [UC San Diego - 队列](https://www.coursera.org/learn/data-structures/lecture/EShpq/queue)
 - [ ] 使用含有尾部指针的链表来实现:
     - enqueue(value) —— 在尾部添加值
     - dequeue() —— 删除最早添加的元素并返回其值（首部元素）
