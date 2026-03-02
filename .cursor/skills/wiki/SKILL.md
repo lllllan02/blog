@@ -33,6 +33,7 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
 -   **Create File**: 优先使用 `./clitool create-file "content/wiki/filename.md" "Title"` 命令创建文件，以自动生成准确的 `date` 和 `aliases` (UUID)。
 -   **Update Content**: 读取生成的文件，保留 `date` 和 `aliases`，并根据 `assets/template.md` 模板重写文件内容。
 -   遵循 `writing-style` 技能的规范：
+    -   **Title**: 修正 Frontmatter 中的 `title` 字段为 "中文 (英文)" 格式（例如 "组合 (Composition)"）。
     -   **Frontmatter**: 补充 `wiki` (包含中文名称、英文缩写或核心术语的数组), `tags`, `card: true` 等字段。
     -   **简洁性**: 核心内容（不含代码）建议控制在 150 字以内。
     -   **视觉重心**: 确保用户打开文档的第一眼看到的是加粗的定义。
