@@ -3,7 +3,7 @@ title: 2976. 转换字符串的最小成本 I
 aliases: f65764e4-cccd-4981-a226-250b7cc497b6
 date: 2026-01-29 20:08:50
 card: true
-order: 1
+order: 2976
 tags: [最短路, Floyd, Dijkstra]
 ---
 

@@ -3,7 +3,7 @@ title: 744. 寻找比目标字母大的最小字母
 aliases: b6ccc12c-58cb-4606-97a0-635f93177e32
 date: 2026-01-31 10:17:15
 card: true
-order: 2
+order: 744
 tags: [数组, 线性查找, 二分查找]
 ---
 

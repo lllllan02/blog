@@ -3,7 +3,7 @@ title: 1382. 将二叉搜索树变平衡
 aliases: b9ad884d-88ba-4581-8e18-de7d287d6e1f
 date: 2026-02-09 21:16:31
 card: true
-order: 3
+order: 1382
 tags:
 ---
 
