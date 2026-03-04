@@ -9,9 +9,10 @@ description: 规范本项目 Markdown 文档的写作风格、元数据（UUID �
 
 ## 核心原则 (Core Principles)
 
-1.  **简洁至上 (Concise is Key)**：优先使用列表和短句，避免冗长段落。
+1.  **完整与连贯 (Completeness & Coherence)**：文章应逻辑通顺、解释详尽。**不要为了追求篇幅短小而牺牲内容的完整性或省略必要的上下文**。
 2.  **渐进式披露 (Progressive Disclosure)**：核心结论先行，扩展细节折叠。
-3.  **工程化规范 (Engineering Standards)**：严格遵守元数据、链接和代码块格式。
+3.  **格式克制 (Format Restraint)**：严格控制 Callout、列表和强调的使用频率，格式服务于内容，而非打断内容。
+4.  **工程化规范 (Engineering Standards)**：严格遵守元数据、链接和代码块格式。
 
 ## 工作流 (Workflow)
 
@@ -32,8 +33,8 @@ description: 规范本项目 Markdown 文档的写作风格、元数据（UUID �
 
 ### 3. 构建结构 (Structure)
 -   **禁止使用一级标题 (H1)**：正文最高级别标题应为 H2。
--   优先使用无序/有序列表承载信息。
--   使用 Callout 区分重点、补充和扩展内容。
+-   **自然段落优先**：对于解释性、叙述性内容，优先使用完整的段落。
+-   **格式克制**：严格控制 Callout 和列表的使用频率，避免文章碎片化。
 -   详见 [rules.md](references/rules.md#1-structure-and-style)。
 
 ### 4. 内容编写与格式化 (Drafting & Formatting)
