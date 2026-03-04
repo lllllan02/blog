@@ -36,665 +36,886 @@ order: 2
 === 定义
 ```c
 typedef struct Node {
-    int value;
+    int data;
     struct Node *next;
 } Node;
 
-typedef struct LinkedList {
+typedef struct List {
     int size;
-    Node *head;
-    Node *tail; // 维护尾指针以支持 O(1) 的 push_back
-} LinkedList;
+    Node *head, *tail;
+} List;
 ```
 
 === 初始化与销毁
 ```c
-// 创建节点
-Node* create_node(int value) {
-    Node* node = malloc(sizeof(Node));
+const char* ERROR_UNABLE_ALLOCATE_MEMORY = "Unable to allocate memory.";
+
+static void exit_with_error(const char *msg) {
+    printf("%s\n", msg);
+    exit(EXIT_FAILURE);
+}
+
+static Node *new_node(List *list, int value) {
+    // 申请地址并初始化
+    Node *node = (Node *) malloc(sizeof(Node));
     if (node == NULL) {
-        fprintf(stderr, "MemoryAllocationException\n");
-        exit(EXIT_FAILURE);
+        destory_list(list);
+        exit_with_error(ERROR_UNABLE_ALLOCATE_MEMORY);
     }
-    node->value = value;
+    node->data = value;
     node->next = NULL;
+
     return node;
 }
 
-// 创建链表
-LinkedList* create_linked_list() {
-    LinkedList* list = malloc(sizeof(LinkedList));
+List *new_list() {
+    // 申请地址
+    List *list = (List *) malloc(sizeof(List));
     if (list == NULL) {
-        fprintf(stderr, "MemoryAllocationException\n");
-        exit(EXIT_FAILURE);
+        exit_with_error(ERROR_UNABLE_ALLOCATE_MEMORY);
     }
+
+    // 初始化
     list->size = 0;
-    list->head = NULL;
-    list->tail = NULL;
+    list->head = list->tail = NULL;
     return list;
 }
 
-// 销毁链表
-void destroy_list(LinkedList *list) {
-    if (list == NULL) return;
-    Node *current = list->head;
-    while (current != NULL) {
-        Node *next = current->next;
-        free(current);
-        current = next;
+void destory_list(List *list) {
+    // 逐个释放节点
+    Node *node = list->head;
+    for (; node != NULL;) {
+        Node *next = node->next;
+        free(node);
+        node = next;
     }
+
+    // 释放列表
     free(list);
 }
 ```
 
 === 状态查询
 ```c
-// 返回链表大小
-int size(LinkedList *list) {
-    return list->size;
-}
+const char* ERROR_OUT_OF_BOUNDS = "Index out of bounds.";
 
-// 判断链表是否为空
-bool empty(LinkedList *list) {
-    return list->size == 0;
-}
-
-// 返回索引处的值
-int value_at(LinkedList *list, int index) {
+static void validate_index(List *list, int index) {
     if (index < 0 || index >= list->size) {
-        fprintf(stderr, "IndexOutOfBoundsException\n");
-        exit(EXIT_FAILURE);
+        destory_list(list);
+        exit_with_error(ERROR_OUT_OF_BOUNDS);
     }
-    Node *current = list->head;
-    for (int i = 0; i < index; i++) {
-        current = current->next;
-    }
-    return current->value;
 }
 
-// 返回倒数第 n 个值
-int value_n_from_end(LinkedList *list, int n) {
-    if (n < 1 || n > list->size) {
-        fprintf(stderr, "IndexOutOfBoundsException\n");
-        exit(EXIT_FAILURE);
-    }
+int size(List *list) { return list->size; }
+
+bool is_empty(List *list) { return list->size == 0; }
+
+int value_at(List *list, int index) {
+    // 检查索引是否合法
+    validate_index(list, index);
+
+    // 遍历到索引处
     Node *current = list->head;
-    for (int i = 0; i < list->size - n; i++) {
+    for (; index > 0; index--) {
         current = current->next;
     }
-    return current->value;
+    return current->data;
 }
 ```
 
 === 元素添加
 ```c
-// 头部插入
-void push_front(LinkedList *list, int value) {
-    Node *node = create_node(value);
-    node->next = list->head;
-    list->head = node;
-    if (list->tail == NULL) {
-        list->tail = node;
-    }
+void push_front(List *list, int value) {
+    // 申请地址并初始化
+    Node *new_head = new_node(list, value);
+
+    // 更新列表头部
     list->size++;
+    list->head = new_head;
+    if (list->tail == NULL) {
+        list->tail = new_head;
+    }
 }
 
-// 尾部插入
-void push_back(LinkedList *list, int value) {
-    Node *node = create_node(value);
-    if (list->head == NULL) {
-        list->head = node;
-        list->tail = node;
+void push_back(List *list, int value) {
+    // 申请地址并初始化
+    Node *node = new_node(list, value);
+
+    // 更新列表尾部
+    list->size++;
+    if (list->tail == NULL) {
+        list->head = list->tail = node;
     } else {
         list->tail->next = node;
         list->tail = node;
     }
-    list->size++;
 }
 
-// 指定索引插入
-void insert(LinkedList *list, int index, int value) {
+void insert(List *list, int index, int value) {
+    // 检查索引是否合法
     if (index < 0 || index > list->size) {
-        fprintf(stderr, "IndexOutOfBoundsException\n");
-        exit(EXIT_FAILURE);
+        destory_list(list);
+        exit_with_error(ERROR_OUT_OF_BOUNDS);
     }
+
+    // 申请地址并初始化
+    Node *node = new_node(list, value);
+
+    list->size++;
+
+    // 如果索引为零，将节点添加到头部
     if (index == 0) {
-        push_front(list, value);
-    } else if (index == list->size) {
-        push_back(list, value);
-    } else {
-        Node *new_node = create_node(value);
-        Node *current = list->head;
-        for (int i = 0; i < index - 1; i++) {
-            current = current->next;   
+        node->next = list->head;
+        list->head = node;
+        if (list->tail == NULL) {
+            list->tail = list->head;
         }
-        new_node->next = current->next;
-        current->next = new_node;
-        list->size++;
+        return;
+    }
+
+    // 遍历列表找到索引处的前一个节点
+    Node *current = list->head;
+    for (; index > 1; index--) {
+        current = current->next;
+    }
+    // 插入新节点
+    node->next = current->next;
+    current->next = node;
+
+    if (node->next == NULL) {
+        list->tail = node;
     }
 }
 ```
 
 === 元素删除
 ```c
-// 头部删除
-void pop_front(LinkedList *list) {
-    if (empty(list)) {
-        fprintf(stderr, "NoSuchElementException\n");
-        exit(EXIT_FAILURE);
-    }
-    Node *temp = list->head;
-    list->head = temp->next;
+const char* ERROR_EMPTY_LIST = "Cannot get elem from empty list.";
+
+int pop_front(List *list) {
+    // 检查列表头部不为空
     if (list->head == NULL) {
+        exit_with_error(ERROR_EMPTY_LIST);
+    }
+
+    // 暂存头部和返回值
+    Node *head = list->head;
+    int value = head->data;
+
+    // 更新列表头部
+    list->size--;
+    list->head = head->next;
+    if (list->size == 0) {
         list->tail = NULL;
     }
-    free(temp);
-    list->size--;
+
+    // 释放旧头部并返回
+    free(head);
+    return value;
 }
 
-// 尾部删除
-int pop_back(LinkedList *list) {
-    if (empty(list)) {
-        fprintf(stderr, "NoSuchElementException\n");
-        exit(EXIT_FAILURE);
+int pop_back(List *list) {
+    // 检查列表尾部不为空
+    if (list->tail == NULL) {
+        exit_with_error(ERROR_EMPTY_LIST);
     }
+    
+    int value = list->tail->data;
+    
+    // 如果只有一个节点
     if (list->head == list->tail) {
-        int value = list->head->value;
         free(list->head);
-        list->head = NULL;
-        list->tail = NULL;
-        list->size--;
+        list->head = list->tail = NULL;
+        list->size = 0;
         return value;
     }
+    
+    // 遍历找到尾部的前一个节点
     Node *current = list->head;
     while (current->next != list->tail) {
         current = current->next;
     }
-    int value = list->tail->value;
+
+    // 更新列表尾部
     free(list->tail);
     list->tail = current;
     list->tail->next = NULL;
     list->size--;
+    
     return value;
 }
 
-// 删除指定索引
-void erase(LinkedList *list, int index) {
-    if (index < 0 || index >= list->size) {
-        fprintf(stderr, "IndexOutOfBoundsException\n");
-        exit(EXIT_FAILURE);
-    }
+void remove_at(List *list, int index) {
+    // 检查索引是否合法
+    validate_index(list, index);
+
+    list->size--;
+
+    // 如果索引为零，直接删除头部
     if (index == 0) {
-        pop_front(list);
-    } else if (index == list->size - 1) {
-        pop_back(list);
-    } else {
-        Node *current = list->head;
-        for (int i = 0; i < index - 1; i++) {
-            current = current->next;
+        Node *node = list->head;
+        list->head = node->next;
+        if (list->head == NULL) {
+            list->tail = NULL;
         }
-        Node *temp = current->next;
-        current->next = temp->next;
-        free(temp);
-        list->size--;
+        free(node);
+        return;
     }
+    
+    // 遍历列表找到索引处的前一个节点
+    Node *current = list->head;
+    for (; index > 1; index--) {
+        current = current->next;
+    }
+
+    // 删除并释放节点
+    Node *next = current->next;
+    if (list->tail == next) {
+        list->tail = current;
+    }
+    current->next = next->next;
+    free(next);
 }
 
-// 删除指定值
-void remove_value(LinkedList *list, int value) {
+void remove_value(List *list, int value) {
     Node *current = list->head;
     Node *prev = NULL;
-    while (current != NULL) {
-        if (current->value == value) {
-            Node *next = current->next;
-            free(current);
+
+    while (current) {
+        Node *next = current->next;
+
+        if (current->data == value) {
             list->size--;
-            if (prev == NULL) {
-                list->head = next;
-                if (list->head == NULL) list->tail = NULL;
-            } else {
+
+            if (prev) {
                 prev->next = next;
-                if (next == NULL) list->tail = prev;
+                if (list->tail == current) {
+                    list->tail = prev;
+                }
+            } else {
+                list->head = next;
+                if (list->tail == current) {
+                    list->tail = NULL;
+                }
             }
-            return;
+
+            free(current);
+            current = next;
+        } else {
+            prev = current;
+            current = next;
         }
-        prev = current;
-        current = current->next;
     }
 }
 ```
 
 === 其他操作
 ```c
-// 反转链表
-void reverse(LinkedList *list) {
+void reverse(List *list) {
     Node *prev = NULL;
     Node *current = list->head;
     Node *next = NULL;
+
     list->tail = list->head;
-    while (current != NULL) {
+
+    while (current) {
         next = current->next;
         current->next = prev;
         prev = current;
         current = next;
     }
+
     list->head = prev;
 }
 
-// 返回头部值
-int front(LinkedList *list) {
-    if (empty(list)) exit(EXIT_FAILURE);
-    return list->head->value;
+int front(List *list) {
+    // 检查列表头部不为空
+    if (list->head == NULL) {
+        exit_with_error(ERROR_EMPTY_LIST);
+    }
+
+    return list->head->data;
 }
 
-// 返回尾部值
-int back(LinkedList *list) {
-    if (empty(list)) exit(EXIT_FAILURE);
-    return list->tail->value;
+int back(List *list) {
+    // 检查列表尾部不为空
+    if (list->tail == NULL) {
+        exit_with_error(ERROR_EMPTY_LIST);
+    }
+
+    return list->tail->data;
 }
 ```
 :::
 
-```c fold="完整代码"
+```c fold="linked_list.h"
+#ifndef PROJECT_LINKED_LIST_H
+#define PROJECT_LINKED_LIST_H
+
+#include <stdbool.h>
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+typedef struct List {
+    int size;
+    Node *head, *tail;
+} List;
+
+// 创建一个链表
+List *new_list();
+
+// 释放链表
+void destory_list(List *list);
+
+// 返回链表中的节点数量
+int size(List *list);
+
+// 如果链表为空，返回 true
+bool is_empty(List *list);
+
+// 添加元素到列表前端
+void push_front(List *list, int value);
+
+// 添加元素到列表后段
+void push_back(List *list, int value);
+
+// 返回列表前端的元素
+int front(List *list);
+
+// 返回列表后段的元素
+int back(List *list);
+
+// 返回并删除列表前端的元素
+int pop_front(List *list);
+
+// 返回并删除列表后段的元素
+int pop_back(List *list);
+
+// 在索引出添加元素
+void insert(List *list, int index, int value);
+
+// 返回索引处的元素
+int value_at(List *list, int index);
+
+// 删除索引处的元素
+void remove_at(List *list, int index);
+
+// 删除链表中所有值为 value 的元素
+void remove_value(List *list, int value);
+
+// 翻转链表
+void reverse(List *list);
+
+#endif
+```
+
+```c fold="linked_list.c"
+#include "linked_list.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct Node {
-    int value;
-    struct Node *next;
-} Node;
+const char* ERROR_UNABLE_ALLOCATE_MEMORY = "Unable to allocate memory.";
+const char* ERROR_OUT_OF_BOUNDS = "Index out of bounds.";
+const char* ERROR_EMPTY_LIST = "Cannot get elem from empty list.";
 
-// 创建节点
-Node* create_node(int value) {
-    Node* node = malloc(sizeof(Node));
-    if (node == NULL) {
-        fprintf(stderr, "create_node: Memory allocation failed\n");
-        exit(EXIT_FAILURE);
+static void exit_with_error(const char *msg) {
+    printf("%s\n", msg);
+    exit(EXIT_FAILURE);
+}
+
+static void validate_index(List *list, int index) {
+    if (index < 0 || index >= list->size) {
+        destory_list(list);
+        exit_with_error(ERROR_OUT_OF_BOUNDS);
     }
+}
 
-    node->value = value;
+static Node *new_node(List *list, int value) {
+    // 申请地址并初始化
+    Node *node = (Node *) malloc(sizeof(Node));
+    if (node == NULL) {
+        destory_list(list);
+        exit_with_error(ERROR_UNABLE_ALLOCATE_MEMORY);
+    }
+    node->data = value;
     node->next = NULL;
+
     return node;
 }
 
-// 创建链表
-typedef struct LinkedList {
-    int size;
-    Node *head, *tail;
-} LinkedList;
-
-LinkedList* create_linked_list() {
-    LinkedList* list = malloc(sizeof(LinkedList));
+List *new_list() {
+    // 申请地址
+    List *list = (List *) malloc(sizeof(List));
     if (list == NULL) {
-        fprintf(stderr, "create_linked_list: Memory allocation failed\n");
-        exit(EXIT_FAILURE);
+        exit_with_error(ERROR_UNABLE_ALLOCATE_MEMORY);
     }
 
+    // 初始化
     list->size = 0;
-    list->head = NULL;
-    list->tail = NULL;
+    list->head = list->tail = NULL;
     return list;
 }
 
-// 销毁链表
-void destroy_list(LinkedList *list) {
-    if (list == NULL) return;
-    Node *current = list->head;
-    while (current != NULL) {
-        Node *next = current->next;
-        free(current);
-        current = next;
+void destory_list(List *list) {
+    // 逐个释放节点
+    Node *node = list->head;
+    for (; node != NULL;) {
+        Node *next = node->next;
+        free(node);
+        node = next;
     }
+
+    // 释放列表
     free(list);
 }
 
-// 返回链表大小
-int size(LinkedList *list) {
-    return list->size;
-}
+int size(List *list) { return list->size; }
 
-// 判断链表是否为空
-bool empty(LinkedList *list) {
-    return list->size == 0;
-}
+bool is_empty(List *list) { return list->size == 0; }
 
-// 返回索引处的值
-int value_at(LinkedList *list, int index) {
-    if (index < 0 || index >= list->size) {
-        fprintf(stderr, "IndexOutOfBoundsException: Index %d is out of bounds\n", index);
-        exit(EXIT_FAILURE);
-    }
+void push_front(List *list, int value) {
+    // 申请地址并初始化
+    Node *new_head = new_node(list, value);
 
-    Node *current = list->head;
-    for (int i = 0; i < index; i++) {
-        current = current->next;
-    }
-    return current->value;
-}
-
-// 在链表开头插入值
-void push_front(LinkedList *list, int value) {
-    Node *node = create_node(value);
-    node->next = list->head;
-    list->head = node;
-    if (list->tail == NULL) {
-        list->tail = node;
-    }
+    // 更新列表头部
     list->size++;
+    list->head = new_head;
+    if (list->tail == NULL) {
+        list->tail = new_head;
+    }
 }
 
-// 删除链表开头值
-void pop_front(LinkedList *list) {
-    if (empty(list)) {
-        fprintf(stderr, "NoSuchElementException: List is empty\n");
-        exit(EXIT_FAILURE);
-    }
+void push_back(List *list, int value) {
+    // 申请地址并初始化
+    Node *node = new_node(list, value);
 
-    Node *temp = list->head;
-    list->head = temp->next;
-    if (list->head == NULL) {
-        list->tail = NULL;
-    }
-    free(temp);
-    list->size--;
-}
-
-// 在链表末尾插入值
-void push_back(LinkedList *list, int value) {
-    Node *node = create_node(value);
-    if (list->head == NULL) {
-        list->head = node;
-        list->tail = node;
+    // 更新列表尾部
+    list->size++;
+    if (list->tail == NULL) {
+        list->head = list->tail = node;
     } else {
         list->tail->next = node;
         list->tail = node;
     }
-    list->size++;
 }
 
-// 删除链表末尾值
-int pop_back(LinkedList *list) {
-    if (empty(list)) {
-        fprintf(stderr, "NoSuchElementException: List is empty\n");
-        exit(EXIT_FAILURE);
+int front(List *list) {
+    // 检查列表头部不为空
+    if (list->head == NULL) {
+        exit_with_error(ERROR_EMPTY_LIST);
     }
 
-    // 如果链表只有一个节点
-    if (list->head == list->tail) {
-        int value = list->head->value;
-        free(list->head);
-        list->head = NULL;
+    return list->head->data;
+}
+
+int back(List *list) {
+    // 检查列表尾部不为空
+    if (list->tail == NULL) {
+        exit_with_error(ERROR_EMPTY_LIST);
+    }
+
+    return list->tail->data;
+}
+
+int pop_front(List *list) {
+    // 检查列表头部不为空
+    if (list->head == NULL) {
+        exit_with_error(ERROR_EMPTY_LIST);
+    }
+
+    // 暂存头部和返回值
+    Node *head = list->head;
+    int value = head->data;
+
+    // 更新列表头部
+    list->size--;
+    list->head = head->next;
+    if (list->size == 0) {
         list->tail = NULL;
-        list->size--;
+    }
+
+    // 释放旧头部并返回
+    free(head);
+    return value;
+}
+
+int pop_back(List *list) {
+    // 检查列表尾部不为空
+    if (list->tail == NULL) {
+        exit_with_error(ERROR_EMPTY_LIST);
+    }
+    
+    int value = list->tail->data;
+    
+    // 如果只有一个节点
+    if (list->head == list->tail) {
+        free(list->head);
+        list->head = list->tail = NULL;
+        list->size = 0;
         return value;
     }
-
-    // 如果链表有多个节点
+    
+    // 遍历找到尾部的前一个节点
     Node *current = list->head;
     while (current->next != list->tail) {
         current = current->next;
     }
-    int value = list->tail->value;
+
+    // 更新列表尾部
     free(list->tail);
     list->tail = current;
     list->tail->next = NULL;
     list->size--;
+    
     return value;
 }
 
-// 返回链表开头值
-int front(LinkedList *list) {
-    if (empty(list)) {
-        fprintf(stderr, "NoSuchElementException: List is empty\n");
-        exit(EXIT_FAILURE);
-    }
-
-    return list->head->value;
-}
-
-// 返回链表末尾值
-int back(LinkedList *list) {
-    if (empty(list)) {
-        fprintf(stderr, "NoSuchElementException: List is empty\n");
-        exit(EXIT_FAILURE);
-    }
-
-    return list->tail->value;
-}
-
-// 在指定索引处插入值
-void insert(LinkedList *list, int index, int value) {
+void insert(List *list, int index, int value) {
+    // 检查索引是否合法
     if (index < 0 || index > list->size) {
-        fprintf(stderr, "IndexOutOfBoundsException: Index %d is out of bounds\n", index);
-        exit(EXIT_FAILURE);
+        destory_list(list);
+        exit_with_error(ERROR_OUT_OF_BOUNDS);
     }
 
+    // 申请地址并初始化
+    Node *node = new_node(list, value);
+
+    list->size++;
+
+    // 如果索引为零，将节点添加到头部
     if (index == 0) {
-        push_front(list, value);
-    } else if (index == list->size) {
-        push_back(list, value);
-    } else {
-        Node *new_node = create_node(value);
-        Node *current = list->head;
-        for (int i = 0; i < index - 1; i++) {
-            current = current->next;   
+        node->next = list->head;
+        list->head = node;
+        if (list->tail == NULL) {
+            list->tail = list->head;
         }
-        new_node->next = current->next;
-        current->next = new_node;
-        list->size++;
-    }
-}
-
-void erase(LinkedList *list, int index) {
-    if (index < 0 || index >= list->size) {
-        fprintf(stderr, "IndexOutOfBoundsException: Index %d is out of bounds\n", index);
-        exit(EXIT_FAILURE);
+        return;
     }
 
-    if (index == 0) {
-        pop_front(list);
-    } else if (index == list->size - 1) {
-        pop_back(list);
-    } else {
-        Node *current = list->head;
-        for (int i = 0; i < index - 1; i++) {
-            current = current->next;
-        }
-        Node *temp = current->next;
-        current->next = temp->next;
-        free(temp);
-        list->size--;
-    }
-}
-
-// 返回倒数第n个值（n从1开始，1表示最后一个元素）
-int value_n_from_end(LinkedList *list, int n) {
-    if (n < 1 || n > list->size) {
-        fprintf(stderr, "IndexOutOfBoundsException: n=%d is out of bounds (1 to %d)\n", n, list->size);
-        exit(EXIT_FAILURE);
-    }
-
+    // 遍历列表找到索引处的前一个节点
     Node *current = list->head;
-    for (int i = 0; i < list->size - n; i++) {
+    for (; index > 1; index--) {
         current = current->next;
     }
-    return current->value;
+    // 插入新节点
+    node->next = current->next;
+    current->next = node;
+
+    if (node->next == NULL) {
+        list->tail = node;
+    }
 }
 
-// 反转链表
-void reverse(LinkedList *list) {
+int value_at(List *list, int index) {
+    // 检查索引是否合法
+    validate_index(list, index);
+
+    // 遍历到索引处
+    Node *current = list->head;
+    for (; index > 0; index--) {
+        current = current->next;
+    }
+    return current->data;
+}
+
+void remove_at(List *list, int index) {
+    // 检查索引是否合法
+    validate_index(list, index);
+
+    list->size--;
+
+    // 如果索引为零，直接删除头部
+    if (index == 0) {
+        Node *node = list->head;
+        list->head = node->next;
+        if (list->head == NULL) {
+            list->tail = NULL;
+        }
+        free(node);
+        return;
+    }
+    
+    // 遍历列表找到索引处的前一个节点
+    Node *current = list->head;
+    for (; index > 1; index--) {
+        current = current->next;
+    }
+
+    // 删除并释放节点
+    Node *next = current->next;
+    if (list->tail == next) {
+        list->tail = current;
+    }
+    current->next = next->next;
+    free(next);
+}
+
+void remove_value(List *list, int value) {
+    Node *current = list->head;
+    Node *prev = NULL;
+
+    while (current) {
+        Node *next = current->next;
+
+        if (current->data == value) {
+            list->size--;
+
+            if (prev) {
+                prev->next = next;
+                if (list->tail == current) {
+                    list->tail = prev;
+                }
+            } else {
+                list->head = next;
+                if (list->tail == current) {
+                    list->tail = NULL;
+                }
+            }
+
+            free(current);
+            current = next;
+        } else {
+            prev = current;
+            current = next;
+        }
+    }
+}
+
+void reverse(List *list) {
     Node *prev = NULL;
     Node *current = list->head;
     Node *next = NULL;
 
     list->tail = list->head;
-    while (current != NULL) {
+
+    while (current) {
         next = current->next;
         current->next = prev;
         prev = current;
         current = next;
     }
+
     list->head = prev;
 }
+```
 
-// 删除指定值（仅删除第一个匹配项）
-void remove_value(LinkedList *list, int value) {
-    Node *current = list->head;
-    Node *prev = NULL;
-    while (current != NULL) {
-        if (current->value == value) {
-            Node *next = current->next;
-            free(current);
-            list->size--;
-            if (prev == NULL) {
-                list->head = next;
-                if (list->head == NULL) {
-                    list->tail = NULL;
-                }
-            } else {
-                prev->next = next;
-                if (next == NULL) {
-                    list->tail = prev;
-                }
-            }
-            return;
-        }
-        prev = current;
-        current = current->next;
-    }
+```c fold="test.c"
+#include "linked_list.h"
+#include <stdio.h>
+#include <assert.h>
+
+void test_size_init() {
+    List *list = new_list();
+    assert(size(list) == 0);
+    destory_list(list);
 }
 
-// 打印链表（用于调试）
-void print_list(LinkedList *list) {
-    printf("[");
-    Node *current = list->head;
-    while (current != NULL) {
-        printf("%d", current->value);
-        if (current->next != NULL) printf(", ");
-        current = current->next;
-    }
-    printf("] (size=%d)\n", list->size);
+void test_push_front() {
+    List *list = new_list();
+    push_front(list, 1);
+    push_front(list, 2);
+    push_front(list, 3);
+    
+    assert(size(list) == 3);
+    assert(front(list) == 3);
+    assert(back(list) == 1);
+    
+    destory_list(list);
+}
+
+void test_push_back() {
+    List *list = new_list();
+    push_back(list, 1);
+    push_back(list, 2);
+    push_back(list, 3);
+    
+    assert(size(list) == 3);
+    assert(front(list) == 1);
+    assert(back(list) == 3);
+    
+    destory_list(list);
+}
+
+void test_empty() {
+    List *list = new_list();
+    assert(is_empty(list));
+    push_back(list, 1);
+    assert(!is_empty(list));
+    destory_list(list);
+}
+
+void test_front_back() {
+    List *list = new_list();
+    push_back(list, 10);
+    assert(front(list) == 10);
+    assert(back(list) == 10);
+    
+    push_back(list, 20);
+    assert(front(list) == 10);
+    assert(back(list) == 20);
+    
+    destory_list(list);
+}
+
+void test_pop_front() {
+    List *list = new_list();
+    push_back(list, 1);
+    push_back(list, 2);
+    push_back(list, 3);
+    
+    assert(pop_front(list) == 1);
+    assert(size(list) == 2);
+    assert(front(list) == 2);
+    
+    assert(pop_front(list) == 2);
+    assert(size(list) == 1);
+    assert(front(list) == 3);
+    
+    assert(pop_front(list) == 3);
+    assert(size(list) == 0);
+    assert(is_empty(list));
+    
+    destory_list(list);
+}
+
+void test_pop_back() {
+    List *list = new_list();
+    push_back(list, 1);
+    push_back(list, 2);
+    push_back(list, 3);
+    
+    assert(pop_back(list) == 3);
+    assert(size(list) == 2);
+    assert(back(list) == 2);
+    
+    assert(pop_back(list) == 2);
+    assert(size(list) == 1);
+    assert(back(list) == 1);
+    
+    assert(pop_back(list) == 1);
+    assert(size(list) == 0);
+    assert(is_empty(list));
+    
+    destory_list(list);
+}
+
+void test_insert() {
+    List *list = new_list();
+    push_back(list, 1);
+    push_back(list, 3);
+    
+    insert(list, 1, 2); // Insert 2 at index 1 -> 1, 2, 3
+    assert(size(list) == 3);
+    assert(value_at(list, 0) == 1);
+    assert(value_at(list, 1) == 2);
+    assert(value_at(list, 2) == 3);
+    
+    insert(list, 0, 0); // Insert 0 at index 0 -> 0, 1, 2, 3
+    assert(value_at(list, 0) == 0);
+    assert(front(list) == 0);
+    
+    insert(list, 4, 4); // Insert 4 at index 4 -> 0, 1, 2, 3, 4
+    assert(value_at(list, 4) == 4);
+    assert(back(list) == 4);
+    
+    destory_list(list);
+}
+
+void test_value_at() {
+    List *list = new_list();
+    push_back(list, 10);
+    push_back(list, 20);
+    push_back(list, 30);
+    
+    assert(value_at(list, 0) == 10);
+    assert(value_at(list, 1) == 20);
+    assert(value_at(list, 2) == 30);
+    
+    destory_list(list);
+}
+
+void test_remove_at() {
+    List *list = new_list();
+    push_back(list, 1);
+    push_back(list, 2);
+    push_back(list, 3);
+    
+    remove_at(list, 1); // Remove 2 -> 1, 3
+    assert(size(list) == 2);
+    assert(value_at(list, 0) == 1);
+    assert(value_at(list, 1) == 3);
+    
+    remove_at(list, 0); // Remove 1 -> 3
+    assert(size(list) == 1);
+    assert(front(list) == 3);
+    
+    remove_at(list, 0); // Remove 3 -> empty
+    assert(size(list) == 0);
+    assert(is_empty(list));
+    
+    destory_list(list);
+}
+
+void test_remove_value() {
+    List *list = new_list();
+    push_back(list, 1);
+    push_back(list, 2);
+    push_back(list, 2);
+    push_back(list, 3);
+    
+    remove_value(list, 2); // Should remove all 2s -> 1, 3
+    
+    assert(size(list) == 2);
+    assert(value_at(list, 0) == 1);
+    assert(value_at(list, 1) == 3);
+    
+    remove_value(list, 1); // Remove 1 -> 3
+    assert(size(list) == 1);
+    assert(front(list) == 3);
+    
+    remove_value(list, 3); // Remove 3 -> empty
+    assert(size(list) == 0);
+    assert(is_empty(list));
+    
+    destory_list(list);
+}
+
+void test_reverse() {
+    List *list = new_list();
+    push_back(list, 1);
+    push_back(list, 2);
+    push_back(list, 3);
+    
+    reverse(list); // 3, 2, 1
+    
+    assert(value_at(list, 0) == 3);
+    assert(value_at(list, 1) == 2);
+    assert(value_at(list, 2) == 1);
+    assert(front(list) == 3);
+    assert(back(list) == 1);
+    
+    destory_list(list);
 }
 
 int main() {
-    LinkedList *list = create_linked_list();
-    int passed = 0, failed = 0;
-
-#define TEST(cond, msg) do { \
-    if (cond) { printf("  ✓ %s\n", msg); passed++; } \
-    else { printf("  ✗ %s\n", msg); failed++; } \
-} while(0)
-
-    printf("=== 链表测试 ===\n\n");
-
-    // 1. 空链表
-    printf("1. 空链表测试:\n");
-    TEST(empty(list), "empty() 返回 true");
-    TEST(size(list) == 0, "size() 返回 0");
-    printf("\n");
-
-    // 2. push_front
-    printf("2. push_front 测试:\n");
-    push_front(list, 3);
-    push_front(list, 2);
-    push_front(list, 1);
-    TEST(size(list) == 3, "push_front 后 size=3");
-    TEST(value_at(list, 0) == 1, "value_at(0)=1");
-    TEST(value_at(list, 1) == 2, "value_at(1)=2");
-    TEST(value_at(list, 2) == 3, "value_at(2)=3");
-    TEST(front(list) == 1, "front()=1");
-    TEST(back(list) == 3, "back()=3");
-    printf("\n");
-
-    // 3. pop_front
-    printf("3. pop_front 测试:\n");
-    pop_front(list);
-    TEST(size(list) == 2, "pop_front 后 size=2");
-    TEST(front(list) == 2, "front()=2");
-    pop_front(list);
-    pop_front(list);
-    TEST(empty(list), "全部 pop_front 后为空");
-    printf("\n");
-
-    // 4. push_back
-    printf("4. push_back 测试:\n");
-    push_back(list, 10);
-    push_back(list, 20);
-    push_back(list, 30);
-    TEST(size(list) == 3, "push_back 后 size=3");
-    TEST(value_at(list, 0) == 10, "value_at(0)=10");
-    TEST(value_at(list, 2) == 30, "value_at(2)=30");
-    TEST(back(list) == 30, "back()=30");
-    printf("\n");
-
-    // 5. pop_back
-    printf("5. pop_back 测试:\n");
-    int v = pop_back(list);
-    TEST(v == 30, "pop_back 返回值=30");
-    TEST(back(list) == 20, "pop_back 后 back()=20");
-    pop_back(list);
-    pop_back(list);
-    TEST(empty(list), "全部 pop_back 后为空");
-    printf("\n");
-
-    // 6. insert
-    printf("6. insert 测试:\n");
-    push_back(list, 1);
-    push_back(list, 3);
-    insert(list, 1, 2);
-    TEST(size(list) == 3, "insert 后 size=3");
-    TEST(value_at(list, 1) == 2, "insert 到索引1正确");
-    insert(list, 0, 0);
-    insert(list, 4, 4);
-    TEST(value_at(list, 0) == 0 && value_at(list, 4) == 4, "头尾 insert 正确");
-    printf("\n");
-
-    // 7. erase
-    printf("7. erase 测试:\n");
-    erase(list, 0);
-    TEST(front(list) == 1, "erase(0) 后 front=1");
-    erase(list, 2);  // 删除原索引2的值3
-    TEST(size(list) == 3, "erase 中间元素后 size=3");
-    printf("\n");
-
-    // 8. value_n_from_end
-    printf("8. value_n_from_end 测试:\n");
-    while (!empty(list)) pop_back(list);
-    push_back(list, 10);
-    push_back(list, 20);
-    push_back(list, 30);
-    push_back(list, 40);
-    TEST(value_n_from_end(list, 1) == 40, "倒数第1个=40");
-    TEST(value_n_from_end(list, 2) == 30, "倒数第2个=30");
-    TEST(value_n_from_end(list, 4) == 10, "倒数第4个=10");
-    printf("\n");
-
-    // 9. reverse
-    printf("9. reverse 测试:\n");
-    reverse(list);
-    TEST(front(list) == 40, "reverse 后 front=40");
-    TEST(back(list) == 10, "reverse 后 back=10");
-    TEST(value_at(list, 1) == 30, "reverse 后 value_at(1)=30");
-    printf("\n");
-
-    // 10. remove_value
-    printf("10. remove_value 测试:\n");
-    while (!empty(list)) pop_back(list);
-    push_back(list, 5);
-    push_back(list, 10);
-    push_back(list, 5);
-    push_back(list, 15);
-    remove_value(list, 5);
-    TEST(size(list) == 3, "remove_value(5) 后 size=3");
-    TEST(value_at(list, 0) == 10, "删除第一个5后 head=10");
-    TEST(value_at(list, 2) == 15, "第二个5保留");
-    remove_value(list, 15);
-    TEST(back(list) == 5, "remove_value(15) 后 tail=5");
-    printf("\n");
-
-    printf("=== 测试结果: %d 通过, %d 失败 ===\n", passed, failed);
-    destroy_list(list);
-    return failed > 0 ? 1 : 0;
+    printf("Running linked list tests...\n");
+    test_size_init();
+    test_push_front();
+    test_push_back();
+    test_empty();
+    test_front_back();
+    test_pop_front();
+    test_pop_back();
+    test_insert();
+    test_value_at();
+    test_remove_at();
+    test_remove_value();
+    test_reverse();
+    printf("All tests passed!\n");
+    return 0;
 }
 ```
