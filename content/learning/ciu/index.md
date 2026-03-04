@@ -58,21 +58,7 @@ tags:
 - [x] [Michael Sambol - Queues in 3 minutes](https://youtu.be/D6gu-_tmEpQ) (2026-03-01)
 - [ ] [圆形队列](https://en.wikipedia.org/wiki/Circular_buffer)
 - [ ] [UC San Diego - 队列](https://www.coursera.org/learn/data-structures/lecture/EShpq/queue)
-- [ ] 使用含有尾部指针的链表来实现:
-    - enqueue(value) —— 在尾部添加值
-    - dequeue() —— 删除最早添加的元素并返回其值（首部元素）
-    - empty()
-- [ ] 使用固定大小的数组实现：
-    - enqueue(value) —— 在可容的情况下添加元素到尾部
-    - dequeue() —— 删除最早添加的元素并返回其值
-    - empty()
-    - full()
-- [ ] 花销：
-    - 在糟糕的实现情况下，使用链表所实现的队列，其入列和出列的时间复杂度将会是 O(n)。
-    因为，你需要找到下一个元素，以致循环整个队列
-    - enqueue：O(1)（平摊（amortized）、链表和数组 [探测（probing）]）
-    - dequeue：O(1)（链表和数组）
-    - empty：O(1)（链表和数组）
+- [x] [[6D3CA959-D86D-4858-A53C-0B3983A685A0|实现队列]] (2026-03-04)
 
 ### 哈希表（Hash table）
 - [ ] 视频：
