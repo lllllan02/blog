@@ -58,9 +58,20 @@ card: true
     -   讨论优缺点、适用场景或常见的陷阱。
     -   关联知识点。
 
-### 4. 创建文件 (Create File)
+### 4. Create File (Create File)
 
-使用 `Write` 工具在目标目录下创建文件。
+请遵循 `.cursor/skills/writing-style/SKILL.md` 中的 **"初始化元数据"** 章节，使用 `clitool` 一键生成文件。
+
+**推荐命令**:
+使用 `new card` 模式，并添加 `interview` 标签。
+
+```bash
+./clitool new card "<filename>" --title "<中文问题>" --tags "interview,<相关技术栈标签>" --dir "<目标目录>"
+```
+
+### 5. 完善内容 (Refine Content)
+
+读取生成的文件，保留 Frontmatter，并根据内容结构建议填充正文。
 
 ## 示例
 

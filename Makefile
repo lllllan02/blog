@@ -7,13 +7,13 @@ pangu:
 	npm run pangu
 
 doc:
-	@./clitool doc
+	@./clitool new doc
 
 dir:
-	@./clitool dir
+	@./clitool new dir
 
 card:
-	@./clitool card
+	@./clitool new card
 
 create-file:
-	@./clitool create-file "$(filename)" "$(title)"
+	@./clitool new doc "$(filename)" --title "$(title)"

@@ -29,13 +29,14 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
 -   **按需补充 (Optional Context)**: [关键] 仅当概念较复杂（如 OAuth2, B+ Tree）时，才以极简列表形式补充 2-3 个核心要点。对于原子概念（如指令、闭包），**严禁凑数**，直接跳过此项。
 -   **链接 (Reference)**: 仅保留 1 个最权威的参考链接。
 
-### 3. Format Output
--   **Create File**: 优先使用 `./clitool create-file "content/wiki/filename.md" "Title"` 命令创建文件，以自动生成准确的 `date` 和 `aliases` (UUID)。
--   **Update Content**: 读取生成的文件，保留 `date` 和 `aliases`，并根据 `assets/template.md` 模板重写文件内容。
--   遵循 `writing-style` 技能的规范：
-    -   **Title**: 修正 Frontmatter 中的 `title` 字段为 "中文 (英文)" 格式（例如 "组合 (Composition)"）。
-    -   **Section Headings**: 使用中文作为章节标题（例如：`## 定义`, `## 直觉`, `## 关键点`, `## 参考资料`）。
-    -   **Frontmatter**: 补充 `wiki` (包含中文名称、英文缩写或核心术语的数组), `tags`, `card: true` 等字段。
+### 3. Create File & Format Output
+-   **Create File**: 请遵循 `.cursor/skills/writing-style/SKILL.md` 中的 **"初始化元数据"** 章节，使用 `clitool` 一键生成文件。
+    *   **推荐命令**: 使用 `new card` 模式，并添加 `--wiki` 参数和 `wiki` 标签。
+    ```bash
+    ./clitool new card "<filename>" --title "<中文 (英文)>" --wiki "<中文名称>,<英文缩写>" --tags "wiki" --dir "content/wiki"
+    ```
+
+-   **Update Content**: 读取生成的文件，保留 Frontmatter，并根据 `assets/template.md` 模板重写文件内容。
     -   **简洁性**: 核心内容（不含代码）建议控制在 150 字以内。
     -   **视觉重心**: 确保用户打开文档的第一眼看到的是加粗的定义。
     -   **标题**: **禁止使用一级标题 (H1)**，正文从 H2 开始。
