@@ -63,6 +63,13 @@
     -   ❌ `[[协程详解]]` (文件名可能变更，UUID 更稳定)
 -   **外部链接**：使用标准 Markdown 链接 `[标题](URL)`。
 
+### 3.4 来源致谢 (Attribution)
+-   **位置**：通常位于文章开头。
+-   **格式**：使用引用块 `>` 包裹原文链接。
+    -   `> [原文标题](URL)`
+-   **补充信息**：必要时在链接后补充来源信息 `(Author/Site, YYYY-MM-DD)`。
+    -   示例：`> [The Absolute Minimum...](https://...) (Joel Spolsky, 2003-10-08)`
+
 ## 4. Linting Guidelines (Linting 指南)
 
 虽然 Agent 无法直接运行 Linter，但生成内容时应遵循以下 `markdownlint` 规则：

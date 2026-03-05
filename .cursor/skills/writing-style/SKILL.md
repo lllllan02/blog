@@ -30,12 +30,13 @@ description: 规范本项目 Markdown 文档的写作风格、元数据（UUID �
 -   **手动创建时**:
     -   为新文章生成唯一的 UUID (`aliases`)。
     -   使用当前时间（精确到秒）替换模板中的 `<Date...>` 占位符或填充 `date` 字段。
--   **Title**: 在 Frontmatter 中添加 `title` 字段，格式为“中文名称 (English Name)”。
+-   **Title**: 在 Frontmatter 中添加 `title` 字段，格式为“中文名称”。
 -   从标签库 (`.cursor/data/tags.txt`) 中选择合适的标签。
 -   详见 [rules.md](references/rules.md#2-metadata-standards)。
 
 ### 3. 构建结构 (Structure)
 -   **禁止使用一级标题 (H1)**：正文最高级别标题应为 H2。
+-   **标题语言**：通常仅使用中文标题。仅在标题为**专有名词**且确有必要对照时，才在括号中补充英文原词（如 `## 码点 (Code Point)`）。
 -   **自然段落优先**：对于解释性、叙述性内容，优先使用完整的段落。
 -   **格式克制**：严格控制 Callout 和列表的使用频率，避免文章碎片化。
 -   详见 [rules.md](references/rules.md#1-structure-and-style)。
@@ -44,6 +45,7 @@ description: 规范本项目 Markdown 文档的写作风格、元数据（UUID �
 -   **中英文空格**：汉字与英文/数字之间必须保留空格。
 -   **代码规范**：指定语言标签，长代码折叠，多语言对比使用 TabGroup。
 -   **引用规范**：内部链接使用 `[[uuid|title]]` 格式。
+-   **来源致谢**：文章开头使用引用块 `> [Title](URL)` 格式注明来源，必要时补充 `(Author/Site, Date)`。
 -   可直接复制 [templates.md](references/templates.md) 中的模板。
 
 ### 5. 质量自检 (Quality Check)
