@@ -32,14 +32,18 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
 ### 3. 创建文件与格式化输出 (Create File & Format Output)
 -   **创建文件**: 请遵循 `.cursor/skills/writing-style/SKILL.md` 中的 **"初始化元数据"** 章节，使用 `clitool` 一键生成文件。
     *   **推荐命令**: 使用 `new card` 模式，并添加 `--wiki` 参数和 `wiki` 标签。
+    *   **标题规范**: 对于 Wiki 类型的文档，或者特别重要的技术概念，标题**必须**包含英文名称，格式为 `中文名称 (英文名称)`。
     ```bash
-    ./clitool new card "<filename>" --title "<中文 (英文)>" --wiki "<中文名称>,<英文缩写>" --tags "wiki" --dir "content/wiki"
+    ./clitool new card "<filename>" --title "<中文名称> (<英文名称>)" --wiki "<中文名称>,<英文名称>" --tags "wiki" --dir "content/wiki"
     ```
 
 -   **更新内容**: 读取生成的文件，保留 Frontmatter，并根据 `assets/template.md` 模板重写文件内容。
     -   **简洁性**: 核心内容（不含代码）建议控制在 150 字以内。
     -   **视觉重心**: 确保用户打开文档的第一眼看到的是加粗的定义。
     -   **标题**: **禁止使用一级标题 (H1)**，正文从 H2 开始。
+    -   **段落标题**:
+        -   **通用标题**: 对于“定义”、“核心直觉”、“关键点”、“参考资料”等通用段落标题，**严禁**添加英文对照（如 `## 定义 (Definition)` 是错误的），直接使用中文即可。
+        -   **专有名词**: 仅当段落标题本身是一个需要对照的专有名词时（例如 `## 反应式流 (Reactive Streams)`），才保留英文对照。
     -   **链接**: **禁止手动添加 Wiki 链接**（如 `[[...]]`）。相关术语保持纯文本即可，系统会自动生成链接。
 -   **文件名规范**: 必须使用全小写英文，单词间用连字符分隔（kebab-case）。
 
@@ -62,6 +66,6 @@ description: 快速生成技术概念或模糊术语的简短介绍文档。当�
 **Agent 动作**:
 1.  搜索 "Closure programming definition MDN wikipedia"。
 2.  提取核心信息: "A closure is the combination of a function bundled together (enclosed) with references to its surrounding state (the lexical environment)."
-3.  **创建文件**: 运行 `./clitool new card "closure" --title "闭包" --wiki "闭包,Closure" --tags "wiki" --dir "content/wiki"`。
+3.  **创建文件**: 运行 `./clitool new card "closure" --title "闭包 (Closure)" --wiki "闭包,Closure" --tags "wiki" --dir "content/wiki"`。
 4.  **读取文件**: 读取 `content/wiki/closure.md` 以获取生成的 `date` 和 `aliases`。
 5.  **更新内容**: 使用完整的 wiki 内容重写 `content/wiki/closure.md`，保留生成的 frontmatter。
