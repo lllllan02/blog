@@ -120,12 +120,17 @@ export const WikiLinks: QuartzTransformerPlugin<Partial<Options>> = (userOpts) =
                     if (!isPrevBoundary || !isNextBoundary) continue
                   }
 
+                  const count = (wikiLinkCounts.get(kwInfo.slug) ?? 0) + 1
+                  wikiLinkCounts.set(kwInfo.slug, count)
+
+                  if (count > 1) {
+                    continue
+                  }
+
                   if (matchIndex > lastIndex) {
                     newChildren.push({ type: "text", value: text.slice(lastIndex, matchIndex) })
                   }
 
-                  const count = (wikiLinkCounts.get(kwInfo.slug) ?? 0) + 1
-                  wikiLinkCounts.set(kwInfo.slug, count)
                   const id = `wikilink-${kwInfo.slug.replace(/\//g, "-")}-${count}`
 
                   newChildren.push({
