@@ -1,5 +1,5 @@
 ---
-title: Golang 中 make 和 new 的区别
+title: make 和 new 的区别
 aliases: dc4afc79-b611-4aab-8975-c433d6e66bb0
 date: 2026-04-08 17:45:43
 card: true
