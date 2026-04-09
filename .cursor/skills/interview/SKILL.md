@@ -12,7 +12,7 @@ description: 当用户提出一个面试问题时，自动创建一篇文档，�
 1. **自动创建文档**：
    - 必须自动在合适的目录（如 `content/interview/` 或用户指定的目录）下创建 Markdown 文件来记录该问题。
    - 文档的元数据（Frontmatter）、排版和命名规范，**必须严格参考并遵循** `@.cursor/skills/writing-style/SKILL.md` 中的要求。
-   - 优先使用 `./clitool new card "filename" --title "面试题：xxx" --dir "content/..."` 来初始化文档（以确保 Frontmatter 中 `card: true`），或者手动生成带有 UUID、`card: true` 和规范 Frontmatter 的文件。
+   - 优先使用 `./clitool new card "filename" --title "xxx" --dir "content/..."` 来初始化文档（以确保 Frontmatter 中 `card: true`），或者手动生成带有 UUID、`card: true` 和规范 Frontmatter 的文件。
 2. **生成回答内容**：
    - 按照下方的“核心原则”在新建的文档中撰写内容。
    - 根据题目的难易程度，从以下三个模板中选择最合适的一个作为参考：
