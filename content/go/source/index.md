@@ -13,7 +13,7 @@ tags:
 
 ## 阶段一：基础数据结构 (Basic Data Structures)
 理解 Go 语言最基础的构建块，关注内存布局与扩容机制。
-- [ ] [[8d2e1c3a-9b4d-4f6d-a1c2-7b3a4f5d6e7f|src/runtime/slice.go: Slice (切片)]]
+- [x] [[8d2e1c3a-9b4d-4f6d-a1c2-7b3a4f5d6e7f|src/runtime/slice.go: Slice (切片)]]
 - [ ] `src/runtime/string.go`: String (字符串)
 - [ ] `src/runtime/map.go`: Map (哈希表)
 - [ ] `src/runtime/iface.go` & `eface.go`: Interface (接口底层实现)
