@@ -28,8 +28,9 @@ tags:
 - [x] [[e8f6b0b2-23c3-424d-b657-fc08d752220d|底层结构（hmap 与 bmap）]]：
     - map 的控制头 `hmap` 包含哪些关键字段？（如 `count`, `B`, `buckets`, `oldbuckets` 等分别代表什么？）
     - 桶 `bmap`（bucket）在编译期和运行时的结构有什么不同？一个 bucket 最多能装几个键值对（K-V）？
-- [ ] **初始化（makemap）**：
+- [x] [[fb971326-3d55-41f5-99fe-1d6111f10d41|nil map 与空 map 的底层区别]]：
     - `var m map[int]int`（nil map）和 `m := make(map[int]int)`（空 map）在底层有什么区别？
+- [x] [[5a487929-6cae-4f2c-aa91-16872827dc62|初始化（makemap）]]：
     - 当使用 `make(map[k]v, hint)` 预分配容量时，底层是如何计算所需的 bucket 数量（即字段 `B` 的值）的？
 - [ ] **哈希冲突（Hash Collision）**：
     - Go 的 map 是如何解决哈希冲突的？（开放寻址法还是链地址法？）
