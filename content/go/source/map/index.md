@@ -40,7 +40,7 @@ tags:
 
 这是 map 最核心的逻辑，位于 `src/runtime/map.go`。阅读时请关注：
 
-- [ ] **查找过程（mapaccess）**：
+- [x] [[3dccc618-e0d3-4e42-b407-13c207c3dcab|查找过程（mapaccess）]]：
     - 哈希值是如何被拆分使用的？（**低位**用来做什么？**高位** `tophash` 用来做什么？）
     - 如果 map 正在扩容期间，查找逻辑会有什么特殊处理？（如何去 `oldbuckets` 中找数据？）
 - [ ] **插入过程（mapassign）**：

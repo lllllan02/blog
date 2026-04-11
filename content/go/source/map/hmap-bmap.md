@@ -40,10 +40,22 @@ type hmap struct {
 |----|------|------|
 | 1 | `iterator` | 可能有迭代器正在遍历 **当前** `buckets` |
 | 2 | `oldIterator` | 可能有迭代器还在遍历 **扩容前** 的 `oldbuckets` |
-| 4 | `hashWriting` | 有 goroutine 正在对 map **写入**（与并发读写的检测有关：未加锁时若同时写会 panic） |
+| 4 | `hashWriting` | 有 goroutine 正在对 map **写入**（用于**并发读写冲突检测**：未加锁时若同时写会 panic） |
 | 8 | `sameSizeGrow` | 当前是一次 **等量扩容**（整理溢出桶等，桶数不变），影响扩容/迁移逻辑 |
 
 因此：**`flags` 不是用来存业务数据的**，而是 runtime 用来协调 **迭代、扩容迁移、并发写检测** 的内部状态；读写 map 时会在这些位上置位/清除（例如 `hashWriting` 的 XOR/`&^=`，迭代时用 `atomic.Or8` 设置 `iterator`/`oldIterator` 等）。
+
+### MapType.Flags (类型元数据)
+
+除了 `hmap.flags` 记录运行时状态外，Go 在编译期还会为每种具体的 map 类型生成一个 `MapType` 结构，其中的 `Flags` 字段记录了该 map 存储类型的物理特性：
+
+| 位 | 标志位 | 作用 |
+|----|------|------|
+| 1 | `IndirectKey` | 标识 `key` 的大小超过限制（128字节），`bmap` 中实际存储的是指向 `key` 的指针 |
+| 2 | `IndirectElem` | 标识 `elem` 的大小超过限制（128字节），`bmap` 中实际存储的是指向 `elem` 的指针 |
+| 4 | `ReflexiveKey` | 标识 `key` 是否具有自反性（即所有可能的 key 都满足 `k == k`，像浮点数含有 `NaN` 就不满足） |
+| 8 | `NeedKeyUpdate` | 标识在覆盖更新元素时，是否需要同时更新 `key`（当 key 包含指针且指向的内容可能变化时需要） |
+| 16 | `HashMightPanic` | 标识该类型的哈希函数在计算时是否可能发生 panic（例如对包含 slice 的 `interface{}` 求哈希）。主要用于即使 map 为空时，也要保证对非法 key 触发 panic（见 Go issue #23734） |
 
 ### extra 与 mapextra
 
