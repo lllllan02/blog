@@ -147,7 +147,7 @@ if c := h.oldbuckets; c != nil {
   - 如果该旧 bucket **尚未迁移**，那么我们要找的数据肯定还在旧 bucket 中，于是将查找目标 `b` 指向这个旧 bucket。
   - 如果该旧 bucket **已经迁移完毕**，那么数据已经被搬到了新的 `buckets` 中，查找目标 `b` 保持为新的 bucket 不变。
 
-## 总结
+### 总结
 
 `mapaccess1` 的查找过程可以概括为以下几个关键步骤：
 
@@ -191,14 +191,6 @@ if h.flags&hashWriting != 0 {
 ```
 
 `h.flags` 记录了 map 的当前状态。如果 `hashWriting` 标志位被设置（通常是在 `mapassign` 或 `mapdelete` 时设置），说明当前正有其他 goroutine 在对 map 进行写操作。此时，Go 会直接抛出 `fatal` 错误（panic），导致程序崩溃。这种 fail-fast 机制强制开发者在并发场景下必须使用 `sync.RWMutex` 或 `sync.Map` 来保护 map。
-
-### 3. 哈希冲突的处理（链地址法）
-
-当两个不同的 key 计算出的哈希值低位相同（落入同一个 bucket），甚至高位 `tophash` 也相同时，就发生了哈希冲突。
-
-Go 的 map 采用**链地址法**（Chaining）来解决哈希冲突。每个 bucket 最多只能装 8 个键值对（`bucketCnt = 8`）。如果一个 bucket 装满了，Go 会分配一个**溢出桶（overflow bucket）**，并将其链接到当前 bucket 的尾部。
-
-在源码的 `bucketloop` 中，外层循环 `for ; b != nil; b = b.overflow(t)` 正是在遍历这条由常规 bucket 和溢出桶组成的单向链表。只要沿着链表一直找下去，就能遍历完所有发生哈希冲突并落在这个槽位的 key。
 
 ## 附：mapaccess1 完整源码
 

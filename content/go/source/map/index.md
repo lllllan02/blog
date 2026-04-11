@@ -32,7 +32,7 @@ tags:
     - `var m map[int]int`（nil map）和 `m := make(map[int]int)`（空 map）在底层有什么区别？
 - [x] [[5a487929-6cae-4f2c-aa91-16872827dc62|初始化（makemap）]]：
     - 当使用 `make(map[k]v, hint)` 预分配容量时，底层是如何计算所需的 bucket 数量（即字段 `B` 的值）的？
-- [ ] **哈希冲突（Hash Collision）**：
+- [x] [[13f10ebe-8826-4821-9eab-565c0c5db2ed|哈希冲突（Hash Collision）]]：
     - Go 的 map 是如何解决哈希冲突的？（开放寻址法还是链地址法？）
     - 溢出桶（overflow bucket）的作用是什么？它是如何与常规桶连接起来的？
 
