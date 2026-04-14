@@ -55,7 +55,7 @@ tags:
 
 ## 进阶思考
 
-- [ ] **遍历的无序性（mapiterinit）**：
+- [x] [[fb25a1e0-77ce-4982-9a06-371c014adddb|遍历的无序性（mapiterinit）]]：
     - 为什么在 Go 中 `for range` 遍历 map 每次的顺序都不一样？
     - 尝试在源码中寻找随机数生成的逻辑（`fastrand`），看看它是如何决定遍历的起始 bucket 和槽位偏移量的。
 - [ ] **并发安全（flags 字段）**：
