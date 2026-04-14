@@ -61,7 +61,7 @@ tags:
 - [ ] **并发安全（flags 字段）**：
     - 为什么说 Go 的原生 map 不是并发安全的？
     - 源码中是如何检测并抛出 `concurrent map read and map write` panic 的？（关注 `hmap.flags` 中的 `hashWriting` 标志位）。
-- [x] **内存回收与泄露陷阱**：
+- [x] [[b691201b-fdf6-40d7-8f79-a07583e3d7f5|内存回收与泄露陷阱]]：
     - 执行 `delete(m, key)` 删除元素后，map 占用的内存会立即归还给操作系统吗？
     - 如果一个 map 曾经存了海量数据，后来删除了绝大部分，它的 bucket 数量会缩小吗？如果不会，应该如何优化以释放内存？
 - [ ] **Key 的类型限制**：
