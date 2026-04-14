@@ -51,8 +51,8 @@ type hmap struct {
 
 | 位 | 标志位 | 作用 |
 |----|------|------|
-| 1 | `IndirectKey` | 标识 `key` 的大小超过限制（128字节），`bmap` 中实际存储的是指向 `key` 的指针 |
-| 2 | `IndirectElem` | 标识 `elem` 的大小超过限制（128字节），`bmap` 中实际存储的是指向 `elem` 的指针 |
+| 1 | `IndirectKey` | 标识 `key` 的大小超过限制（128 字节），`bmap` 中实际存储的是指向 `key` 的指针 |
+| 2 | `IndirectElem` | 标识 `elem` 的大小超过限制（128 字节），`bmap` 中实际存储的是指向 `elem` 的指针 |
 | 4 | `ReflexiveKey` | 标识 `key` 是否具有自反性（即所有可能的 key 都满足 `k == k`，像浮点数含有 `NaN` 就不满足） |
 | 8 | `NeedKeyUpdate` | 标识在覆盖更新元素时，是否需要同时更新 `key`（当 key 包含指针且指向的内容可能变化时需要） |
 | 16 | `HashMightPanic` | 标识该类型的哈希函数在计算时是否可能发生 panic（例如对包含 slice 的 `interface{}` 求哈希）。主要用于即使 map 为空时，也要保证对非法 key 触发 panic（见 Go issue #23734） |

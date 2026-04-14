@@ -31,12 +31,12 @@ tags:
 
 ## 锁机制
 - [ ] MySQL 有哪些锁（全局锁、表级锁、行级锁）？
-- [ ] 什么是共享锁（S锁）和排他锁（X锁）？
+- [ ] 什么是共享锁（S 锁）和排他锁（X 锁）？
 - [ ] 什么是记录锁（Record Lock）、间隙锁（Gap Lock）和临键锁（Next-Key Lock）？
 - [ ] 什么是死锁？MySQL 是如何处理死锁的？
 
 ## 日志与架构
-- [ ] MySQL 的体系架构是怎样的（Server层与存储引擎层）？
+- [ ] MySQL 的体系架构是怎样的（Server 层与存储引擎层）？
 - [ ] InnoDB 和 MyISAM 存储引擎的区别？
 - [ ] `binlog`、`redo log` 和 `undo log` 的作用分别是什么？
 - [ ] 什么是两阶段提交？
