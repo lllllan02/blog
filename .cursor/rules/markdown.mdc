@@ -1,0 +1,21 @@
+---
+description: 强制所有的 Markdown 写作、修改、生成任务遵循统一的排版与基调规范。
+globs: *.md, content/**/*.md
+---
+
+# Markdown 写作与排版全局规范
+
+在当前项目中，无论你是新建、重写、生成还是优化任何 Markdown (`.md`) 文件，**必须**严格遵守项目定义的写作规范。
+
+## 强制要求
+
+1. **必须读取并应用规范**：在开始输出任何 Markdown 内容之前，你必须先阅读并严格遵循 `@.cursor/skills/tech-writing-tone/SKILL.md`（内容与口吻）与 `@.cursor/skills/markdown-format/SKILL.md`（排版与格式）中的规则。
+2. **核心原则**：
+   - 保持专业严谨、启发引导的工程师口吻，拒绝幼教化或废话。
+   - 必须包含标准 YAML Frontmatter（`title`, `aliases`, `date` 等）。
+   - 禁用一级标题 (`#`)，正文从 `##` 开始。
+   - 中英文、数字之间必须保留一个半角空格。
+   - 引用内部文档必须使用双链语法 `[[uuid|文档标题]]`。
+   - Callout 提示块必须使用 `::: [!type] 纯中文标题` 格式。
+
+如果你发现用户的请求涉及 Markdown 文件的修改或生成，请立即应用上述规范，不要有任何遗漏。
