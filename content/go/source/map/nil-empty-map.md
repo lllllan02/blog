@@ -3,7 +3,7 @@ title: nil map 与空 map 的底层区别
 aliases: fb971326-3d55-41f5-99fe-1d6111f10d41
 date: 2026-04-11 10:27:25
 card: false
-order: 1
+order: 2
 tags: 
   - golang
   - map

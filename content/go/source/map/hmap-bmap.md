@@ -2,7 +2,7 @@
 title: 底层结构（hmap 与 bmap）
 aliases: e8f6b0b2-23c3-424d-b657-fc08d752220d
 date: 2026-04-10 20:15:00
-order: 2
+order: 1
 tags:
   - golang
   - source-reading

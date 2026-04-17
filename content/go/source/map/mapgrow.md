@@ -3,7 +3,7 @@ title: 扩容机制（hashGrow 与 evacuate）
 aliases: 54c7d285-4878-4c1e-99eb-57d2f814da07
 date: 2026-04-13 12:00:00
 card: false
-order: 6
+order: 8
 tags: 
   - golang
   - source-reading
