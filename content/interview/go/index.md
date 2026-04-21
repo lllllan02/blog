@@ -12,7 +12,7 @@ tags:
 - [x] [[b4da4e26-41f7-4233-9ce4-0b0e6ead3f60|与其他语言相比，使用 Go 有什么好处？]]
 - [x] [[f641a219-9938-4c52-ac97-f501065a87ad|数组 (Array) 和 切片 (Slice) 的区别是什么？]]
 - [x] [[9dc46105-6a61-469e-95ab-5256d7771460|Slice 的底层结构是怎样的？它的扩容机制是怎样的？]]
-- [ ] Map 的底层实现原理是什么？它是并发安全的吗？如何实现并发安全的 Map？
+- [x] [[48424abd-e477-42ba-b5c4-b1a2a8b419bf|Map 的底层实现原理是什么？它是并发安全的吗？如何实现并发安全的 Map？]]
 - [ ] Channel 的底层实现原理？有缓冲和无缓冲 Channel 的区别？
 - [x] [[6c34d43c-c806-4e65-8b39-911680685106|Channel 会在什么情况下引发 panic？]]
 - [x] [[dc4afc79-b611-4aab-8975-c433d6e66bb0|make 和 new 的区别是什么？]]
@@ -35,10 +35,13 @@ tags:
 - [ ] 什么是 sync.Pool？它的底层原理和使用场景？
 
 ## 内存管理与底层原理
+- [ ] [A Guide to the Go Garbage Collector](https://go.dev/doc/gc-guide)
+- [ ] [Getting to Go: The Journey of Go's Garbage Collector](https://go.dev/blog/ismmkeynote)
+- [ ] [Go GC: Prioritizing low latency and simplicity](https://go.dev/blog/go15gc)
 - [x] [[f1be6b04-6925-4d70-a373-0f13bdd278a3|什么是逃逸分析？如何知道对象分配在栈上还是堆上？]]
-- [ ] Golang 的垃圾回收（GC）机制是怎样的？详细说说三色标记法。
-- [ ] 什么是混合写屏障（Hybrid Write Barrier）机制？
-- [ ] GC 的触发时机有哪些？
-- [ ] Golang 中的内存分配机制是怎样的（TCMalloc）？
+- [x] [[8610c5c2-4446-4f1c-8121-c82314699e9f|Golang 的垃圾回收（GC）机制是怎样的？详细说说三色标记法。]]
+- [x] [[0c3fdf59-8efc-48e0-9e56-db354dcb249c|什么是混合写屏障（Hybrid Write Barrier）机制？]]
+- [x] [[ba090a4a-ef54-42c4-a129-4fed77d75b13|GC 的触发时机有哪些？]]
+- [x] [[04779a79-47bf-4438-9e7f-20655729e431|Golang 中的内存分配机制是怎样的（TCMalloc）？]]
 - [x] [[9343f3b4-93b1-4e54-a0b3-f2802f602eb6|什么是反射（Reflection）？反射的性能问题及应用场景？]]
 - [x] [[e4da93aa-006d-4632-bb90-e7ed628a2a42|Go 语言中的函数参数传递是值传递还是引用传递？]]
