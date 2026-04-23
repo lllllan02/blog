@@ -25,10 +25,16 @@ tags:
 - [x] [[e205c1c3-5aaa-4427-bd8b-9c90e7ac6091|rune 类型是什么？它和 byte 有什么区别？]]
 
 ## 并发编程
+- [ ] [Share Memory By Communicating](https://go.dev/blog/codelab-share)
+- [ ] [Go Concurrency Patterns: Context](https://go.dev/blog/context)
+- [ ] [Go Concurrency Patterns: Pipelines and cancellation](https://go.dev/blog/pipelines)
+- [ ] [Scheduling In Go : Part I - OS Scheduler (Ardan Labs)](https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part1.html)
+- [ ] [Scheduling In Go : Part II - Go Scheduler (Ardan Labs)](https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part2.html)
+- [ ] [Scheduling In Go : Part III - Concurrency (Ardan Labs)](https://www.ardanlabs.com/blog/2018/12/scheduling-in-go-part3.html)
 - [x] [[c6d9fcdb-1a1f-4b3b-8370-486d8b99c20d|什么是 Goroutine？协程、线程和进程的区别是什么？]]
-- [ ] 详细讲讲 Golang 的 GMP 调度模型？
-- [ ] GMP 模型中，如果一个 Goroutine 发生阻塞（如系统调用），会发生什么？
-- [ ] 什么是工作窃取（Work Stealing）机制？
+- [x] [[28ea854b-aff7-4b5b-8bcb-9b6b98073d7e|详细讲讲 Golang 的 GMP 调度模型？]]
+- [x] [[1cecd927-901d-4129-8e71-4c4de32c816e|GMP 模型中，如果一个 Goroutine 发生阻塞（如系统调用），会发生什么？]]
+- [x] [[e3faa7bd-cf43-48ed-8c17-9954524b48c9|什么是工作窃取（Work Stealing）机制？]]
 - [x] [[2cd2c0b4-c94f-4535-9899-4b09bb116bb9|Context 的作用是什么？有哪些使用场景？]]
 - [ ] sync.WaitGroup 的底层原理？
 - [ ] sync.Mutex 的底层实现？正常模式和饥饿模式有什么区别？
