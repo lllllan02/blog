@@ -17,7 +17,7 @@ tags:
 在直接阅读源码之前，理解官方的设计哲学与历史演进至关重要。这能帮助我们明白代码“为什么”这样设计，而不仅仅是“是什么”。
 
 建议在开始前，先阅读以下两份官方资料以对齐术语与背景知识：
-- 官方视角的切片设计背景：[Go Slices: usage and internals](https://go.dev/blog/slices-intro)
+- 官方视角的切片设计背景：[[b320f328-f1d8-4c4d-a5e0-edba5660b9dd|Go Slices: usage and internals]]
 - 扩容策略的关键来源与推导过程：[Go 1.18 扩容策略的变化 (GitHub Commit)](https://github.com/golang/go/commit/2dda92ff6f9f07eeb110ecbf0fc2d7a0ddd27f9d)
 
 ## 2. 核心结构与基础：Slice 的真面目
