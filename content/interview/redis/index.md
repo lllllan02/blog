@@ -9,17 +9,15 @@ tags:
   - cache
 ---
 
-# 缓存 (Redis) 面试题库
-
 这里记录了 Redis 及缓存架构相关的核心面试题：
 
 ## 数据结构与底层原理
-- [ ] Redis 有哪些常用的数据类型（String、List、Hash、Set、Zset）？它们的应用场景？
-- [ ] String 类型的底层实现（SDS）是什么？相比 C 语言字符串有什么优势？
-- [ ] Zset（有序集合）的底层实现是什么？详细讲讲跳表（Skip List）的原理。
-- [ ] Hash 字典的底层实现？Redis 的渐进式 rehash 是怎么做的？
-- [ ] 为什么 Redis 单线程还能保持这么高的性能？
-- [ ] Redis 6.0 之后为什么引入了多线程？
+- [x] [[f3b70409-86bc-4e2c-a404-a5d4d6e8dda3|Redis 常用数据类型及应用场景]]
+- [x] [[85efc7eb-0a44-4b2a-9988-052e4a63bf3c|Redis 字符串的底层实现 SDS]]
+- [x] [[c959467a-dd3e-4bce-ac2f-58b635a1e24e|Redis 有序集合的底层实现和跳表原理]]
+- [x] [[653edb98-7548-4e9f-8c5e-6f91ce1af6d3|Redis Hash 字典的底层实现和渐进式 rehash]]
+- [x] [[41d82f71-a80f-483e-aeb7-41925a793096|Redis 单线程高性能的原因]]
+- [x] [[fb485302-7c6e-484d-ac7f-fa4c6280a4a6|Redis 引入多线程的原因]]
 
 ## 持久化与内存管理
 - [ ] Redis 的持久化机制 RDB 和 AOF 有什么区别？各自的优缺点？
