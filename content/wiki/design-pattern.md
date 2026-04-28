@@ -3,25 +3,26 @@ title: 设计模式 (Design Pattern)
 aliases: 01eed474-7516-4745-ad02-1e43bf5da338
 date: 2026-03-02 11:00:27
 card: true
+order:
 wiki: [Design Pattern, GoF, 软件设计模式]
 tags: [Software Engineering, Architecture]
 ---
 
-**设计模式（Design Pattern）** 是软件开发中常见问题的典型解决方案，是经过分类编目的、代码设计经验的总结。
+## 定义
 
-它是编程界的“棋谱”或“建筑图纸”。**不要重复造轮子**，而是复用前人验证过的最佳实践来构建可维护、低耦合的系统。
+**设计模式 (Design Pattern)** 是软件设计中反复出现问题的通用解决方案，它总结的是对象、职责和协作关系，而不是可以直接复制的具体代码。
 
-设计模式主要解决了以下问题：
+## 直观理解
 
--   **代码复用与维护**：避免重复劳动，提高代码的可读性和可维护性。
--   **沟通成本**：提供了一套通用的术语（如“单例”、“工厂”），方便开发者之间高效沟通。
--   **系统解耦**：通过抽象和封装，降低模块间的耦合度，应对需求变化。
+设计模式像工程里的成熟做法：当你反复遇到“如何创建对象”“如何解耦模块”“如何组织对象协作”这类问题时，它提供一套经过验证的思路和命名。它的价值不只是复用方案，也在于降低沟通成本，比如“工厂”“观察者”“装饰器”本身就是一组设计语义。
 
-一个设计模式通常包含四个基本要素：
+## 关键点
 
--   **模式名称 (Pattern Name)**：助记词，用于沟通和记录。
--   **问题 (Problem)**：描述了何时使用模式，以及问题存在的背景。
--   **解决方案 (Solution)**：描述了设计的组成成分、它们之间的相互关系及协作方式。
--   **效果 (Consequences)**：描述了模式应用的效果及使用中可能出现的权衡问题。
+- **不是代码模板**：设计模式描述的是结构和协作方式，具体实现会随语言、框架和场景变化。
+- **强调权衡**：模式通常会降低某类复杂度，但也可能引入抽象层次和理解成本。
+- **常见分类**：经典 GoF 设计模式通常分为创建型、结构型和行为型。
 
-[Refactoring Guru: Design Patterns](https://refactoringguru.cn/design-patterns)
+## 参考资料
+
+- [Refactoring Guru: Design Patterns](https://refactoringguru.cn/design-patterns)
+- [Design Patterns - Wikipedia](https://en.wikipedia.org/wiki/Design_Patterns)

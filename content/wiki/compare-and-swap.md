@@ -3,15 +3,16 @@ title: 比较并交换 (Compare and Swap)
 aliases: 6d8d75c9-e6fd-4c09-9f1e-639c5c71e1db
 date: 2026-03-03 11:18:28
 card: true
+order:
 wiki: [CAS, 比较并交换, Compare and Swap]
 tags: [Concurrency, Synchronization]
 ---
 
 ## 定义
 
-**Compare and Swap (CAS)** 是一种用于多线程同步的原子指令。它将内存位置的内容与给定值进行比较，**仅当**两者相等时，才将该内存位置的内容修改为新的给定值。
+**比较并交换 (Compare and Swap, CAS)** 是一种用于多线程同步的原子指令。它将内存位置的内容与给定值进行比较，仅当两者相等时，才将该内存位置的内容修改为新的给定值。
 
-## 直觉
+## 直观理解
 
 CAS 解决了并发编程中“读-改-写”操作的竞态条件问题，是**乐观锁**的实现基础。
 
