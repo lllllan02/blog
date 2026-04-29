@@ -3,21 +3,20 @@ title: 消息队列 (MQ) 面试题库
 aliases: 4c70c6c7-3e63-49c2-9895-51a56d573e4e
 date: 2026-04-09 16:31:16
 card: false
+order:
 tags:
   - interview
   - mq
   - kafka
 ---
 
-# 消息队列 (MQ) 面试题库
-
 这里记录了分布式消息队列（如 Kafka、RabbitMQ、RocketMQ）相关的核心面试题：
 
 ## 基础与架构选型
-- [ ] 为什么需要使用消息队列？（核心作用：解耦、异步、削峰）
-- [ ] 引入消息队列会带来哪些问题？（系统可用性降低、复杂性提高、一致性问题）
-- [ ] Kafka、RabbitMQ、RocketMQ 的优缺点对比与技术选型？
-- [ ] 什么是 Push 模式和 Pull 模式？各自的优缺点？
+- [x] [[d5e78d5d-8f9e-4f9f-94a6-d5aec62da543|为什么需要使用消息队列？]]
+- [x] [[7b4c7de4-35f5-4c43-a245-632ea44e59b5|引入消息队列会带来哪些问题？]]
+- [x] [[7829bdac-a327-40c8-9e36-dc63ad66f8af|Kafka、RabbitMQ、RocketMQ 的优缺点对比与技术选型？]]
+- [x] [[c19bb061-1a4d-4f32-a8b7-f34e0e67086b|消息队列的 Push 模式和 Pull 模式]]
 
 ## 消息可靠性与一致性
 - [ ] 如何保证消息不丢失？（生产端、Broker 端、消费端分别如何处理）
