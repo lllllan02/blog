@@ -1,9 +1,10 @@
+# Disabled — restore the `on:` block below to re-enable.
 name: Sync LeetCode Image
 
-on:
-  schedule:
-    - cron: "0 17 * * *" # 每天北京时间 01:00 (UTC 17:00)
-  workflow_dispatch:
+# on:
+#   schedule:
+#     - cron: "0 17 * * *" # 每天北京时间 01:00 (UTC 17:00)
+#   workflow_dispatch:
 
 permissions:
   contents: write
